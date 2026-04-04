@@ -113,15 +113,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .rank-conv{font-size:11px;color:var(--text3);text-align:right;margin-top:2px}
 .rank-bar{height:4px;background:var(--surface2);border-radius:2px;margin-top:4px;overflow:hidden}
 .rank-bar-f{height:100%;background:var(--green);border-radius:2px;transition:width .6s ease}
-.form-view{max-width:560px;margin:0 auto}
-.form-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden;box-shadow:var(--sh-md)}
-.form-hero{background:var(--green);padding:28px 32px;color:#fff}
-.form-hero h2{font-size:20px;font-weight:600;letter-spacing:-.4px;margin-bottom:4px}
-.form-hero p{font-size:13px;color:#9dc888;line-height:1.5}
-.form-body{padding:28px 32px}
-.form-sent{text-align:center;padding:40px 32px;display:none}
-.form-sent h3{font-size:18px;font-weight:600;margin-bottom:8px}
-.form-sent p{font-size:13px;color:var(--text3);line-height:1.6}
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
 .overlay.open{display:flex}
 .modal{background:var(--surface);border-radius:14px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
@@ -158,7 +149,33 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .empty p{font-size:13px;line-height:1.6}
 .toast{position:fixed;bottom:24px;right:24px;background:var(--text);color:#fff;padding:10px 18px;border-radius:var(--rs);font-size:13px;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,.2);transform:translateY(80px);opacity:0;transition:all .25s cubic-bezier(.34,1.56,.64,1);z-index:200;pointer-events:none}
 .toast.show{transform:translateY(0);opacity:1}
-@media(max-width:960px){.metrics{grid-template-columns:repeat(2,1fr)}.dash-grid{grid-template-columns:1fr}.team-layout{grid-template-columns:1fr}}
+/* Analytics */
+.analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+.source-table{width:100%;border-collapse:collapse;font-size:13px}
+.source-table th{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
+.source-table td{padding:9px 12px;border-bottom:1px solid var(--border)}
+.source-table tr:last-child td{border-bottom:none}
+.source-table tr:hover td{background:var(--bg)}
+.conv-bar{height:6px;background:var(--surface2);border-radius:3px;overflow:hidden;margin-top:4px}
+.conv-bar-f{height:100%;background:var(--green);border-radius:3px}
+/* Marketing */
+.mkt-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.mkt-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;box-shadow:var(--sh)}
+.mkt-card-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.mkt-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.mkt-card-title{font-size:15px;font-weight:600}
+.mkt-card-sub{font-size:12px;color:var(--text3);margin-top:2px}
+.mkt-stat-row{display:flex;gap:10px;margin-bottom:14px}
+.mkt-stat{flex:1;background:var(--surface2);border-radius:var(--rs);padding:10px;text-align:center}
+.mkt-stat-val{font-size:18px;font-weight:700;color:var(--text)}
+.mkt-stat-lbl{font-size:10px;color:var(--text3);margin-top:2px}
+.webhook-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px;box-shadow:var(--sh);margin-bottom:16px}
+.webhook-status{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500}
+.webhook-status.active{background:var(--green-l);color:var(--green)}
+.webhook-status.inactive{background:var(--surface2);color:var(--text3)}
+.code-block{background:#1a1916;color:#d4e8c8;padding:14px 16px;border-radius:var(--rs);font-family:'DM Mono',monospace;font-size:11.5px;line-height:1.8;overflow-x:auto;margin-top:10px}
+.code-block .cm{color:#6b8c5f}.code-block .ck{color:#9dc888}.code-block .cv{color:#e8c97a}.code-block .cs{color:#7ab8e8}
+@media(max-width:960px){.metrics{grid-template-columns:repeat(2,1fr)}.dash-grid{grid-template-columns:1fr}.team-layout{grid-template-columns:1fr}.analytics-grid{grid-template-columns:1fr}.mkt-grid{grid-template-columns:1fr}}
 @media(max-width:600px){.content{padding:14px}.metrics{grid-template-columns:repeat(2,1fr);gap:10px}.topbar{padding:0 14px}.nav{padding:0 14px}.fg-row{grid-template-columns:1fr}}
 </style>
 </head>
@@ -181,6 +198,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   <button class="nav-btn" onclick="showView('tarefas',this)">Tarefas <span class="nav-cnt" id="cnt-tarefas">0</span></button>
   <button class="nav-btn" onclick="showView('clientes',this)">Clientes <span class="nav-cnt" id="cnt-clientes">0</span></button>
   <button class="nav-btn" onclick="showView('equipe',this)">Equipe <span class="nav-cnt" id="cnt-equipe">0</span></button>
+  <button class="nav-btn" onclick="showView('analytics',this)">Analytics</button>
+  <button class="nav-btn" onclick="showView('marketing',this)">Marketing & Ads</button>
   <button class="nav-btn" onclick="showView('captacao',this)">Formulário</button>
 </nav>
 
@@ -235,41 +254,153 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
   </div>
 
-  <!-- CAPTAÇÃO -->
-  <div class="view" id="view-captacao">
-    <div class="form-view">
-      <div style="margin-bottom:16px">
-        <div style="font-size:13px;color:var(--text2);margin-bottom:8px">Compartilhe este link com clientes para captar leads automaticamente:</div>
-        <div style="display:flex;gap:8px;align-items:center">
-          <div style="flex:1;padding:9px 12px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);font-size:12px;font-family:'DM Mono',monospace;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap" id="form-link">—</div>
-          <button class="btn" onclick="copyLink()">Copiar</button>
+  <!-- ANALYTICS -->
+  <div class="view" id="view-analytics">
+    <div class="section-head"><h2>Analytics de vendas</h2></div>
+    <div class="metrics" id="analytics-metrics"></div>
+    <div class="analytics-grid">
+      <div class="panel">
+        <div class="panel-head"><span class="panel-title">Taxa de conversão por origem</span></div>
+        <div style="padding:8px 0" id="source-table-wrap"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><span class="panel-title">Pipeline por etapa</span></div>
+        <div style="padding:8px 0" id="stage-table-wrap"></div>
+      </div>
+    </div>
+    <div class="panel" style="margin-top:14px">
+      <div class="panel-head"><span class="panel-title">Desempenho por produto</span></div>
+      <div style="padding:8px 0" id="product-table-wrap"></div>
+    </div>
+  </div>
+
+  <!-- MARKETING & ADS -->
+  <div class="view" id="view-marketing">
+    <div class="section-head"><h2>Marketing & Ads</h2></div>
+
+    <!-- Webhook Make.com -->
+    <div class="webhook-panel">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div>
+          <div style="font-size:15px;font-weight:600;margin-bottom:3px">Integração Make.com (Webhook)</div>
+          <div style="font-size:13px;color:var(--text2)">Configure o webhook para receber leads automaticamente dos seus anúncios</div>
+        </div>
+        <span class="webhook-status inactive" id="webhook-status-badge">Não configurado</span>
+      </div>
+      <div class="fg-row">
+        <div class="fg" style="margin-bottom:0">
+          <label>URL do Webhook Make.com</label>
+          <input id="webhook-url" placeholder="https://hook.eu1.make.com/xxxxxxxxxxxx" oninput="updateWebhookStatus()">
+        </div>
+        <div class="fg" style="margin-bottom:0;display:flex;align-items:flex-end">
+          <button class="btn btn-primary" onclick="saveWebhookUrl()" style="width:100%;padding:9px">Salvar URL</button>
         </div>
       </div>
-      <div class="form-card">
-        <div class="form-hero"><h2>Solicite seu orçamento</h2><p>Preencha o formulário e entraremos em contato em breve com a proposta para o seu projeto.</p></div>
-        <div class="form-body" id="pub-form-body">
-          <div class="fg"><label>Nome completo *</label><input id="pf-name" placeholder="Ex: João da Silva"></div>
-          <div class="fg-row">
-            <div class="fg"><label>WhatsApp *</label><input id="pf-phone" placeholder="(47) 99999-0000" type="tel"></div>
-            <div class="fg"><label>Cidade</label><input id="pf-city" placeholder="Ex: Blumenau"></div>
-          </div>
-          <div class="fg"><label>O que você precisa? *</label>
-            <select id="pf-product">
-              <option value="">Selecione...</option>
-              <option>Cozinha planejada</option><option>Dormitório planejado</option>
-              <option>Home office</option><option>Closet</option>
-              <option>Sala planejada</option><option>Banheiro planejado</option>
-              <option>Área de serviço</option><option>Outro</option>
-            </select>
-          </div>
-          <div class="fg"><label>Conte mais sobre o projeto</label><textarea id="pf-obs" placeholder="Medidas aproximadas, estilo, prazo..."></textarea></div>
-          <button class="btn btn-primary btn-lg" onclick="submitForm()">Enviar solicitação →</button>
+
+      <!-- Documentação técnica do fluxo -->
+      <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
+        <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:8px;text-transform:uppercase;letter-spacing:.4px">Como configurar no Make.com</div>
+        <div style="font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:10px">
+          No Make.com, crie um cenário com o módulo <strong>Webhooks → Custom Webhook</strong> como gatilho. O webhook receberá um JSON com os dados do lead vindo dos seus anúncios (Meta Ads ou Google Ads). Configure o segundo módulo para enviar uma requisição HTTP POST para este CRM ou use o módulo Firestore diretamente.
         </div>
-        <div class="form-sent" id="pub-form-sent">
-          <div style="font-size:32px;margin-bottom:12px">✅</div>
-          <h3>Solicitação enviada!</h3>
-          <p>Recebemos seu interesse. Nossa equipe entrará em contato em breve pelo WhatsApp.</p>
-          <button class="btn" style="margin-top:16px" onclick="resetForm()">Enviar nova solicitação</button>
+        <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px">JSON esperado pelo webhook (estrutura do lead):</div>
+        <div class="code-block">
+<span class="cm">// Estrutura JSON que o Make.com deve enviar ao Firebase</span><br>
+<span class="cm">// Collection: "leads" | Método: POST via HTTP Module ou Firestore Module</span><br>
+{<br>
+&nbsp;&nbsp;<span class="ck">"name"</span>: <span class="cv">"{{nome do lead}}"</span>,<br>
+&nbsp;&nbsp;<span class="ck">"phone"</span>: <span class="cv">"{{telefone}}"</span>,<br>
+&nbsp;&nbsp;<span class="ck">"email"</span>: <span class="cv">"{{email}}"</span>,<br>
+&nbsp;&nbsp;<span class="ck">"product"</span>: <span class="cv">"{{produto de interesse}}"</span>,<br>
+&nbsp;&nbsp;<span class="ck">"source"</span>: <span class="cv">"{{utm_source}}"</span>, <span class="cm">// ex: "Instagram", "Google", "Facebook"</span><br>
+&nbsp;&nbsp;<span class="ck">"utm_medium"</span>: <span class="cv">"{{utm_medium}}"</span>, <span class="cm">// ex: "cpc", "social"</span><br>
+&nbsp;&nbsp;<span class="ck">"utm_campaign"</span>: <span class="cv">"{{utm_campaign}}"</span>, <span class="cm">// nome da campanha</span><br>
+&nbsp;&nbsp;<span class="ck">"utm_content"</span>: <span class="cv">"{{utm_content}}"</span>, <span class="cm">// variação do anúncio (A/B)</span><br>
+&nbsp;&nbsp;<span class="ck">"adset"</span>: <span class="cv">"{{nome do conjunto de anúncios}}"</span>,<br>
+&nbsp;&nbsp;<span class="ck">"stage"</span>: <span class="cs">"Novo Lead"</span>, <span class="cm">// sempre "Novo Lead" para leads de ads</span><br>
+&nbsp;&nbsp;<span class="ck">"city"</span>: <span class="cv">"{{cidade}}"</span>,<br>
+&nbsp;&nbsp;<span class="ck">"obs"</span>: <span class="cv">"Lead via anúncio pago"</span><br>
+}<br>
+<span class="cm">// O campo "source" (UTM Source) é gravado no Firestore e aparece</span><br>
+<span class="cm">// automaticamente na aba Analytics → Taxa de conversão por origem.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Cards Meta Ads e Google Ads -->
+    <div class="mkt-grid">
+      <div class="mkt-card">
+        <div class="mkt-card-head">
+          <div class="mkt-icon" style="background:#f0e6f8">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="#833ab4"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          </div>
+          <div>
+            <div class="mkt-card-title">Meta Ads</div>
+            <div class="mkt-card-sub">Instagram & Facebook</div>
+          </div>
+        </div>
+        <div class="mkt-stat-row" id="meta-stats">
+          <div class="mkt-stat"><div class="mkt-stat-val" id="meta-leads">0</div><div class="mkt-stat-lbl">Leads</div></div>
+          <div class="mkt-stat"><div class="mkt-stat-val" id="meta-fechados">0</div><div class="mkt-stat-lbl">Fechados</div></div>
+          <div class="mkt-stat"><div class="mkt-stat-val" id="meta-conv">0%</div><div class="mkt-stat-lbl">Conversão</div></div>
+        </div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:8px">Origens detectadas: Instagram, Facebook</div>
+        <a href="https://business.facebook.com/adsmanager" target="_blank" class="btn" style="width:100%;text-align:center;text-decoration:none;display:block">Abrir Gerenciador de Anúncios →</a>
+      </div>
+
+      <div class="mkt-card">
+        <div class="mkt-card-head">
+          <div class="mkt-icon" style="background:#e8f0fe">
+            <svg width="22" height="22" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+          </div>
+          <div>
+            <div class="mkt-card-title">Google Ads</div>
+            <div class="mkt-card-sub">Search & Display</div>
+          </div>
+        </div>
+        <div class="mkt-stat-row">
+          <div class="mkt-stat"><div class="mkt-stat-val" id="google-leads">0</div><div class="mkt-stat-lbl">Leads</div></div>
+          <div class="mkt-stat"><div class="mkt-stat-val" id="google-fechados">0</div><div class="mkt-stat-lbl">Fechados</div></div>
+          <div class="mkt-stat"><div class="mkt-stat-val" id="google-conv">0%</div><div class="mkt-stat-lbl">Conversão</div></div>
+        </div>
+        <div style="font-size:12px;color:var(--text3);margin-bottom:8px">Origens detectadas: Google, Google Ads</div>
+        <a href="https://ads.google.com" target="_blank" class="btn" style="width:100%;text-align:center;text-decoration:none;display:block">Abrir Google Ads →</a>
+      </div>
+    </div>
+
+    <!-- Pipeline Value destaque -->
+    <div class="panel">
+      <div class="panel-head"><span class="panel-title">Pipeline Value — valor total em negociação</span></div>
+      <div style="padding:16px 18px" id="pipeline-value-detail"></div>
+    </div>
+  </div>
+
+  <!-- CAPTAÇÃO -->
+  <div class="view" id="view-captacao">
+    <div style="max-width:600px">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:28px 30px;box-shadow:var(--sh)">
+        <div style="width:44px;height:44px;background:var(--green-l);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px">📋</div>
+        <div style="font-size:18px;font-weight:700;margin-bottom:6px">Formulário público de captação</div>
+        <div style="font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:24px">Compartilhe este link com clientes — Instagram, stories, WhatsApp ou como destino dos seus anúncios. Quando o cliente preencher, o lead cai automaticamente no Pipeline.</div>
+        <div style="font-size:12px;font-weight:500;color:var(--text2);margin-bottom:6px">Link do formulário</div>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:20px">
+          <div style="flex:1;padding:10px 13px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);font-size:12px;font-family:'DM Mono',monospace;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap" id="form-link">—</div>
+          <button class="btn btn-primary" onclick="copyLink()">Copiar link</button>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn" onclick="window.open(document.getElementById('form-link').textContent)" style="display:flex;align-items:center;gap:6px">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Abrir formulário
+          </button>
+        </div>
+        <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border)">
+          <div style="font-size:12px;font-weight:500;color:var(--text2);margin-bottom:10px">Como compartilhar</div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text2)"><span style="color:var(--green);font-weight:600;flex-shrink:0">→</span><span><strong>Instagram / Stories:</strong> coloque o link na bio ou use o sticker de link nos stories</span></div>
+            <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text2)"><span style="color:var(--green);font-weight:600;flex-shrink:0">→</span><span><strong>WhatsApp:</strong> envie o link direto para clientes interessados</span></div>
+            <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text2)"><span style="color:var(--green);font-weight:600;flex-shrink:0">→</span><span><strong>Google Ads / Meta Ads:</strong> use como destino dos anúncios (adicione UTMs no link)</span></div>
+            <div style="display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--text2)"><span style="color:var(--green);font-weight:600;flex-shrink:0">→</span><span><strong>Site:</strong> adicione um botão "Solicitar orçamento" apontando para este link</span></div>
+          </div>
         </div>
       </div>
     </div>
@@ -285,7 +416,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <div class="fg"><label>Nome do cliente *</label><input id="nl-name" placeholder="Ex: Maria Oliveira"></div>
       <div class="fg-row">
         <div class="fg"><label>WhatsApp</label><input id="nl-phone" placeholder="47999990000" type="tel"></div>
-        <div class="fg"><label>Cidade</label><input id="nl-city" placeholder="Ex: Joinville"></div>
+        <div class="fg"><label>Cidade</label><input id="nl-city" placeholder="Ex: Serra - ES"></div>
       </div>
       <div class="fg-row">
         <div class="fg"><label>Produto / Projeto</label><input id="nl-product" placeholder="Ex: Cozinha planejada"></div>
@@ -298,7 +429,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         <div class="fg"><label>Vendedor responsável</label><select id="nl-seller" class="sel-inp"><option value="">— nenhum —</option></select></div>
       </div>
       <div class="fg"><label>Canal de captação</label>
-        <select id="nl-source"><option value="">— selecione —</option><option>Instagram</option><option>WhatsApp</option><option>Formulário do site</option><option>Indicação</option><option>Google</option><option>Presencial</option><option>Outro</option></select>
+        <select id="nl-source"><option value="">— selecione —</option><option>Instagram</option><option>Facebook</option><option>WhatsApp</option><option>Formulário do site</option><option>Indicação</option><option>Google</option><option>Google Ads</option><option>Presencial</option><option>Outro</option></select>
       </div>
       <div class="fg"><label>Observações</label><textarea id="nl-obs" placeholder="Anotações sobre o cliente..."></textarea></div>
     </div>
@@ -415,69 +546,120 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore,collection,onSnapshot,addDoc,updateDoc,deleteDoc,doc,serverTimestamp,query,orderBy } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import {
+  getFirestore, collection, onSnapshot, addDoc, updateDoc,
+  deleteDoc, doc, serverTimestamp, query, orderBy,
+  initializeFirestore, persistentLocalCache, persistentMultipleTabManager
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-const db = getFirestore(initializeApp({
+// ─── FIREBASE COM PERSISTÊNCIA IndexedDB ────────────────────────────────────
+// initializeFirestore com persistentLocalCache garante que os dados ficam
+// salvos no navegador mesmo após fechar a aba ou perder conexão.
+// persistentMultipleTabManager permite que múltiplas abas compartilhem o cache.
+const firebaseApp = initializeApp({
   apiKey:"AIzaSyBJ4_iiknBGZX1ciwKtOfhfDPytsRqYW9A",
   authDomain:"crm-marcenaria-ac88a.firebaseapp.com",
   projectId:"crm-marcenaria-ac88a",
   storageBucket:"crm-marcenaria-ac88a.firebasestorage.app",
   messagingSenderId:"763443542872",
   appId:"1:763443542872:web:8046db5950bf66ddd1432d"
-}));
+});
 
-const STAGES=['Novo Lead','Primeiro Contato','Qualificação','Proposta','Negociação','Fechado','Perdido'];
-const SST={'Novo Lead':{dot:'#a09d98',badge:'background:#efede8;color:#6b6760'},'Primeiro Contato':{dot:'#185FA5',badge:'background:#e6eef8;color:#1a4a7a'},'Qualificação':{dot:'#4a8a2e',badge:'background:#e8f0e2;color:#2d5a1b'},'Proposta':{dot:'#92530a',badge:'background:#fdf0e0;color:#7a3d08'},'Negociação':{dot:'#b04010',badge:'background:#fde8e0;color:#8a2a10'},'Fechado':{dot:'#0f5c4a',badge:'background:#e0f2ec;color:#0a4035'},'Perdido':{dot:'#8a1f1f',badge:'background:#fdeaea;color:#6b1a1a'}};
-const WPP={
-  contato:(n,p)=>`Olá ${n}! 👋\n\nSomos da *Marcenaria* e entramos em contato sobre seu interesse em *${p}*.\n\nPodemos conversar para entender melhor o que você precisa?`,
-  visita:(n,p)=>`Olá ${n}! 📐\n\nGostaríamos de confirmar a visita para medição do seu projeto de *${p}*.\n\nQual a melhor data e horário para você?`,
-  proposta:(n,p)=>`Olá ${n}! 📋\n\nSua proposta para *${p}* está pronta!\n\nVou encaminhar os detalhes agora. Qualquer dúvida, estou à disposição. 😊`,
-  aprovado:(n,p)=>`Olá ${n}! 🎉\n\nÓtima notícia! Seu projeto de *${p}* foi aprovado e já entrará na nossa fila de produção!\n\nEm breve atualizamos você com a previsão!`,
-  producao:(n,p)=>`Olá ${n}! 🪵\n\nSeu projeto de *${p}* já está em produção na nossa marcenaria!\n\nEstamos trabalhando com muito cuidado. Qualquer dúvida, é só chamar!`,
-  entrega:(n,p)=>`Olá ${n}! 🚚\n\nSeu projeto de *${p}* está pronto para entrega!\n\nVamos agendar a instalação. Qual data é melhor para você?`,
-  concluido:(n,p)=>`Olá ${n}! ✅\n\nO projeto de *${p}* foi concluído!\n\nObrigado pela confiança. Qualquer necessidade futura, conte conosco! 🙏`
-};
-
-let leads=[],tasks=[],sellers=[];
-let currentLeadId=null,currentSellerId=null,taskFilter='all',dragId=null,selectedColor='#2d5a1b';
-
-onSnapshot(query(collection(db,'leads'),orderBy('createdAt','desc')),s=>{leads=s.docs.map(d=>({id:d.id,...d.data()}));render();setSynced(true);},()=>setSynced(false));
-onSnapshot(query(collection(db,'tasks'),orderBy('createdAt','desc')),s=>{tasks=s.docs.map(d=>({id:d.id,...d.data()}));renderTasks();renderDashTasks();updateCounts();});
-onSnapshot(query(collection(db,'sellers'),orderBy('createdAt','asc')),s=>{sellers=s.docs.map(d=>({id:d.id,...d.data()}));renderTeam();updateSellerSelects();updateCounts();});
-
-function setSynced(ok){document.getElementById('syncDot').className='sync-dot'+(ok?' live':'');document.getElementById('syncLabel').textContent=ok?'Sincronizado':'Sem conexão';}
-function fmt(n){return(n||0).toLocaleString('pt-BR');}
-function initials(n){return(n||'?').split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase();}
-function hexLight(h){const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return `rgba(${r},${g},${b},0.13)`;}
-function toast(m){const e=document.getElementById('toast');e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),2800);}
-
-function render(){renderMetrics();renderRecent();renderPipeline();renderClients();renderTeam();updateCounts();}
-
-function updateCounts(){
-  document.getElementById('cnt-pipeline').textContent=leads.filter(l=>!['Fechado','Perdido'].includes(l.stage)).length;
-  document.getElementById('cnt-tarefas').textContent=tasks.filter(t=>!t.done).length;
-  document.getElementById('cnt-clientes').textContent=leads.filter(l=>l.stage==='Fechado').length;
-  document.getElementById('cnt-equipe').textContent=sellers.length;
+let db;
+try {
+  // Tenta ativar persistência com suporte a múltiplas abas (Chrome, Edge, Safari)
+  db = initializeFirestore(firebaseApp, {
+    localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() })
+  });
+} catch(e) {
+  // Fallback para Firefox ou navegadores sem suporte a IndexedDB multi-tab
+  db = getFirestore(firebaseApp);
 }
 
-function renderMetrics(){
-  const ativos=leads.filter(l=>!['Fechado','Perdido'].includes(l.stage));
-  const fechados=leads.filter(l=>l.stage==='Fechado');
-  const pipeline=ativos.reduce((s,l)=>s+(parseFloat(l.value)||0),0);
-  const receita=fechados.reduce((s,l)=>s+(parseFloat(l.value)||0),0);
-  document.getElementById('metrics').innerHTML=`
+// ─── CONSTANTES ──────────────────────────────────────────────────────────────
+const STAGES = ['Novo Lead','Primeiro Contato','Qualificação','Proposta','Negociação','Fechado','Perdido'];
+const ACTIVE_STAGES = ['Novo Lead','Primeiro Contato','Qualificação','Proposta','Negociação'];
+const SST = {
+  'Novo Lead':        {dot:'#a09d98', badge:'background:#efede8;color:#6b6760'},
+  'Primeiro Contato': {dot:'#185FA5', badge:'background:#e6eef8;color:#1a4a7a'},
+  'Qualificação':     {dot:'#4a8a2e', badge:'background:#e8f0e2;color:#2d5a1b'},
+  'Proposta':         {dot:'#92530a', badge:'background:#fdf0e0;color:#7a3d08'},
+  'Negociação':       {dot:'#b04010', badge:'background:#fde8e0;color:#8a2a10'},
+  'Fechado':          {dot:'#0f5c4a', badge:'background:#e0f2ec;color:#0a4035'},
+  'Perdido':          {dot:'#8a1f1f', badge:'background:#fdeaea;color:#6b1a1a'},
+};
+const WPP = {
+  contato:  (n,p) => `Olá ${n}! 👋\n\nSomos da *Marcenaria Rodrigues* e entramos em contato sobre seu interesse em *${p}*.\n\nPodemos conversar para entender melhor o que você precisa?`,
+  visita:   (n,p) => `Olá ${n}! 📐\n\nGostaríamos de confirmar a visita para medição do seu projeto de *${p}*.\n\nQual a melhor data e horário para você?`,
+  proposta: (n,p) => `Olá ${n}! 📋\n\nSua proposta para *${p}* está pronta!\n\nVou encaminhar os detalhes agora. Qualquer dúvida, estou à disposição. 😊`,
+  aprovado: (n,p) => `Olá ${n}! 🎉\n\nÓtima notícia! Seu projeto de *${p}* foi aprovado e já entrará na nossa fila de produção!\n\nEm breve atualizamos você com a previsão!`,
+  producao: (n,p) => `Olá ${n}! 🪵\n\nSeu projeto de *${p}* já está em produção na nossa marcenaria!\n\nEstamos trabalhando com muito cuidado. Qualquer dúvida, é só chamar!`,
+  entrega:  (n,p) => `Olá ${n}! 🚚\n\nSeu projeto de *${p}* está pronto para entrega!\n\nVamos agendar a instalação. Qual data é melhor para você?`,
+  concluido:(n,p) => `Olá ${n}! ✅\n\nO projeto de *${p}* foi concluído!\n\nObrigado pela confiança. Qualquer necessidade futura, conte conosco! 🙏`,
+};
+
+// ─── ESTADO ──────────────────────────────────────────────────────────────────
+let leads=[], tasks=[], sellers=[];
+let currentLeadId=null, currentSellerId=null, taskFilter='all', dragId=null, selectedColor='#2d5a1b';
+
+// ─── LISTENERS FIRESTORE ─────────────────────────────────────────────────────
+onSnapshot(query(collection(db,'leads'), orderBy('createdAt','desc')), s => {
+  leads = s.docs.map(d => ({id:d.id,...d.data()}));
+  render(); setSynced(true);
+}, () => setSynced(false));
+
+onSnapshot(query(collection(db,'tasks'), orderBy('createdAt','desc')), s => {
+  tasks = s.docs.map(d => ({id:d.id,...d.data()}));
+  renderTasks(); renderDashTasks(); updateCounts();
+});
+
+onSnapshot(query(collection(db,'sellers'), orderBy('createdAt','asc')), s => {
+  sellers = s.docs.map(d => ({id:d.id,...d.data()}));
+  renderTeam(); updateSellerSelects(); updateCounts();
+});
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+function setSynced(ok) {
+  document.getElementById('syncDot').className = 'sync-dot'+(ok?' live':'');
+  document.getElementById('syncLabel').textContent = ok ? 'Sincronizado' : 'Sem conexão';
+}
+function fmt(n) { return (n||0).toLocaleString('pt-BR'); }
+function initials(n) { return (n||'?').split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
+function hexLight(h) { const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16); return `rgba(${r},${g},${b},0.13)`; }
+function toast(m) { const e=document.getElementById('toast'); e.textContent=m; e.classList.add('show'); setTimeout(()=>e.classList.remove('show'),2800); }
+const wppSVG = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
+
+// ─── RENDER PRINCIPAL ─────────────────────────────────────────────────────────
+function render() {
+  renderMetrics(); renderRecent(); renderPipeline(); renderClients();
+  renderTeam(); renderAnalytics(); renderMarketing(); updateCounts();
+}
+
+function updateCounts() {
+  document.getElementById('cnt-pipeline').textContent = leads.filter(l=>!['Fechado','Perdido'].includes(l.stage)).length;
+  document.getElementById('cnt-tarefas').textContent = tasks.filter(t=>!t.done).length;
+  document.getElementById('cnt-clientes').textContent = leads.filter(l=>l.stage==='Fechado').length;
+  document.getElementById('cnt-equipe').textContent = sellers.length;
+}
+
+function renderMetrics() {
+  const ativos = leads.filter(l=>ACTIVE_STAGES.includes(l.stage));
+  const fechados = leads.filter(l=>l.stage==='Fechado');
+  const pipeline = ativos.reduce((s,l)=>s+(parseFloat(l.value)||0),0);
+  const receita = fechados.reduce((s,l)=>s+(parseFloat(l.value)||0),0);
+  document.getElementById('metrics').innerHTML = `
     <div class="mc"><div class="mc-label">Total de leads</div><div class="mc-val">${leads.length}</div><div class="mc-sub">${ativos.length} em andamento</div></div>
     <div class="mc accent"><div class="mc-label">Receita fechada</div><div class="mc-val">R$&nbsp;${fmt(receita)}</div><div class="mc-sub">${fechados.length} negócios</div></div>
     <div class="mc"><div class="mc-label">Pipeline ativo</div><div class="mc-val">R$&nbsp;${fmt(pipeline)}</div><div class="mc-sub">${ativos.length} leads</div></div>
     <div class="mc"><div class="mc-label">Tarefas pendentes</div><div class="mc-val">${tasks.filter(t=>!t.done).length}</div><div class="mc-sub">${tasks.filter(t=>!t.done&&t.priority==='urgente').length} urgentes</div></div>`;
 }
 
-function renderRecent(){
-  const el=document.getElementById('recent-leads');
-  if(!leads.length){el.innerHTML='<div class="empty"><p>Nenhum lead ainda.<br>Clique em "+ Novo lead" para começar.</p></div>';return;}
-  el.innerHTML=leads.slice(0,8).map(l=>{
-    const st=SST[l.stage]||SST['Novo Lead'];
-    const seller=l.sellerId?sellers.find(s=>s.id===l.sellerId):null;
+function renderRecent() {
+  const el = document.getElementById('recent-leads');
+  if (!leads.length) { el.innerHTML='<div class="empty"><p>Nenhum lead ainda.<br>Clique em "+ Novo lead" para começar.</p></div>'; return; }
+  el.innerHTML = leads.slice(0,8).map(l => {
+    const st = SST[l.stage]||SST['Novo Lead'];
+    const seller = l.sellerId ? sellers.find(s=>s.id===l.sellerId) : null;
     return `<div class="lead-row" onclick="openDetail('${l.id}')">
       <div class="avatar">${(l.name||'?')[0].toUpperCase()}</div>
       <div class="lead-info"><div class="lead-name">${l.name}</div><div class="lead-sub">${l.product||'—'}${seller?' · '+seller.name:''}</div></div>
@@ -485,23 +667,24 @@ function renderRecent(){
   }).join('');
 }
 
-function renderDashTasks(){
-  const el=document.getElementById('dash-tasks');
-  const pend=tasks.filter(t=>!t.done).slice(0,6);
-  if(!pend.length){el.innerHTML='<div class="empty"><p>Nenhuma tarefa pendente.</p></div>';return;}
-  el.innerHTML=pend.map(t=>{
-    const lead=t.leadId?leads.find(l=>l.id===t.leadId):null;
-    const seller=t.sellerId?sellers.find(s=>s.id===t.sellerId):null;
+function renderDashTasks() {
+  const el = document.getElementById('dash-tasks');
+  const pend = tasks.filter(t=>!t.done).slice(0,6);
+  if (!pend.length) { el.innerHTML='<div class="empty"><p>Nenhuma tarefa pendente.</p></div>'; return; }
+  el.innerHTML = pend.map(t => {
+    const lead = t.leadId ? leads.find(l=>l.id===t.leadId) : null;
+    const seller = t.sellerId ? sellers.find(s=>s.id===t.sellerId) : null;
     return `<div class="lead-row" style="cursor:default">
       <div style="width:8px;height:8px;border-radius:50%;background:${t.priority==='urgente'?'#e24b4a':'#a09d98'};flex-shrink:0"></div>
       <div class="lead-info"><div class="lead-name">${t.title}</div><div class="lead-sub">${lead?lead.name:'—'}${seller?' · '+seller.name:''}</div></div></div>`;
   }).join('');
 }
 
-function renderPipeline(){
-  document.getElementById('kanban-board').innerHTML=STAGES.map(stage=>{
-    const st=SST[stage];
-    const cols=leads.filter(l=>l.stage===stage);
+// ─── PIPELINE KANBAN ──────────────────────────────────────────────────────────
+function renderPipeline() {
+  document.getElementById('kanban-board').innerHTML = STAGES.map(stage => {
+    const st = SST[stage];
+    const cols = leads.filter(l=>l.stage===stage);
     return `<div class="kcol" data-stage="${stage}"
       ondragover="event.preventDefault();event.currentTarget.classList.add('drag-over')"
       ondragleave="event.currentTarget.classList.remove('drag-over')"
@@ -509,7 +692,7 @@ function renderPipeline(){
       <div class="kcol-head"><div class="kcol-name"><span class="col-dot" style="background:${st.dot}"></span>${stage}</div><span class="kcol-cnt">${cols.length}</span></div>
       <div class="kcol-cards">
         ${cols.map(l=>{
-          const seller=l.sellerId?sellers.find(s=>s.id===l.sellerId):null;
+          const seller = l.sellerId ? sellers.find(s=>s.id===l.sellerId) : null;
           return `<div class="kcard" draggable="true" ondragstart="startDrag(event,'${l.id}')" ondragend="endDrag(event)" onclick="openDetail('${l.id}')">
             <div class="kcard-name">${l.name}</div>
             <div class="kcard-product">${l.product||'—'}</div>
@@ -523,21 +706,27 @@ function renderPipeline(){
   }).join('');
 }
 
-window.startDrag=(e,id)=>{dragId=id;e.currentTarget.classList.add('dragging');e.dataTransfer.effectAllowed='move';};
-window.endDrag=(e)=>{e.currentTarget.classList.remove('dragging');document.querySelectorAll('.kcol').forEach(c=>c.classList.remove('drag-over'));};
-window.dropCard=async(e,stage)=>{e.currentTarget.classList.remove('drag-over');if(!dragId)return;await updateDoc(doc(db,'leads',dragId),{stage});dragId=null;toast('Movido para '+stage);};
+window.startDrag = (e,id) => { dragId=id; e.currentTarget.classList.add('dragging'); e.dataTransfer.effectAllowed='move'; };
+window.endDrag   = (e) => { e.currentTarget.classList.remove('dragging'); document.querySelectorAll('.kcol').forEach(c=>c.classList.remove('drag-over')); };
+window.dropCard  = async (e,stage) => {
+  e.currentTarget.classList.remove('drag-over');
+  if (!dragId) return;
+  await updateDoc(doc(db,'leads',dragId),{stage});
+  dragId=null; toast('Movido para '+stage);
+};
 
-function renderTasks(){
-  const el=document.getElementById('tasks-list');if(!el)return;
-  let list=[...tasks];
-  if(taskFilter==='pending')list=list.filter(t=>!t.done);
-  if(taskFilter==='done')list=list.filter(t=>t.done);
+// ─── TAREFAS ──────────────────────────────────────────────────────────────────
+function renderTasks() {
+  const el = document.getElementById('tasks-list'); if (!el) return;
+  let list = [...tasks];
+  if (taskFilter==='pending') list = list.filter(t=>!t.done);
+  if (taskFilter==='done')    list = list.filter(t=>t.done);
   list.sort((a,b)=>a.done===b.done?0:a.done?1:-1);
-  if(!list.length){el.innerHTML='<div class="empty"><p>Nenhuma tarefa encontrada.</p></div>';return;}
-  el.innerHTML=list.map(t=>{
-    const lead=t.leadId?leads.find(l=>l.id===t.leadId):null;
-    const seller=t.sellerId?sellers.find(s=>s.id===t.sellerId):null;
-    const ds=t.date?new Date(t.date).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'';
+  if (!list.length) { el.innerHTML='<div class="empty"><p>Nenhuma tarefa encontrada.</p></div>'; return; }
+  el.innerHTML = list.map(t => {
+    const lead   = t.leadId   ? leads.find(l=>l.id===t.leadId)   : null;
+    const seller = t.sellerId ? sellers.find(s=>s.id===t.sellerId): null;
+    const ds = t.date ? new Date(t.date).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}) : '';
     return `<div class="tcard${t.done?' done':''}">
       <div class="tcheck${t.done?' checked':''}" onclick="toggleTask('${t.id}','${t.done}')"></div>
       <div class="t-body">
@@ -553,17 +742,17 @@ function renderTasks(){
   }).join('');
 }
 
-window.filterTasks=(f,btn)=>{taskFilter=f;document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderTasks();};
-window.toggleTask=async(id,done)=>{await updateDoc(doc(db,'tasks',id),{done:done!=='true'});};
-window.deleteTask=async(id)=>{if(!confirm('Excluir tarefa?'))return;await deleteDoc(doc(db,'tasks',id));toast('Tarefa excluída');};
+window.filterTasks = (f,btn) => { taskFilter=f; document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); renderTasks(); };
+window.toggleTask  = async (id,done) => { await updateDoc(doc(db,'tasks',id),{done:done!=='true'}); };
+window.deleteTask  = async (id) => { if(!confirm('Excluir tarefa?'))return; await deleteDoc(doc(db,'tasks',id)); toast('Tarefa excluída'); };
 
-function renderClients(){
-  const el=document.getElementById('clients-grid');
-  const closed=leads.filter(l=>l.stage==='Fechado');
-  if(!closed.length){el.innerHTML='<div class="empty"><p>Nenhum cliente com negócio fechado ainda.</p></div>';return;}
-  el.innerHTML=closed.map(l=>{
-    const seller=l.sellerId?sellers.find(s=>s.id===l.sellerId):null;
-    const wppIcon=`<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
+// ─── CLIENTES ─────────────────────────────────────────────────────────────────
+function renderClients() {
+  const el = document.getElementById('clients-grid');
+  const closed = leads.filter(l=>l.stage==='Fechado');
+  if (!closed.length) { el.innerHTML='<div class="empty"><p>Nenhum cliente com negócio fechado ainda.</p></div>'; return; }
+  el.innerHTML = closed.map(l => {
+    const seller = l.sellerId ? sellers.find(s=>s.id===l.sellerId) : null;
     return `<div class="client-card" onclick="openDetail('${l.id}')">
       <div class="cc-head"><div class="cc-av">${(l.name||'?')[0].toUpperCase()}</div><div><div class="cc-name">${l.name}</div><div class="cc-product">${l.product||'—'}</div></div></div>
       ${l.city?`<div class="cc-row"><span>Cidade</span><span>${l.city}</span></div>`:''}
@@ -571,31 +760,36 @@ function renderClients(){
       ${seller?`<div class="cc-row"><span>Vendedor</span><span>${seller.name}</span></div>`:''}
       ${l.source?`<div class="cc-row"><span>Canal</span><span>${l.source}</span></div>`:''}
       ${l.phone?`<button class="wpp-btn" onclick="event.stopPropagation();window.open('https://wa.me/55${l.phone.replace(/\D/g,'')}')">
-        ${wppIcon} Chamar no WhatsApp</button>`:''}
+        ${wppSVG} Chamar no WhatsApp</button>`:''}
     </div>`;
   }).join('');
 }
 
-function sellerStats(s){
-  const ml=leads.filter(l=>l.sellerId===s.id);
-  const fc=ml.filter(l=>l.stage==='Fechado');
-  const receita=fc.reduce((sum,l)=>sum+(parseFloat(l.value)||0),0);
-  const conv=ml.length?Math.round(fc.length/ml.length*100):0;
-  const now=new Date();
-  const mesRec=fc.filter(l=>{if(!l.createdAt?.toDate)return false;const d=l.createdAt.toDate();return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();}).reduce((s,l)=>s+(parseFloat(l.value)||0),0);
-  return{total:ml.length,fechados:fc.length,receita,conv,receitaMes:mesRec};
+// ─── EQUIPE ───────────────────────────────────────────────────────────────────
+function sellerStats(s) {
+  const ml = leads.filter(l=>l.sellerId===s.id);
+  const fc = ml.filter(l=>l.stage==='Fechado');
+  const receita = fc.reduce((sum,l)=>sum+(parseFloat(l.value)||0),0);
+  const conv = ml.length ? Math.round(fc.length/ml.length*100) : 0;
+  const now = new Date();
+  const mesRec = fc.filter(l=>{
+    if (!l.createdAt?.toDate) return false;
+    const d = l.createdAt.toDate();
+    return d.getMonth()===now.getMonth() && d.getFullYear()===now.getFullYear();
+  }).reduce((s,l)=>s+(parseFloat(l.value)||0),0);
+  return {total:ml.length, fechados:fc.length, receita, conv, receitaMes:mesRec};
 }
 
-function renderTeam(){renderSellerCards();renderRanking();}
+function renderTeam() { renderSellerCards(); renderRanking(); }
 
-function renderSellerCards(){
-  const el=document.getElementById('sellers-list');
-  if(!sellers.length){el.innerHTML='<div class="empty"><p>Nenhum vendedor cadastrado.<br>Clique em "+ Novo vendedor".</p></div>';return;}
-  el.innerHTML=sellers.map(s=>{
-    const st=sellerStats(s);
-    const goal=parseFloat(s.goal)||0;
-    const pct=goal>0?Math.min(Math.round(st.receitaMes/goal*100),150):0;
-    const c=s.color||'#2d5a1b';
+function renderSellerCards() {
+  const el = document.getElementById('sellers-list');
+  if (!sellers.length) { el.innerHTML='<div class="empty"><p>Nenhum vendedor cadastrado.<br>Clique em "+ Novo vendedor".</p></div>'; return; }
+  el.innerHTML = sellers.map(s => {
+    const st = sellerStats(s);
+    const goal = parseFloat(s.goal)||0;
+    const pct = goal>0 ? Math.min(Math.round(st.receitaMes/goal*100),150) : 0;
+    const c = s.color||'#2d5a1b';
     return `<div class="seller-card" onclick="openSellerEdit('${s.id}')">
       <div class="sc-head">
         <div class="sc-av" style="background:${hexLight(c)};color:${c}">${initials(s.name)}</div>
@@ -613,15 +807,15 @@ function renderSellerCards(){
   }).join('');
 }
 
-function renderRanking(){
-  const el=document.getElementById('ranking-panel');
-  if(!sellers.length){el.innerHTML='<div class="empty"><p>Cadastre vendedores para ver o ranking.</p></div>';return;}
-  const ranked=sellers.map(s=>({...s,...sellerStats(s)})).sort((a,b)=>b.receita-a.receita);
-  const maxR=ranked[0]?.receita||1;
-  const pc=(i)=>i===0?'gold':i===1?'silver':i===2?'bronze':'other';
-  el.innerHTML=`<div class="panel-head"><span class="panel-title">Ranking — receita total</span></div>`+
-    ranked.map((s,i)=>{
-      const c=s.color||'#2d5a1b';
+function renderRanking() {
+  const el = document.getElementById('ranking-panel');
+  if (!sellers.length) { el.innerHTML='<div class="empty"><p>Cadastre vendedores para ver o ranking.</p></div>'; return; }
+  const ranked = sellers.map(s=>({...s,...sellerStats(s)})).sort((a,b)=>b.receita-a.receita);
+  const maxR = ranked[0]?.receita||1;
+  const pc = (i) => i===0?'gold':i===1?'silver':i===2?'bronze':'other';
+  el.innerHTML = `<div class="panel-head"><span class="panel-title">Ranking — receita total</span></div>` +
+    ranked.map((s,i) => {
+      const c = s.color||'#2d5a1b';
       return `<div class="rank-row">
         <div class="rank-pos ${pc(i)}">${i+1}</div>
         <div style="width:32px;height:32px;border-radius:50%;background:${hexLight(c)};color:${c};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0">${initials(s.name)}</div>
@@ -635,94 +829,283 @@ function renderRanking(){
     }).join('');
 }
 
-function updateSellerSelects(){
-  const base=sellers.map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
-  document.getElementById('nl-seller').innerHTML='<option value="">— nenhum —</option>'+base;
-  document.getElementById('nt-seller').innerHTML='<option value="">— nenhum —</option>'+base;
-  document.getElementById('det-seller').innerHTML='<option value="">— sem atribuição —</option>'+base;
+// ─── ANALYTICS PROFISSIONAL ───────────────────────────────────────────────────
+function renderAnalytics() {
+  const ativos  = leads.filter(l=>ACTIVE_STAGES.includes(l.stage));
+  const fechados = leads.filter(l=>l.stage==='Fechado');
+  const perdidos = leads.filter(l=>l.stage==='Perdido');
+  const pipeline = ativos.reduce((s,l)=>s+(parseFloat(l.value)||0),0);
+  const receita  = fechados.reduce((s,l)=>s+(parseFloat(l.value)||0),0);
+  const txGeral  = leads.length ? Math.round(fechados.length/leads.length*100) : 0;
+  const ticketMed = fechados.length ? receita/fechados.length : 0;
+
+  document.getElementById('analytics-metrics').innerHTML = `
+    <div class="mc"><div class="mc-label">Taxa de conversão geral</div><div class="mc-val">${txGeral}%</div><div class="mc-sub">${fechados.length} de ${leads.length} leads</div></div>
+    <div class="mc accent"><div class="mc-label">Pipeline value</div><div class="mc-val">R$&nbsp;${fmt(pipeline)}</div><div class="mc-sub">${ativos.length} negócios ativos</div></div>
+    <div class="mc"><div class="mc-label">Ticket médio</div><div class="mc-val">R$&nbsp;${fmt(Math.round(ticketMed))}</div><div class="mc-sub">por fechamento</div></div>
+    <div class="mc"><div class="mc-label">Taxa de perda</div><div class="mc-val">${leads.length?Math.round(perdidos.length/leads.length*100):0}%</div><div class="mc-sub">${perdidos.length} leads perdidos</div></div>`;
+
+  // Taxa de conversão por origem
+  const sources = [...new Set(leads.map(l=>l.source||'Não informado'))];
+  const sourceData = sources.map(src => {
+    const sl  = leads.filter(l=>(l.source||'Não informado')===src);
+    const sf  = sl.filter(l=>l.stage==='Fechado');
+    const val = sf.reduce((s,l)=>s+(parseFloat(l.value)||0),0);
+    return {src, total:sl.length, fechados:sf.length, conv:sl.length?Math.round(sf.length/sl.length*100):0, valor:val};
+  }).sort((a,b)=>b.total-a.total);
+  const maxConv = Math.max(...sourceData.map(s=>s.conv),1);
+
+  document.getElementById('source-table-wrap').innerHTML = sourceData.length ? `
+    <table class="source-table">
+      <thead><tr><th>Origem</th><th>Leads</th><th>Fechados</th><th>Receita</th><th style="width:120px">Conversão</th></tr></thead>
+      <tbody>${sourceData.map(s=>`
+        <tr>
+          <td style="font-weight:500">${s.src}</td>
+          <td>${s.total}</td>
+          <td>${s.fechados}</td>
+          <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--green)">R$ ${fmt(s.valor)}</td>
+          <td>
+            <div style="font-size:12px;font-weight:500;margin-bottom:3px">${s.conv}%</div>
+            <div class="conv-bar"><div class="conv-bar-f" style="width:${Math.round(s.conv/maxConv*100)}%"></div></div>
+          </td>
+        </tr>`).join('')}
+      </tbody>
+    </table>` : '<div class="empty"><p>Nenhum dado de origem disponível.</p></div>';
+
+  // Pipeline por etapa
+  const stageData = STAGES.map(stage => {
+    const sl  = leads.filter(l=>l.stage===stage);
+    const val = sl.reduce((s,l)=>s+(parseFloat(l.value)||0),0);
+    return {stage, count:sl.length, valor:val};
+  }).filter(s=>s.count>0);
+
+  document.getElementById('stage-table-wrap').innerHTML = stageData.length ? `
+    <table class="source-table">
+      <thead><tr><th>Etapa</th><th>Leads</th><th>Valor em pipeline</th></tr></thead>
+      <tbody>${stageData.map(s=>`
+        <tr>
+          <td><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:${SST[s.stage]?.dot||'#ccc'};flex-shrink:0;display:inline-block"></span>${s.stage}</span></td>
+          <td>${s.count}</td>
+          <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--green)">R$ ${fmt(s.valor)}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>` : '<div class="empty"><p>Nenhum dado disponível.</p></div>';
+
+  // Desempenho por produto
+  const products = [...new Set(leads.map(l=>l.product||'Não informado').filter(Boolean))];
+  const productData = products.map(prod => {
+    const pl = leads.filter(l=>(l.product||'Não informado')===prod);
+    const pf = pl.filter(l=>l.stage==='Fechado');
+    const val = pf.reduce((s,l)=>s+(parseFloat(l.value)||0),0);
+    return {prod, total:pl.length, fechados:pf.length, conv:pl.length?Math.round(pf.length/pl.length*100):0, valor:val};
+  }).sort((a,b)=>b.valor-a.valor);
+
+  document.getElementById('product-table-wrap').innerHTML = productData.length ? `
+    <table class="source-table">
+      <thead><tr><th>Produto</th><th>Leads</th><th>Fechados</th><th>Receita</th><th>Conversão</th></tr></thead>
+      <tbody>${productData.map(p=>`
+        <tr>
+          <td style="font-weight:500">${p.prod}</td>
+          <td>${p.total}</td>
+          <td>${p.fechados}</td>
+          <td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--green)">R$ ${fmt(p.valor)}</td>
+          <td style="font-weight:500">${p.conv}%</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>` : '<div class="empty"><p>Cadastre leads com produto para ver este relatório.</p></div>';
 }
 
-window.openModal=(name)=>{
-  if(name==='task'){
-    document.getElementById('nt-lead').innerHTML='<option value="">— nenhum —</option>'+leads.map(l=>`<option value="${l.id}">${l.name}</option>`).join('');
+// ─── MARKETING & ADS ─────────────────────────────────────────────────────────
+function renderMarketing() {
+  // Meta Ads: agrupa Instagram + Facebook
+  const metaSources = ['Instagram','Facebook'];
+  const metaLeads   = leads.filter(l=>metaSources.includes(l.source));
+  const metaFec     = metaLeads.filter(l=>l.stage==='Fechado');
+  const metaConv    = metaLeads.length ? Math.round(metaFec.length/metaLeads.length*100) : 0;
+  document.getElementById('meta-leads').textContent    = metaLeads.length;
+  document.getElementById('meta-fechados').textContent = metaFec.length;
+  document.getElementById('meta-conv').textContent     = metaConv+'%';
+
+  // Google Ads: agrupa Google + Google Ads
+  const gSources = ['Google','Google Ads'];
+  const gLeads   = leads.filter(l=>gSources.includes(l.source));
+  const gFec     = gLeads.filter(l=>l.stage==='Fechado');
+  const gConv    = gLeads.length ? Math.round(gFec.length/gLeads.length*100) : 0;
+  document.getElementById('google-leads').textContent    = gLeads.length;
+  document.getElementById('google-fechados').textContent = gFec.length;
+  document.getElementById('google-conv').textContent     = gConv+'%';
+
+  // Pipeline Value detalhe por etapa ativa
+  const pvRows = ACTIVE_STAGES.map(stage => {
+    const sl  = leads.filter(l=>l.stage===stage);
+    const val = sl.reduce((s,l)=>s+(parseFloat(l.value)||0),0);
+    return {stage, count:sl.length, val};
+  }).filter(r=>r.count>0);
+  const totalPV = pvRows.reduce((s,r)=>s+r.val,0);
+
+  document.getElementById('pipeline-value-detail').innerHTML = pvRows.length ? `
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:12px">
+      ${pvRows.map(r=>`
+        <div style="background:var(--surface2);border-radius:var(--rs);padding:12px 14px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+            <span style="width:8px;height:8px;border-radius:50%;background:${SST[r.stage]?.dot||'#ccc'};flex-shrink:0"></span>
+            <span style="font-size:12px;font-weight:500">${r.stage}</span>
+          </div>
+          <div style="font-size:18px;font-weight:700;font-family:'DM Mono',monospace;color:var(--green)">R$ ${fmt(r.val)}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px">${r.count} lead${r.count>1?'s':''}</div>
+        </div>`).join('')}
+      <div style="background:var(--green);border-radius:var(--rs);padding:12px 14px">
+        <div style="font-size:12px;font-weight:500;color:#9dc888;margin-bottom:6px">TOTAL EM ABERTO</div>
+        <div style="font-size:18px;font-weight:700;font-family:'DM Mono',monospace;color:#fff">R$ ${fmt(totalPV)}</div>
+        <div style="font-size:11px;color:#9dc888;margin-top:2px">${pvRows.reduce((s,r)=>s+r.count,0)} leads ativos</div>
+      </div>
+    </div>` : '<div class="empty"><p>Nenhum lead ativo no pipeline.</p></div>';
+}
+
+// ─── WEBHOOK MAKE.COM ─────────────────────────────────────────────────────────
+window.updateWebhookStatus = () => {
+  const url = document.getElementById('webhook-url').value.trim();
+  const badge = document.getElementById('webhook-status-badge');
+  const valid = url.startsWith('https://hook.');
+  badge.textContent = valid ? 'Configurado' : 'Não configurado';
+  badge.className   = 'webhook-status '+(valid?'active':'inactive');
+};
+
+window.saveWebhookUrl = () => {
+  const url = document.getElementById('webhook-url').value.trim();
+  if (!url) { toast('Informe a URL do webhook'); return; }
+  localStorage.setItem('crm_webhook_url', url);
+  updateWebhookStatus();
+  toast('URL do webhook salva!');
+};
+
+// Restaura URL salva do webhook ao carregar
+const savedWebhook = localStorage.getItem('crm_webhook_url');
+if (savedWebhook) {
+  document.getElementById('webhook-url').value = savedWebhook;
+  window.updateWebhookStatus();
+}
+
+// ─── MODAIS ───────────────────────────────────────────────────────────────────
+window.openModal = (name) => {
+  // CORREÇÃO: reset completo do formulário antes de abrir
+  if (name === 'lead') {
+    ['nl-name','nl-phone','nl-city','nl-product','nl-value','nl-obs'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('nl-stage').value  = 'Novo Lead';
+    document.getElementById('nl-source').value = '';
     updateSellerSelects();
+    document.getElementById('nl-seller').value = '';
   }
-  if(name==='lead')updateSellerSelects();
-  if(name==='seller'){
-    currentSellerId=null;
-    document.getElementById('seller-modal-title').textContent='Novo vendedor';
-    document.getElementById('btn-del-seller').style.display='none';
-    ['sv-name','sv-phone','sv-email','sv-role','sv-goal'].forEach(id=>document.getElementById(id).value='');
-    selectColor('#2d5a1b',document.querySelector('.cp-opt'));
+  if (name === 'task') {
+    document.getElementById('nt-title').value    = '';
+    document.getElementById('nt-date').value     = '';
+    document.getElementById('nt-priority').value = 'normal';
+    document.getElementById('nt-lead').innerHTML = '<option value="">— nenhum —</option>'+leads.map(l=>`<option value="${l.id}">${l.name}</option>`).join('');
+    updateSellerSelects();
+    document.getElementById('nt-seller').value = '';
+  }
+  if (name === 'seller') {
+    currentSellerId = null;
+    document.getElementById('seller-modal-title').textContent = 'Novo vendedor';
+    document.getElementById('btn-del-seller').style.display = 'none';
+    ['sv-name','sv-phone','sv-email','sv-role','sv-goal'].forEach(id => document.getElementById(id).value = '');
+    selectColor('#2d5a1b', document.querySelector('.cp-opt'));
   }
   document.getElementById(`overlay-${name}`).classList.add('open');
 };
-window.closeModal=(name)=>document.getElementById(`overlay-${name}`).classList.remove('open');
 
-window.openSellerEdit=(id)=>{
-  currentSellerId=id;
-  const s=sellers.find(s=>s.id===id);if(!s)return;
-  document.getElementById('seller-modal-title').textContent='Editar vendedor';
-  document.getElementById('btn-del-seller').style.display='block';
-  document.getElementById('sv-name').value=s.name||'';
-  document.getElementById('sv-phone').value=s.phone||'';
-  document.getElementById('sv-email').value=s.email||'';
-  document.getElementById('sv-role').value=s.role||'';
-  document.getElementById('sv-goal').value=s.goal||'';
-  const cpOpt=document.querySelector(`.cp-opt[data-color="${s.color||'#2d5a1b'}"]`)||document.querySelector('.cp-opt');
-  selectColor(s.color||'#2d5a1b',cpOpt);
+window.closeModal = (name) => document.getElementById(`overlay-${name}`).classList.remove('open');
+
+window.openSellerEdit = (id) => {
+  currentSellerId = id;
+  const s = sellers.find(s=>s.id===id); if (!s) return;
+  document.getElementById('seller-modal-title').textContent = 'Editar vendedor';
+  document.getElementById('btn-del-seller').style.display = 'block';
+  document.getElementById('sv-name').value  = s.name||'';
+  document.getElementById('sv-phone').value = s.phone||'';
+  document.getElementById('sv-email').value = s.email||'';
+  document.getElementById('sv-role').value  = s.role||'';
+  document.getElementById('sv-goal').value  = s.goal||'';
+  const cpOpt = document.querySelector(`.cp-opt[data-color="${s.color||'#2d5a1b'}"]`) || document.querySelector('.cp-opt');
+  selectColor(s.color||'#2d5a1b', cpOpt);
   document.getElementById('overlay-seller').classList.add('open');
 };
 
-window.selectColor=(color,el)=>{
-  selectedColor=color;document.getElementById('sv-color').value=color;
+window.selectColor = (color,el) => {
+  selectedColor = color;
+  document.getElementById('sv-color').value = color;
   document.querySelectorAll('.cp-opt').forEach(o=>o.style.border='3px solid transparent');
-  if(el)el.style.border='3px solid var(--text)';
+  if (el) el.style.border = '3px solid var(--text)';
 };
 
-window.saveSeller=async()=>{
-  const name=document.getElementById('sv-name').value.trim();
-  if(!name){alert('Informe o nome.');return;}
-  const data={name,phone:document.getElementById('sv-phone').value.trim(),email:document.getElementById('sv-email').value.trim(),role:document.getElementById('sv-role').value.trim(),goal:document.getElementById('sv-goal').value,color:document.getElementById('sv-color').value};
-  if(currentSellerId){await updateDoc(doc(db,'sellers',currentSellerId),data);toast('Vendedor atualizado!');}
-  else{await addDoc(collection(db,'sellers'),{...data,createdAt:serverTimestamp()});toast('Vendedor cadastrado!');}
+function updateSellerSelects() {
+  const opts = sellers.map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
+  document.getElementById('nl-seller').innerHTML = '<option value="">— nenhum —</option>'+opts;
+  document.getElementById('nt-seller').innerHTML = '<option value="">— nenhum —</option>'+opts;
+  document.getElementById('det-seller').innerHTML = '<option value="">— sem atribuição —</option>'+opts;
+}
+
+// ─── CRUD VENDEDOR ────────────────────────────────────────────────────────────
+window.saveSeller = async () => {
+  const name = document.getElementById('sv-name').value.trim();
+  if (!name) { alert('Informe o nome.'); return; }
+  const data = {name, phone:document.getElementById('sv-phone').value.trim(), email:document.getElementById('sv-email').value.trim(), role:document.getElementById('sv-role').value.trim(), goal:document.getElementById('sv-goal').value, color:document.getElementById('sv-color').value};
+  if (currentSellerId) { await updateDoc(doc(db,'sellers',currentSellerId),data); toast('Vendedor atualizado!'); }
+  else { await addDoc(collection(db,'sellers'),{...data, createdAt:serverTimestamp()}); toast('Vendedor cadastrado!'); }
   closeModal('seller');
 };
 
-window.deleteSeller=async()=>{
-  if(!confirm('Excluir este vendedor?'))return;
+window.deleteSeller = async () => {
+  if (!confirm('Excluir este vendedor?')) return;
   await deleteDoc(doc(db,'sellers',currentSellerId));
-  closeModal('seller');toast('Vendedor removido');
+  closeModal('seller'); toast('Vendedor removido');
 };
 
-window.saveLead=async()=>{
-  const name=document.getElementById('nl-name').value.trim();
-  if(!name){alert('Informe o nome do cliente.');return;}
-  await addDoc(collection(db,'leads'),{name,phone:document.getElementById('nl-phone').value.trim(),city:document.getElementById('nl-city').value.trim(),product:document.getElementById('nl-product').value.trim(),value:document.getElementById('nl-value').value,stage:document.getElementById('nl-stage').value,sellerId:document.getElementById('nl-seller').value,source:document.getElementById('nl-source').value,obs:document.getElementById('nl-obs').value.trim(),createdAt:serverTimestamp()});
-  ['nl-name','nl-phone','nl-city','nl-product','nl-value','nl-obs'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('nl-stage').value='Novo Lead';document.getElementById('nl-source').value='';
-  closeModal('lead');toast('Lead salvo!');
+// ─── CRUD LEAD ────────────────────────────────────────────────────────────────
+window.saveLead = async () => {
+  const name = document.getElementById('nl-name').value.trim();
+  if (!name) { alert('Informe o nome do cliente.'); return; }
+  await addDoc(collection(db,'leads'), {
+    name, phone:document.getElementById('nl-phone').value.trim(),
+    city:document.getElementById('nl-city').value.trim(),
+    product:document.getElementById('nl-product').value.trim(),
+    value:document.getElementById('nl-value').value,
+    stage:document.getElementById('nl-stage').value,
+    sellerId:document.getElementById('nl-seller').value,
+    source:document.getElementById('nl-source').value,
+    obs:document.getElementById('nl-obs').value.trim(),
+    createdAt:serverTimestamp()
+  });
+  closeModal('lead'); toast('Lead salvo!');
 };
 
-window.saveTask=async()=>{
-  const title=document.getElementById('nt-title').value.trim();
-  if(!title){alert('Informe a descrição.');return;}
-  await addDoc(collection(db,'tasks'),{title,leadId:document.getElementById('nt-lead').value,sellerId:document.getElementById('nt-seller').value,date:document.getElementById('nt-date').value,priority:document.getElementById('nt-priority').value,done:false,createdAt:serverTimestamp()});
-  document.getElementById('nt-title').value='';document.getElementById('nt-date').value='';
-  closeModal('task');toast('Tarefa criada!');
+// ─── CRUD TAREFA ──────────────────────────────────────────────────────────────
+window.saveTask = async () => {
+  const title = document.getElementById('nt-title').value.trim();
+  if (!title) { alert('Informe a descrição.'); return; }
+  await addDoc(collection(db,'tasks'), {
+    title, leadId:document.getElementById('nt-lead').value,
+    sellerId:document.getElementById('nt-seller').value,
+    date:document.getElementById('nt-date').value,
+    priority:document.getElementById('nt-priority').value,
+    done:false, createdAt:serverTimestamp()
+  });
+  closeModal('task'); toast('Tarefa criada!');
 };
 
-window.openDetail=(id)=>{
-  currentLeadId=id;const l=leads.find(l=>l.id===id);if(!l)return;
+// ─── DETALHE LEAD ─────────────────────────────────────────────────────────────
+window.openDetail = (id) => {
+  currentLeadId = id;
+  const l = leads.find(l=>l.id===id); if (!l) return;
   updateSellerSelects();
-  document.getElementById('det-title').textContent=l.name;
-  document.getElementById('det-stage').value=l.stage;
-  document.getElementById('det-seller').value=l.sellerId||'';
-  document.getElementById('det-wpp-tpl').value='';
-  document.getElementById('det-wpp-preview').style.display='none';
-  document.getElementById('btn-open-wpp').style.display='none';
-  const seller=l.sellerId?sellers.find(s=>s.id===l.sellerId):null;
-  document.getElementById('det-info').innerHTML=`
+  document.getElementById('det-title').textContent = l.name;
+  document.getElementById('det-stage').value  = l.stage;
+  document.getElementById('det-seller').value = l.sellerId||'';
+  document.getElementById('det-wpp-tpl').value = '';
+  document.getElementById('det-wpp-preview').style.display = 'none';
+  document.getElementById('btn-open-wpp').style.display   = 'none';
+  const seller = l.sellerId ? sellers.find(s=>s.id===l.sellerId) : null;
+  document.getElementById('det-info').innerHTML = `
     <div class="det-row"><span>Projeto</span><span>${l.product||'—'}</span></div>
     <div class="det-row"><span>Valor</span><span>${l.value?'R$ '+fmt(parseFloat(l.value)):'—'}</span></div>
     <div class="det-row"><span>WhatsApp</span><span>${l.phone||'—'}</span></div>
@@ -733,62 +1116,49 @@ window.openDetail=(id)=>{
   openModal('detail');
 };
 
-window.updateLeadStage=async()=>{if(currentLeadId)await updateDoc(doc(db,'leads',currentLeadId),{stage:document.getElementById('det-stage').value});toast('Etapa atualizada');};
-window.updateLeadSeller=async()=>{if(currentLeadId)await updateDoc(doc(db,'leads',currentLeadId),{sellerId:document.getElementById('det-seller').value});toast('Vendedor atribuído');};
-window.deleteLead=async()=>{if(!confirm('Excluir este lead?'))return;await deleteDoc(doc(db,'leads',currentLeadId));closeModal('detail');toast('Lead excluído');};
+window.updateLeadStage  = async () => { if(currentLeadId) await updateDoc(doc(db,'leads',currentLeadId),{stage:document.getElementById('det-stage').value}); toast('Etapa atualizada'); };
+window.updateLeadSeller = async () => { if(currentLeadId) await updateDoc(doc(db,'leads',currentLeadId),{sellerId:document.getElementById('det-seller').value}); toast('Vendedor atribuído'); };
+window.deleteLead = async () => { if(!confirm('Excluir este lead?'))return; await deleteDoc(doc(db,'leads',currentLeadId)); closeModal('detail'); toast('Lead excluído'); };
 
-window.previewWpp=()=>{
-  const tpl=document.getElementById('det-wpp-tpl').value;
-  const l=leads.find(l=>l.id===currentLeadId);
-  const el=document.getElementById('det-wpp-preview');
-  const btn=document.getElementById('btn-open-wpp');
-  if(!tpl||!l){el.style.display='none';btn.style.display='none';return;}
-  el.textContent=WPP[tpl](l.name,l.product||'seu projeto');
-  el.style.display='block';btn.style.display=l.phone?'flex':'none';
+window.previewWpp = () => {
+  const tpl = document.getElementById('det-wpp-tpl').value;
+  const l   = leads.find(l=>l.id===currentLeadId);
+  const el  = document.getElementById('det-wpp-preview');
+  const btn = document.getElementById('btn-open-wpp');
+  if (!tpl||!l) { el.style.display='none'; btn.style.display='none'; return; }
+  el.textContent = WPP[tpl](l.name, l.product||'seu projeto');
+  el.style.display  = 'block';
+  btn.style.display = l.phone ? 'flex' : 'none';
 };
 
-window.openWpp=()=>{
-  const tpl=document.getElementById('det-wpp-tpl').value;
-  const l=leads.find(l=>l.id===currentLeadId);
-  if(!l||!l.phone||!tpl)return;
+window.openWpp = () => {
+  const tpl = document.getElementById('det-wpp-tpl').value;
+  const l   = leads.find(l=>l.id===currentLeadId);
+  if (!l||!l.phone||!tpl) return;
   window.open(`https://wa.me/55${l.phone.replace(/\D/g,'')}?text=${encodeURIComponent(WPP[tpl](l.name,l.product||'seu projeto'))}`);
 };
 
-window.openModalForStage=(stage)=>{openModal('lead');document.getElementById('nl-stage').value=stage;};
+window.openModalForStage = (stage) => { openModal('lead'); document.getElementById('nl-stage').value = stage; };
 
-window.submitForm=async()=>{
-  const name=document.getElementById('pf-name').value.trim();
-  const phone=document.getElementById('pf-phone').value.trim();
-  const product=document.getElementById('pf-product').value;
-  if(!name||!phone||!product){alert('Preencha nome, WhatsApp e produto.');return;}
-  await addDoc(collection(db,'leads'),{name,phone,city:document.getElementById('pf-city').value.trim(),product,obs:document.getElementById('pf-obs').value.trim(),stage:'Novo Lead',source:'Formulário do site',createdAt:serverTimestamp()});
-  document.getElementById('pub-form-body').style.display='none';
-  document.getElementById('pub-form-sent').style.display='block';
-  toast('Lead captado!');
+// ─── FORMULÁRIO / CAPTAÇÃO ────────────────────────────────────────────────────
+window.copyLink = () => {
+  const base = window.location.href.replace(/\/[^\/]*$/,'')+'/formulario.html';
+  document.getElementById('form-link').textContent = base;
+  navigator.clipboard.writeText(base).then(()=>toast('Link copiado!')).catch(()=>toast('Copie o link acima'));
 };
 
-window.resetForm=()=>{
-  ['pf-name','pf-phone','pf-city','pf-obs'].forEach(id=>document.getElementById(id).value='');
-  document.getElementById('pf-product').value='';
-  document.getElementById('pub-form-body').style.display='block';
-  document.getElementById('pub-form-sent').style.display='none';
-};
-
-window.copyLink=()=>{
-  const link=window.location.href.split('?')[0];
-  document.getElementById('form-link').textContent=link;
-  navigator.clipboard.writeText(link).then(()=>toast('Link copiado!')).catch(()=>toast('Copie o link acima'));
-};
-
-window.showView=(name,btn)=>{
+// ─── NAVEGAÇÃO ────────────────────────────────────────────────────────────────
+window.showView = (name,btn) => {
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById(`view-${name}`).classList.add('active');btn.classList.add('active');
+  document.getElementById(`view-${name}`).classList.add('active');
+  btn.classList.add('active');
 };
 
+// ─── INIT ─────────────────────────────────────────────────────────────────────
 document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
-document.getElementById('form-link').textContent=window.location.href.split('?')[0];
-document.querySelector('.cp-opt').style.border='3px solid var(--text)';
+document.getElementById('form-link').textContent = window.location.href.replace(/\/[^\/]*$/,'')+'/formulario.html';
+document.querySelector('.cp-opt').style.border = '3px solid var(--text)';
 </script>
 </body>
 </html>
