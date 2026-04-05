@@ -1,1316 +1,287 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rodrigues CRM</title>
-<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<style>
-:root{
-  --bg:#F2F2F2;--surface:#fff;--surface2:#ebe8e4;
-  --border:#ddd9d4;--border2:#c9c4bc;
-  --text:#222;--text2:#5a5550;--text3:#9e9990;
-  --brand:#592419;--brand-d:#3e1810;--brand-l:#f5ece9;--brand-m:#7a3326;
-  --blue:#1a4a7a;--blue-l:#e6eef8;
-  --red:#8a1f1f;--red-l:#fdeaea;
-  --purple:#4a2d8a;--purple-l:#eeebfa;
-  --amber:#92530a;--amber-l:#fdf0e0;
-  --green:#1a5c2a;--green-l:#e4f2e8;
-  --r:10px;--rs:6px;
-  --sh:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.05);
-  --sh-md:0 4px 20px rgba(89,36,25,.14);
-}
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rodrigues CRM | Móveis Planejados</title>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --primary: #592419; /* Marrom Rodrigues */
+            --bg: #F2F2F2;      /* Off-white Rodrigues */
+            --text: #222222;
+            --surface: #ffffff;
+            --border: #e2ddd6;
+            --r: 12px;
+            --sh: 0 4px 12px rgba(0,0,0,0.05);
+        }
+        * { box-sizing: border-box; font-family: 'Ubuntu', sans-serif; margin: 0; padding: 0; }
+        body { background: var(--bg); color: var(--text); display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
-/* LOGIN */
-#login-screen{position:fixed;inset:0;background:var(--brand);display:flex;align-items:center;justify-content:center;z-index:999;padding:20px}
-#login-screen.hidden{display:none}
-.login-box{background:#fff;border-radius:16px;padding:40px 36px;width:100%;max-width:400px;box-shadow:0 24px 60px rgba(0,0,0,.3)}
-.login-logo{display:flex;align-items:center;gap:12px;margin-bottom:28px}
-.login-logo-mark{width:48px;height:48px;background:var(--brand);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.ll-text{font-size:20px;font-weight:700;color:var(--brand);line-height:1.1}
-.ll-sub{font-size:12px;color:var(--text3);margin-top:2px}
-.login-title{font-size:16px;font-weight:700;margin-bottom:4px}
-.login-sub{font-size:13px;color:var(--text3);margin-bottom:20px}
-.login-err{font-size:13px;color:var(--red);background:var(--red-l);border-radius:var(--rs);padding:10px 12px;margin-bottom:14px;display:none;line-height:1.5}
-.login-btn{width:100%;padding:12px;background:var(--brand);color:#fff;border:none;border-radius:var(--rs);font-size:14px;font-weight:700;font-family:'Ubuntu',sans-serif;cursor:pointer;transition:background .15s;margin-top:6px}
-.login-btn:hover{background:var(--brand-m)}
-.login-btn:disabled{opacity:.6;cursor:not-allowed}
-.login-hint{font-size:11px;color:var(--text3);margin-top:12px;padding:10px;background:var(--surface2);border-radius:var(--rs);line-height:1.5}
+        /* Auth Screen */
+        #auth-screen { position: fixed; inset: 0; background: var(--primary); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+        .login-card { background: white; padding: 2.5rem; border-radius: var(--r); width: 90%; max-width: 380px; text-align: center; box-shadow: var(--sh); }
+        .login-card h2 { color: var(--primary); margin-bottom: 1.5rem; }
+        .login-card input { width: 100%; padding: 14px; margin-bottom: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; }
+        .btn-login { width: 100%; padding: 14px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 1rem; }
 
-/* DEBUG OVERLAY */
-#debug-bar{position:fixed;bottom:0;left:0;right:0;background:#1a1512;color:#e8c9b8;font-family:'DM Mono',monospace;font-size:11px;padding:6px 14px;z-index:500;display:none;gap:12px;align-items:center;flex-wrap:wrap}
-#debug-bar.show{display:flex}
-#debug-msg{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.debug-ok{color:#7ec880}
-.debug-err{color:#e87878}
-.debug-close{background:none;border:none;color:#9e8880;cursor:pointer;font-size:14px;padding:0 4px}
+        /* Main Layout */
+        #main-app { display: none; flex-direction: column; height: 100vh; }
+        header { background: white; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+        .logo-area { display: flex; align-items: center; gap: 12px; }
+        .logo-box { width: 40px; height: 40px; background: var(--primary); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 22px; }
+        
+        nav { background: white; padding: 10px 20px; display: flex; gap: 15px; border-bottom: 1px solid var(--border); overflow-x: auto; }
+        .nav-btn { padding: 8px 20px; border: none; background: none; cursor: pointer; font-weight: 500; border-radius: 20px; color: var(--text); white-space: nowrap; }
+        .nav-btn.active { background: var(--primary); color: white; }
 
-/* NOTIFICAÇÃO */
-#lead-notif{position:fixed;top:68px;right:20px;background:var(--brand);color:#fff;padding:11px 18px;border-radius:var(--r);font-size:13px;font-weight:700;box-shadow:var(--sh-md);transform:translateY(-16px);opacity:0;transition:all .3s;z-index:300;pointer-events:none;display:flex;align-items:center;gap:8px}
-#lead-notif.show{transform:translateY(0);opacity:1}
-#lead-notif::before{content:'';width:8px;height:8px;border-radius:50%;background:#fff;flex-shrink:0;animation:pdot .8s ease-in-out infinite}
-@keyframes pdot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.6)}}
+        main { flex: 1; overflow-y: auto; padding: 20px; }
+        .view { display: none; }
+        .view.active { display: block; }
 
-/* TOPBAR */
-.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
-.logo{display:flex;align-items:center;gap:10px}
-.logo-mark{width:36px;height:36px;background:var(--brand);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.logo-text{font-size:15px;font-weight:700;color:var(--brand);letter-spacing:-.2px}
-.logo-sub-text{font-size:11px;color:var(--text3);margin-top:1px}
-.topbar-r{display:flex;align-items:center;gap:8px}
-.sync{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text3)}
-.sync-dot{width:7px;height:7px;border-radius:50%;background:var(--border2);transition:all .3s}
-.sync-dot.live{background:#4caf50;box-shadow:0 0 0 2px #c8e6c9}
-.sync-dot.err{background:#e24b4a;box-shadow:0 0 0 2px #f9c0c0}
-.btn-logout{padding:6px 14px;font-size:12px;font-weight:500;font-family:'Ubuntu',sans-serif;border:1px solid var(--border);background:var(--surface);color:var(--text2);border-radius:var(--rs);cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:5px}
-.btn-logout:hover{background:var(--red-l);border-color:#e8b4b4;color:var(--red)}
+        .panel { background: white; border-radius: var(--r); padding: 20px; box-shadow: var(--sh); margin-bottom: 20px; }
+        .grid-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .stat-card { background: white; padding: 20px; border-radius: var(--r); border-left: 6px solid var(--primary); box-shadow: var(--sh); }
+        .stat-card h3 { font-size: 1.8rem; margin-bottom: 5px; }
+        
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th { text-align: left; padding: 15px; border-bottom: 2px solid var(--bg); opacity: 0.6; font-size: 0.9rem; }
+        td { padding: 15px; border-bottom: 1px solid var(--bg); }
+        
+        .btn-add { background: var(--primary); color: white; padding: 12px 24px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 10px rgba(89, 36, 25, 0.3); }
 
-/* NAV */
-.nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;gap:2px;overflow-x:auto}
-.nav-btn{padding:12px 16px;font-size:13px;font-weight:500;font-family:'Ubuntu',sans-serif;color:var(--text2);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:6px}
-.nav-btn:hover{color:var(--text)}.nav-btn.active{color:var(--brand);border-bottom-color:var(--brand)}
-.nav-cnt{font-size:11px;padding:1px 6px;background:var(--surface2);border-radius:20px;color:var(--text3);font-weight:400}
-.nav-btn.active .nav-cnt{background:var(--brand-l);color:var(--brand)}
+        /* Modal */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
+        .modal-content { background: white; padding: 30px; border-radius: var(--r); width: 100%; max-width: 500px; position: relative; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 6px; font-weight: bold; font-size: 0.9rem; }
+        .form-group input, .form-group select { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 1rem; }
 
-/* LAYOUT */
-.content{padding:24px;max-width:1440px;margin:0 auto;width:100%}
-.view{display:none}.view.active{display:block}
-
-/* METRICS */
-.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
-.mc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;box-shadow:var(--sh)}
-.mc-label{font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
-.mc-val{font-size:26px;font-weight:700;letter-spacing:-1px;line-height:1}
-.mc-sub{font-size:12px;color:var(--text3);margin-top:4px}
-.mc.accent{background:var(--brand);border-color:var(--brand)}
-.mc.accent .mc-label{color:#e8b8ae}.mc.accent .mc-val{color:#fff}.mc.accent .mc-sub{color:#e8b8ae}
-
-/* PANELS */
-.dash-grid{display:grid;grid-template-columns:1fr 320px;gap:14px}
-.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
-.panel-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-.panel-title{font-size:14px;font-weight:700}
-
-/* ROWS */
-.lead-row{display:flex;align-items:center;gap:12px;padding:10px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s}
-.lead-row:last-child{border-bottom:none}.lead-row:hover{background:var(--bg)}
-.avatar{width:34px;height:34px;border-radius:50%;background:var(--brand-l);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--brand);flex-shrink:0}
-.lead-info{flex:1;min-width:0}
-.lead-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.lead-sub{font-size:12px;color:var(--text3);margin-top:1px}
-.badge{font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0}
-
-/* KANBAN */
-.kanban-wrap{overflow-x:auto;padding-bottom:8px}
-.kanban{display:flex;gap:12px;min-width:max-content;padding:4px 2px}
-.kcol{width:220px;flex-shrink:0;background:var(--surface2);border-radius:var(--r);border:1px solid var(--border);display:flex;flex-direction:column;max-height:calc(100vh - 180px)}
-.kcol.drag-over{background:var(--brand-l);border-color:var(--brand-m)}
-.kcol-head{padding:10px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);background:var(--surface);border-radius:var(--r) var(--r) 0 0;flex-shrink:0}
-.kcol-name{font-size:12px;font-weight:700;display:flex;align-items:center;gap:6px}
-.col-dot{width:8px;height:8px;border-radius:50%}
-.kcol-cnt{font-size:11px;color:var(--text3);background:var(--surface2);padding:1px 7px;border-radius:10px}
-.kcol-cards{padding:8px;flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:7px}
-.kcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--rs);padding:11px 12px;cursor:grab;box-shadow:var(--sh);transition:box-shadow .15s,transform .15s;user-select:none}
-.kcard:hover{box-shadow:var(--sh-md)}.kcard.dragging{opacity:.45;transform:rotate(2deg);cursor:grabbing}
-.kcard-name{font-size:13px;font-weight:500;margin-bottom:2px}
-.kcard-product{font-size:12px;color:var(--text3);margin-bottom:6px}
-.kcard-foot{display:flex;align-items:center;justify-content:space-between;gap:4px;flex-wrap:wrap}
-.kcard-value{font-size:12px;color:var(--brand);font-weight:700;font-family:'DM Mono',monospace}
-.kcard-seller{font-size:11px;color:var(--text3);background:var(--surface2);padding:2px 7px;border-radius:10px;max-width:88px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.col-add{width:100%;padding:7px;background:none;border:1px dashed var(--border2);border-radius:var(--rs);color:var(--text3);font-size:12px;font-family:'Ubuntu',sans-serif;cursor:pointer;transition:all .15s;margin-top:2px}
-.col-add:hover{border-color:var(--brand-m);color:var(--brand);background:var(--brand-l)}
-
-/* TASKS */
-.tasks-tb{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap}
-.fbtn{padding:6px 14px;font-size:12px;font-family:'Ubuntu',sans-serif;font-weight:500;border:1px solid var(--border);background:var(--surface);border-radius:20px;cursor:pointer;color:var(--text2);transition:all .15s}
-.fbtn.active{background:var(--brand);border-color:var(--brand);color:#fff}
-.tasks-list{display:flex;flex-direction:column;gap:8px}
-.tcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:13px 16px;display:flex;align-items:center;gap:12px;box-shadow:var(--sh);transition:opacity .2s}
-.tcard.done{opacity:.5}
-.tcheck{width:18px;height:18px;border-radius:50%;border:2px solid var(--border2);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s;background:none}
-.tcheck.checked{background:var(--brand);border-color:var(--brand)}
-.tcheck.checked::after{content:'';width:5px;height:8px;border:2px solid #fff;border-top:none;border-left:none;transform:rotate(45deg) translate(-1px,-1px);display:block}
-.t-body{flex:1}.t-title{font-size:13px;font-weight:500}
-.tcard.done .t-title{text-decoration:line-through;color:var(--text3)}
-.t-meta{display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap}
-.t-lead{font-size:11px;padding:2px 8px;background:var(--blue-l);color:var(--blue);border-radius:10px;font-weight:500}
-.t-seller{font-size:11px;padding:2px 8px;background:var(--purple-l);color:var(--purple);border-radius:10px;font-weight:500}
-.t-date{font-size:11px;color:var(--text3)}
-.t-urgent{font-size:11px;padding:2px 8px;background:var(--red-l);color:var(--red);border-radius:10px;font-weight:500}
-.tdel{background:none;border:none;cursor:pointer;color:var(--text3);font-size:18px;padding:2px 4px;line-height:1;transition:color .1s}
-.tdel:hover{color:var(--red)}
-
-/* CLIENTS */
-.clients-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
-.client-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;box-shadow:var(--sh);cursor:pointer;transition:box-shadow .15s}
-.client-card:hover{box-shadow:var(--sh-md)}
-.cc-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.cc-av{width:40px;height:40px;border-radius:50%;background:var(--brand-l);color:var(--brand);font-size:15px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.cc-name{font-size:14px;font-weight:700}.cc-product{font-size:12px;color:var(--text3)}
-.cc-row{display:flex;justify-content:space-between;padding:6px 0;border-top:1px solid var(--border);font-size:12px}
-.cc-row span:first-child{color:var(--text3)}.cc-row span:last-child{font-weight:500}
-.wpp-btn{width:100%;margin-top:12px;padding:8px;background:#25d366;color:#fff;border:none;border-radius:var(--rs);font-size:13px;font-weight:500;font-family:'Ubuntu',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:background .15s}
-.wpp-btn:hover{background:#1ebe5d}
-
-/* TEAM */
-.team-layout{display:grid;grid-template-columns:360px 1fr;gap:16px;align-items:start}
-.sellers-list{display:flex;flex-direction:column;gap:8px}
-.seller-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;box-shadow:var(--sh);cursor:pointer;transition:all .15s}
-.seller-card:hover{box-shadow:var(--sh-md)}
-.sc-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
-.sc-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
-.sc-name{font-size:14px;font-weight:700}.sc-role{font-size:12px;color:var(--text3)}
-.meta-bar{margin-top:8px}
-.meta-bar-label{display:flex;justify-content:space-between;font-size:11px;color:var(--text3);margin-bottom:4px}
-.bar-track{height:5px;background:var(--surface2);border-radius:3px;overflow:hidden}
-.bar-fill{height:100%;background:var(--brand);border-radius:3px;transition:width .6s ease}
-.bar-fill.over{background:#e24b4a}
-.sc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px}
-.sc-stat{text-align:center;padding:6px;background:var(--surface2);border-radius:var(--rs)}
-.sc-stat-val{font-size:15px;font-weight:700}.sc-stat-lbl{font-size:10px;color:var(--text3);margin-top:1px}
-.ranking-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
-.rank-row{display:flex;align-items:center;gap:12px;padding:13px 18px;border-bottom:1px solid var(--border)}
-.rank-row:last-child{border-bottom:none}
-.rank-pos{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
-.rank-pos.gold{background:#fdf0e0;color:#92530a}.rank-pos.silver{background:#f0ede8;color:#6b6760}
-.rank-pos.bronze{background:#faeae7;color:#8a3010}.rank-pos.other{background:var(--surface2);color:var(--text3)}
-.rank-info{flex:1;min-width:0}.rank-name{font-size:13px;font-weight:500}
-.rank-detail{font-size:12px;color:var(--text3);margin-top:2px}
-.rank-brl{font-size:14px;font-weight:700;font-family:'DM Mono',monospace;color:var(--brand);text-align:right}
-.rank-conv{font-size:11px;color:var(--text3);text-align:right;margin-top:2px}
-.rank-bar{height:4px;background:var(--surface2);border-radius:2px;margin-top:4px;overflow:hidden}
-.rank-bar-f{height:100%;background:var(--brand);border-radius:2px;transition:width .6s ease}
-
-/* ANALYTICS */
-.analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
-.chart-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
-.source-table{width:100%;border-collapse:collapse;font-size:13px}
-.source-table th{font-size:11px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border)}
-.source-table td{padding:9px 12px;border-bottom:1px solid var(--border)}
-.source-table tr:last-child td{border-bottom:none}
-.source-table tr:hover td{background:var(--bg)}
-.conv-bar{height:6px;background:var(--surface2);border-radius:3px;overflow:hidden;margin-top:4px}
-.conv-bar-f{height:100%;background:var(--brand);border-radius:3px}
-
-/* MARKETING */
-.mkt-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
-.mkt-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;box-shadow:var(--sh)}
-.mkt-card-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-.mkt-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.mkt-card-title{font-size:15px;font-weight:700}
-.mkt-card-sub{font-size:12px;color:var(--text3);margin-top:2px}
-.mkt-stat-row{display:flex;gap:10px;margin-bottom:14px}
-.mkt-stat{flex:1;background:var(--surface2);border-radius:var(--rs);padding:10px;text-align:center}
-.mkt-stat-val{font-size:18px;font-weight:700}
-.mkt-stat-lbl{font-size:10px;color:var(--text3);margin-top:2px}
-.webhook-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:22px;box-shadow:var(--sh);margin-bottom:16px}
-.wh-status{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:3px 9px;border-radius:20px;font-weight:500}
-.wh-status.active{background:var(--green-l);color:var(--green)}
-.wh-status.inactive{background:var(--surface2);color:var(--text3)}
-.code-block{background:#1a1512;color:#e8c9b8;padding:14px 16px;border-radius:var(--rs);font-family:'DM Mono',monospace;font-size:11.5px;line-height:1.8;overflow-x:auto;margin-top:10px}
-.cm{color:#7a6258}.ck{color:#e8a898}.cv{color:#f0d080}.cs{color:#90c0e0}
-
-/* MODAIS */
-.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
-.overlay.open{display:flex}
-.modal{background:var(--surface);border-radius:14px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
-.modal-head{padding:18px 22px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
-.modal-head h2{font-size:16px;font-weight:700}
-.modal-close{background:none;border:none;font-size:22px;cursor:pointer;color:var(--text3);line-height:1;padding:2px}
-.modal-close:hover{color:var(--text)}
-.modal-body{padding:18px 22px}.modal-foot{padding:14px 22px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
-
-/* FORMS */
-.fg{margin-bottom:13px}
-.fg label{display:block;font-size:12px;font-weight:500;color:var(--text2);margin-bottom:4px}
-.fg input,.fg select,.fg textarea{width:100%;padding:9px 12px;font-size:13px;font-family:'Ubuntu',sans-serif;border:1px solid var(--border);border-radius:var(--rs);background:var(--surface);color:var(--text);outline:none;transition:border-color .15s}
-.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(89,36,25,.1)}
-.fg textarea{resize:vertical;min-height:68px}
-.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-
-/* BUTTONS */
-.btn{padding:8px 18px;font-size:13px;font-weight:500;font-family:'Ubuntu',sans-serif;border-radius:var(--rs);border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;transition:all .15s}
-.btn:hover{background:var(--surface2)}
-.btn-primary{background:var(--brand);border-color:var(--brand);color:#fff}
-.btn-primary:hover{background:var(--brand-m);border-color:var(--brand-m)}
-.btn-danger{background:none;border-color:#e8b4b4;color:var(--red)}.btn-danger:hover{background:var(--red-l)}
-.btn-wpp{background:#25d366;border-color:#25d366;color:#fff;display:flex;align-items:center;gap:6px}
-.btn-wpp:hover{background:#1ebe5d}
-
-/* DETAIL */
-.det-section{margin-bottom:16px}
-.det-section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:8px}
-.det-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px}
-.det-row:last-child{border-bottom:none}
-.det-row span:first-child{color:var(--text2)}.det-row span:last-child{font-weight:500;text-align:right;max-width:62%}
-.wpp-preview{background:#e9f9ee;border:1px solid #b2e5c4;border-radius:var(--rs);padding:12px;font-size:12.5px;color:#1a4a2e;line-height:1.7;white-space:pre-wrap;margin-top:8px}
-.sel-inp{width:100%;padding:9px 12px;font-size:13px;font-family:'Ubuntu',sans-serif;border:1px solid var(--border);border-radius:var(--rs);background:var(--surface);color:var(--text);outline:none}
-.sel-inp:focus{border-color:var(--brand)}
-
-/* MISC */
-.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-.section-head h2{font-size:16px;font-weight:700}
-.empty{text-align:center;padding:48px 20px;color:var(--text3)}
-.empty p{font-size:13px;line-height:1.6}
-.toast{position:fixed;bottom:32px;right:24px;background:var(--text);color:#fff;padding:10px 18px;border-radius:var(--rs);font-size:13px;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,.2);transform:translateY(80px);opacity:0;transition:all .25s cubic-bezier(.34,1.56,.64,1);z-index:200;pointer-events:none}
-.toast.show{transform:translateY(0);opacity:1}
-
-@media(max-width:960px){.metrics{grid-template-columns:repeat(2,1fr)}.dash-grid{grid-template-columns:1fr}.team-layout{grid-template-columns:1fr}.analytics-grid{grid-template-columns:1fr}.mkt-grid{grid-template-columns:1fr}}
-@media(max-width:600px){.content{padding:14px}.metrics{grid-template-columns:repeat(2,1fr);gap:10px}.topbar{padding:0 14px}.nav{padding:0 14px}.fg-row{grid-template-columns:1fr}}
-</style>
+        .charts-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 768px) { .charts-container { grid-template-columns: 1fr; } }
+    </style>
 </head>
 <body>
 
-<!-- LOGIN -->
-<div id="login-screen">
-  <div class="login-box">
-    <div class="login-logo">
-      <div class="login-logo-mark">
-        <svg viewBox="0 0 30 30" fill="none"><text x="2" y="22" font-family="Ubuntu" font-weight="700" font-size="18" fill="#fff">RR</text></svg>
-      </div>
-      <div>
-        <div class="ll-text">Rodrigues</div>
-        <div class="ll-sub">Móveis Planejados</div>
-      </div>
-    </div>
-    <div class="login-title">Acesso ao CRM</div>
-    <div class="login-sub">Entre com suas credenciais para continuar</div>
-    <div class="login-err" id="login-err"></div>
-    <div class="fg"><label>E-mail</label><input id="li-email" type="email" placeholder="seu@email.com"></div>
-    <div class="fg"><label>Senha</label><input id="li-pass" type="password" placeholder="••••••••"></div>
-    <button class="login-btn" id="login-btn" onclick="doLogin()">Entrar</button>
-    <div class="login-hint">
-      <strong>Credenciais:</strong> contatomoveisrodrigues@gmail.com<br>
-      Certifique-se de ter ativado o <strong>Firebase Authentication</strong> no console e criado este usuário.
-    </div>
-  </div>
-</div>
-
-<!-- DEBUG BAR -->
-<div id="debug-bar">
-  <span style="color:#e8a898;font-weight:700">DEBUG</span>
-  <span id="debug-msg">Aguardando...</span>
-  <button class="debug-close" onclick="document.getElementById('debug-bar').classList.remove('show')">×</button>
-</div>
-
-<!-- NOTIFICAÇÃO NOVO LEAD -->
-<div id="lead-notif">Novo lead recebido!</div>
-
-<!-- APP -->
-<header class="topbar">
-  <div class="logo">
-    <div class="logo-mark">
-      <svg viewBox="0 0 22 22" fill="none"><text x="1" y="17" font-family="Ubuntu" font-weight="700" font-size="14" fill="#fff">RR</text></svg>
-    </div>
-    <div>
-      <div class="logo-text">Rodrigues CRM</div>
-      <div class="logo-sub-text">Móveis Planejados</div>
-    </div>
-  </div>
-  <div class="topbar-r">
-    <div class="sync"><div class="sync-dot" id="syncDot"></div><span id="syncLabel">Aguardando login...</span></div>
-    <button class="btn btn-primary" onclick="openModal('lead')">+ Novo lead</button>
-    <button class="btn-logout" onclick="doLogout()">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-      Sair
-    </button>
-  </div>
-</header>
-
-<nav class="nav">
-  <button class="nav-btn active" onclick="showView('dashboard',this)">Painel</button>
-  <button class="nav-btn" onclick="showView('pipeline',this)">Pipeline <span class="nav-cnt" id="cnt-pipeline">0</span></button>
-  <button class="nav-btn" onclick="showView('tarefas',this)">Tarefas <span class="nav-cnt" id="cnt-tarefas">0</span></button>
-  <button class="nav-btn" onclick="showView('clientes',this)">Clientes <span class="nav-cnt" id="cnt-clientes">0</span></button>
-  <button class="nav-btn" onclick="showView('equipe',this)">Equipe <span class="nav-cnt" id="cnt-equipe">0</span></button>
-  <button class="nav-btn" onclick="showView('analytics',this)">Analytics</button>
-  <button class="nav-btn" onclick="showView('marketing',this)">Marketing & Ads</button>
-  <button class="nav-btn" onclick="showView('captacao',this)">Formulário</button>
-</nav>
-
-<div class="content">
-
-  <!-- DASHBOARD -->
-  <div class="view active" id="view-dashboard">
-    <div class="metrics" id="metrics"></div>
-    <div class="dash-grid">
-      <div class="panel"><div class="panel-head"><span class="panel-title">Leads recentes</span></div><div id="recent-leads"></div></div>
-      <div class="panel"><div class="panel-head"><span class="panel-title">Tarefas pendentes</span></div><div id="dash-tasks"></div></div>
-    </div>
-  </div>
-
-  <!-- PIPELINE -->
-  <div class="view" id="view-pipeline">
-    <div class="kanban-wrap"><div class="kanban" id="kanban-board"></div></div>
-  </div>
-
-  <!-- TAREFAS -->
-  <div class="view" id="view-tarefas">
-    <div class="tasks-tb">
-      <button class="fbtn active" onclick="filterTasks('all',this)">Todas</button>
-      <button class="fbtn" onclick="filterTasks('pending',this)">Pendentes</button>
-      <button class="fbtn" onclick="filterTasks('done',this)">Concluídas</button>
-      <div style="flex:1"></div>
-      <button class="btn btn-primary" onclick="openModal('task')">+ Nova tarefa</button>
-    </div>
-    <div class="tasks-list" id="tasks-list"></div>
-  </div>
-
-  <!-- CLIENTES -->
-  <div class="view" id="view-clientes">
-    <div class="clients-grid" id="clients-grid"></div>
-  </div>
-
-  <!-- EQUIPE -->
-  <div class="view" id="view-equipe">
-    <div class="section-head">
-      <h2>Equipe de vendas</h2>
-      <button class="btn btn-primary" onclick="openModal('seller')">+ Novo vendedor</button>
-    </div>
-    <div class="team-layout">
-      <div>
-        <div style="font-size:12px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px">Vendedores</div>
-        <div class="sellers-list" id="sellers-list"></div>
-      </div>
-      <div>
-        <div style="font-size:12px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px">Ranking geral</div>
-        <div class="ranking-panel" id="ranking-panel"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ANALYTICS -->
-  <div class="view" id="view-analytics">
-    <div class="section-head"><h2>Analytics de vendas</h2></div>
-    <div class="metrics" id="analytics-metrics"></div>
-    <div class="analytics-grid">
-      <div class="chart-panel">
-        <div class="panel-head"><span class="panel-title">Valor por etapa do funil (R$)</span></div>
-        <div style="padding:16px;height:280px"><canvas id="chartFunil"></canvas></div>
-      </div>
-      <div class="chart-panel">
-        <div class="panel-head"><span class="panel-title">Origem dos leads</span></div>
-        <div style="padding:16px;height:280px;display:flex;align-items:center;justify-content:center"><canvas id="chartOrigem"></canvas></div>
-      </div>
-    </div>
-    <div class="panel" style="margin-top:14px">
-      <div class="panel-head"><span class="panel-title">Taxa de conversão por origem</span></div>
-      <div id="source-table-wrap"></div>
-    </div>
-    <div class="panel" style="margin-top:14px">
-      <div class="panel-head"><span class="panel-title">Desempenho por produto</span></div>
-      <div id="product-table-wrap"></div>
-    </div>
-  </div>
-
-  <!-- MARKETING -->
-  <div class="view" id="view-marketing">
-    <div class="section-head"><h2>Marketing & Ads</h2></div>
-    <div class="webhook-panel">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-        <div>
-          <div style="font-size:15px;font-weight:700;margin-bottom:3px">Integração Make.com</div>
-          <div style="font-size:13px;color:var(--text2)">Receba leads dos anúncios automaticamente via webhook</div>
+    <div id="auth-screen">
+        <div class="login-card">
+            <div class="logo-box" style="margin: 0 auto 20px;">R</div>
+            <h2>Rodrigues Móveis</h2>
+            <input type="email" id="login-email" placeholder="E-mail" value="contatomoveisrodrigues@gmail.com">
+            <input type="password" id="login-pass" placeholder="Senha" value="123">
+            <button class="btn-login" onclick="handleLogin()">Acessar Sistema</button>
         </div>
-        <span class="wh-status inactive" id="wh-badge">Não configurado</span>
-      </div>
-      <div class="fg-row">
-        <div class="fg" style="margin-bottom:0">
-          <label>URL do Webhook Make.com</label>
-          <input id="webhook-url" placeholder="https://hook.eu1.make.com/xxxx" oninput="updateWhStatus()">
+    </div>
+
+    <div id="main-app">
+        <header>
+            <div class="logo-area">
+                <div class="logo-box">R</div>
+                <strong style="font-size: 1.3rem; color: var(--primary);">Rodrigues CRM</strong>
+            </div>
+            <button onclick="handleLogout()" style="background:none; border:1px solid #ccc; padding:6px 12px; border-radius:6px; cursor:pointer;">Sair</button>
+        </header>
+
+        <nav>
+            <button class="nav-btn active" onclick="showView('dashboard', this)">Dashboard</button>
+            <button class="nav-btn" onclick="showView('leads', this)">Gestão de Leads</button>
+        </nav>
+
+        <main>
+            <div id="view-dashboard" class="view active">
+                <div class="grid-stats" id="stats-summary">
+                    <div class="stat-card"><h3>0</h3><p>Leads Ativos</p></div>
+                    <div class="stat-card"><h3>R$ 0</h3><p>Pipeline Total</p></div>
+                </div>
+                <div class="charts-container">
+                    <div class="panel"><h3>Vendas por Etapa</h3><canvas id="chartEtapas"></canvas></div>
+                    <div class="panel"><h3>Volume Financeiro</h3><canvas id="chartFinanceiro"></canvas></div>
+                </div>
+            </div>
+
+            <div id="view-leads" class="view">
+                <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom: 25px;">
+                    <h2>Leads em Negociação</h2>
+                    <button class="btn-add" onclick="openModalLead()">+ Novo Lead</button>
+                </div>
+                <div class="panel" style="overflow-x: auto;">
+                    <table id="table-leads">
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Projeto</th>
+                                <th>Etapa</th>
+                                <th>Valor</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="list-leads"></tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="modal-lead" class="modal">
+        <div class="modal-content">
+            <h2 style="margin-bottom:20px; color: var(--primary);">Cadastrar Novo Projeto</h2>
+            <form id="form-lead">
+                <div class="form-group"><label>Nome do Cliente</label><input type="text" id="l-name" required></div>
+                <div class="form-group"><label>WhatsApp</label><input type="text" id="l-phone" placeholder="Ex: 55999999999"></div>
+                <div class="form-group"><label>Descrição do Móvel</label><input type="text" id="l-product" placeholder="Ex: Cozinha sob medida"></div>
+                <div class="form-group"><label>Valor do Orçamento (R$)</label><input type="number" id="l-value" step="0.01"></div>
+                <div class="form-group">
+                    <label>Fase da Venda</label>
+                    <select id="l-stage">
+                        <option value="Prospecção">Prospecção</option>
+                        <option value="Visita Técnica">Visita Técnica</option>
+                        <option value="Orçamento">Orçamento</option>
+                        <option value="Aguardando Contrato">Aguardando Contrato</option>
+                        <option value="Fechado">Fechado</option>
+                    </select>
+                </div>
+                <div style="display:flex; gap: 10px; margin-top: 25px;">
+                    <button type="button" class="btn-login" style="background:#eee; color:#333;" onclick="closeModal()">Cancelar</button>
+                    <button type="submit" class="btn-login">Salvar no Sistema</button>
+                </div>
+            </form>
         </div>
-        <div class="fg" style="margin-bottom:0;display:flex;align-items:flex-end">
-          <button class="btn btn-primary" onclick="saveWh()" style="width:100%;padding:9px">Salvar</button>
-        </div>
-      </div>
-      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
-        <div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px">JSON esperado (Make.com → Firebase)</div>
-        <div class="code-block">
-<span class="cm">// Cenário: Meta Lead Ads → Webhook → HTTP POST → Firestore</span><br>
-{<br>
-&nbsp;&nbsp;<span class="ck">"name"</span>: <span class="cv">"{{lead.name}}"</span>,<br>
-&nbsp;&nbsp;<span class="ck">"phone"</span>: <span class="cv">"{{lead.phone}}"</span>,<br>
-&nbsp;&nbsp;<span class="ck">"product"</span>: <span class="cv">"{{lead.product}}"</span>,<br>
-&nbsp;&nbsp;<span class="ck">"source"</span>: <span class="cv">"{{utm_source}}"</span>,&nbsp;&nbsp;<span class="cm">// "Instagram", "Google"…</span><br>
-&nbsp;&nbsp;<span class="ck">"utm_campaign"</span>: <span class="cv">"{{utm_campaign}}"</span>,<br>
-&nbsp;&nbsp;<span class="ck">"stage"</span>: <span class="cs">"Novo Lead"</span>,<br>
-&nbsp;&nbsp;<span class="ck">"city"</span>: <span class="cv">"{{lead.city}}"</span><br>
-}<br>
-<span class="cm">// O campo "source" alimenta os gráficos de Analytics automaticamente.</span>
-        </div>
-      </div>
     </div>
-    <div class="mkt-grid">
-      <div class="mkt-card">
-        <div class="mkt-card-head">
-          <div class="mkt-icon" style="background:#f0e6f8">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="#833ab4"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-          </div>
-          <div><div class="mkt-card-title">Meta Ads</div><div class="mkt-card-sub">Instagram & Facebook</div></div>
-        </div>
-        <div class="mkt-stat-row">
-          <div class="mkt-stat"><div class="mkt-stat-val" id="meta-leads">0</div><div class="mkt-stat-lbl">Leads</div></div>
-          <div class="mkt-stat"><div class="mkt-stat-val" id="meta-fechados">0</div><div class="mkt-stat-lbl">Fechados</div></div>
-          <div class="mkt-stat"><div class="mkt-stat-val" id="meta-conv">0%</div><div class="mkt-stat-lbl">Conversão</div></div>
-        </div>
-        <a href="https://business.facebook.com/adsmanager" target="_blank" class="btn" style="width:100%;text-align:center;text-decoration:none;display:block">Abrir Gerenciador →</a>
-      </div>
-      <div class="mkt-card">
-        <div class="mkt-card-head">
-          <div class="mkt-icon" style="background:#e8f0fe">
-            <svg width="22" height="22" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-          </div>
-          <div><div class="mkt-card-title">Google Ads</div><div class="mkt-card-sub">Search & Display</div></div>
-        </div>
-        <div class="mkt-stat-row">
-          <div class="mkt-stat"><div class="mkt-stat-val" id="google-leads">0</div><div class="mkt-stat-lbl">Leads</div></div>
-          <div class="mkt-stat"><div class="mkt-stat-val" id="google-fechados">0</div><div class="mkt-stat-lbl">Fechados</div></div>
-          <div class="mkt-stat"><div class="mkt-stat-val" id="google-conv">0%</div><div class="mkt-stat-lbl">Conversão</div></div>
-        </div>
-        <a href="https://ads.google.com" target="_blank" class="btn" style="width:100%;text-align:center;text-decoration:none;display:block">Abrir Google Ads →</a>
-      </div>
-    </div>
-    <div class="panel">
-      <div class="panel-head"><span class="panel-title">Pipeline value por etapa</span></div>
-      <div style="padding:16px" id="pipeline-value-detail"></div>
-    </div>
-  </div>
 
-  <!-- CAPTAÇÃO -->
-  <div class="view" id="view-captacao">
-    <div style="max-width:600px">
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:28px 30px;box-shadow:var(--sh)">
-        <div style="font-size:18px;font-weight:700;margin-bottom:6px">Formulário público de captação</div>
-        <div style="font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:20px">Compartilhe com clientes — Instagram, WhatsApp ou como destino de anúncios. O lead cai direto no Pipeline.</div>
-        <div style="font-size:12px;font-weight:500;color:var(--text2);margin-bottom:6px">Link do formulário</div>
-        <div style="display:flex;gap:8px;align-items:center">
-          <div style="flex:1;padding:10px 13px;background:var(--surface2);border:1px solid var(--border);border-radius:var(--rs);font-size:12px;font-family:'DM Mono',monospace;color:var(--text2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap" id="form-link">—</div>
-          <button class="btn btn-primary" onclick="copyLink()">Copiar</button>
-          <button class="btn" onclick="window.open(document.getElementById('form-link').textContent)">Abrir</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</div>
-
-<!-- MODAL NOVO LEAD -->
-<div class="overlay" id="overlay-lead">
-  <div class="modal">
-    <div class="modal-head"><h2>Novo lead</h2><button class="modal-close" onclick="closeModal('lead')">×</button></div>
-    <div class="modal-body">
-      <div class="fg"><label>Nome do cliente *</label><input id="nl-name" placeholder="Ex: Maria Oliveira"></div>
-      <div class="fg-row">
-        <div class="fg"><label>WhatsApp</label><input id="nl-phone" placeholder="27999990000" type="tel"></div>
-        <div class="fg"><label>Cidade</label><input id="nl-city" placeholder="Ex: Serra - ES"></div>
-      </div>
-      <div class="fg-row">
-        <div class="fg"><label>Produto / Projeto</label><input id="nl-product" placeholder="Ex: Cozinha planejada"></div>
-        <div class="fg"><label>Valor estimado (R$)</label><input id="nl-value" type="number" placeholder="8500"></div>
-      </div>
-      <div class="fg-row">
-        <div class="fg"><label>Etapa</label>
-          <select id="nl-stage"><option>Novo Lead</option><option>Primeiro Contato</option><option>Qualificação</option><option>Proposta</option><option>Negociação</option><option>Fechado</option><option>Perdido</option></select>
-        </div>
-        <div class="fg"><label>Vendedor responsável</label><select id="nl-seller" class="sel-inp"><option value="">— nenhum —</option></select></div>
-      </div>
-      <div class="fg"><label>Canal de captação</label>
-        <select id="nl-source"><option value="">— selecione —</option><option>Instagram</option><option>Facebook</option><option>WhatsApp</option><option>Formulário do site</option><option>Indicação</option><option>Google</option><option>Google Ads</option><option>Presencial</option><option>Outro</option></select>
-      </div>
-      <div class="fg"><label>Observações</label><textarea id="nl-obs" placeholder="Anotações sobre o cliente..."></textarea></div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn" onclick="closeModal('lead')">Cancelar</button>
-      <button class="btn btn-primary" id="btn-save-lead" onclick="saveLead()">Salvar lead</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL NOVA TAREFA -->
-<div class="overlay" id="overlay-task">
-  <div class="modal">
-    <div class="modal-head"><h2>Nova tarefa</h2><button class="modal-close" onclick="closeModal('task')">×</button></div>
-    <div class="modal-body">
-      <div class="fg"><label>Descrição *</label><input id="nt-title" placeholder="Ex: Ligar para confirmar visita"></div>
-      <div class="fg-row">
-        <div class="fg"><label>Lead relacionado</label><select id="nt-lead" class="sel-inp"><option value="">— nenhum —</option></select></div>
-        <div class="fg"><label>Vendedor</label><select id="nt-seller" class="sel-inp"><option value="">— nenhum —</option></select></div>
-      </div>
-      <div class="fg-row">
-        <div class="fg"><label>Data e hora</label><input id="nt-date" type="datetime-local"></div>
-        <div class="fg"><label>Prioridade</label><select id="nt-priority"><option value="normal">Normal</option><option value="urgente">Urgente</option></select></div>
-      </div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn" onclick="closeModal('task')">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveTask()">Salvar tarefa</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL VENDEDOR -->
-<div class="overlay" id="overlay-seller">
-  <div class="modal">
-    <div class="modal-head"><h2 id="seller-modal-title">Novo vendedor</h2><button class="modal-close" onclick="closeModal('seller')">×</button></div>
-    <div class="modal-body">
-      <div class="fg"><label>Nome completo *</label><input id="sv-name" placeholder="Ex: Carlos Mendes"></div>
-      <div class="fg-row">
-        <div class="fg"><label>WhatsApp</label><input id="sv-phone" placeholder="27999990000" type="tel"></div>
-        <div class="fg"><label>E-mail</label><input id="sv-email" placeholder="carlos@email.com" type="email"></div>
-      </div>
-      <div class="fg-row">
-        <div class="fg"><label>Cargo</label><input id="sv-role" placeholder="Ex: Consultor de vendas"></div>
-        <div class="fg"><label>Meta mensal (R$)</label><input id="sv-goal" type="number" placeholder="20000"></div>
-      </div>
-      <div class="fg"><label>Cor do perfil</label>
-        <div style="display:flex;gap:8px;margin-top:4px" id="color-picker">
-          <div class="cp-opt" data-color="#592419" style="width:28px;height:28px;border-radius:50%;background:#592419;cursor:pointer;border:3px solid transparent;transition:border .15s" onclick="selectColor('#592419',this)"></div>
-          <div class="cp-opt" data-color="#1a4a7a" style="width:28px;height:28px;border-radius:50%;background:#1a4a7a;cursor:pointer;border:3px solid transparent;transition:border .15s" onclick="selectColor('#1a4a7a',this)"></div>
-          <div class="cp-opt" data-color="#4a2d8a" style="width:28px;height:28px;border-radius:50%;background:#4a2d8a;cursor:pointer;border:3px solid transparent;transition:border .15s" onclick="selectColor('#4a2d8a',this)"></div>
-          <div class="cp-opt" data-color="#92530a" style="width:28px;height:28px;border-radius:50%;background:#92530a;cursor:pointer;border:3px solid transparent;transition:border .15s" onclick="selectColor('#92530a',this)"></div>
-          <div class="cp-opt" data-color="#0f5c4a" style="width:28px;height:28px;border-radius:50%;background:#0f5c4a;cursor:pointer;border:3px solid transparent;transition:border .15s" onclick="selectColor('#0f5c4a',this)"></div>
-          <div class="cp-opt" data-color="#8a1f1f" style="width:28px;height:28px;border-radius:50%;background:#8a1f1f;cursor:pointer;border:3px solid transparent;transition:border .15s" onclick="selectColor('#8a1f1f',this)"></div>
-        </div>
-        <input type="hidden" id="sv-color" value="#592419">
-      </div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn btn-danger" id="btn-del-seller" onclick="deleteSeller()" style="display:none;margin-right:auto">Excluir</button>
-      <button class="btn" onclick="closeModal('seller')">Cancelar</button>
-      <button class="btn btn-primary" onclick="saveSeller()">Salvar</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL DETALHE LEAD -->
-<div class="overlay" id="overlay-detail">
-  <div class="modal" style="max-width:520px">
-    <div class="modal-head"><h2 id="det-title">Lead</h2><button class="modal-close" onclick="closeModal('detail')">×</button></div>
-    <div class="modal-body">
-      <div class="det-section">
-        <div class="det-section-title">Informações</div>
-        <div id="det-info"></div>
-      </div>
-      <div class="det-section">
-        <div class="det-section-title">Vendedor responsável</div>
-        <select id="det-seller" class="sel-inp" onchange="updateLeadSeller()"><option value="">— sem atribuição —</option></select>
-      </div>
-      <div class="det-section">
-        <div class="det-section-title">Mover etapa</div>
-        <select id="det-stage" class="sel-inp" onchange="updateLeadStage()">
-          <option>Novo Lead</option><option>Primeiro Contato</option><option>Qualificação</option><option>Proposta</option><option>Negociação</option><option>Fechado</option><option>Perdido</option>
-        </select>
-      </div>
-      <div class="det-section">
-        <div class="det-section-title">Aviso WhatsApp</div>
-        <select id="det-wpp-tpl" class="sel-inp" onchange="previewWpp()" style="margin-bottom:4px">
-          <option value="">— escolha uma mensagem —</option>
-          <option value="contato">Primeiro contato</option><option value="visita">Confirmar visita / medição</option>
-          <option value="proposta">Proposta enviada</option><option value="aprovado">Projeto aprovado</option>
-          <option value="producao">Em produção</option><option value="entrega">Agendar entrega</option>
-          <option value="concluido">Obra concluída</option>
-        </select>
-        <div class="wpp-preview" id="det-wpp-preview" style="display:none"></div>
-      </div>
-    </div>
-    <div class="modal-foot">
-      <button class="btn btn-danger" onclick="deleteLead()">Excluir</button>
-      <div style="flex:1"></div>
-      <button class="btn" onclick="closeModal('detail')">Fechar</button>
-      <button class="btn btn-wpp" id="btn-open-wpp" onclick="openWpp()" style="display:none">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Abrir WhatsApp
-      </button>
-    </div>
-  </div>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script type="module">
-// ════════════════════════════════════════════════════════════════════════
-//  IMPORTS — Firebase v10 Modular SDK (sem persistência local)
-// ════════════════════════════════════════════════════════════════════════
-import { initializeApp }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import {
-  getFirestore, collection, onSnapshot,
-  addDoc, updateDoc, deleteDoc,
-  doc, serverTimestamp, query, orderBy
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-// ════════════════════════════════════════════════════════════════════════
-//  CONFIGURAÇÃO FIREBASE
-//  getFirestore() simples — sem IndexedDB cache, sem localStorage.
-//  Isso garante que cada escrita vai DIRETO para o servidor.
-// ════════════════════════════════════════════════════════════════════════
-const firebaseApp = initializeApp({
-  apiKey:            "AIzaSyBJ4_iiknBGZX1ciwKtOfhfDPytsRqYW9A",
-  authDomain:        "crm-marcenaria-ac88a.firebaseapp.com",
-  projectId:         "crm-marcenaria-ac88a",
-  storageBucket:     "crm-marcenaria-ac88a.firebasestorage.app",
-  messagingSenderId: "763443542872",
-  appId:             "1:763443542872:web:8046db5950bf66ddd1432d"
-});
-
-const auth = getAuth(firebaseApp);
-const db   = getFirestore(firebaseApp); // ← sem persistência local intencional
-
-// ════════════════════════════════════════════════════════════════════════
-//  CONSTANTES
-// ════════════════════════════════════════════════════════════════════════
-const STAGES        = ['Novo Lead','Primeiro Contato','Qualificação','Proposta','Negociação','Fechado','Perdido'];
-const ACTIVE_STAGES = ['Novo Lead','Primeiro Contato','Qualificação','Proposta','Negociação'];
-const SST = {
-  'Novo Lead':        {dot:'#9e9990', badge:'background:#ebe8e4;color:#5a5550'},
-  'Primeiro Contato': {dot:'#1a4a7a', badge:'background:#e6eef8;color:#1a4a7a'},
-  'Qualificação':     {dot:'#1a5c2a', badge:'background:#e4f2e8;color:#1a5c2a'},
-  'Proposta':         {dot:'#92530a', badge:'background:#fdf0e0;color:#7a3d08'},
-  'Negociação':       {dot:'#b04010', badge:'background:#fde8e0;color:#8a2a10'},
-  'Fechado':          {dot:'#0f5c4a', badge:'background:#e0f2ec;color:#0a4035'},
-  'Perdido':          {dot:'#8a1f1f', badge:'background:#fdeaea;color:#6b1a1a'},
-};
-const BRAND_COLORS = ['#592419','#7a3326','#9a4433','#ba5544','#d98070','#e9b0a0'];
-const WPP = {
-  contato:  (n,p)=>`Olá ${n}! 👋\n\nSomos da *Rodrigues Móveis Planejados* e entramos em contato sobre seu interesse em *${p}*.\n\nPodemos conversar?`,
-  visita:   (n,p)=>`Olá ${n}! 📐\n\nGostaríamos de confirmar a visita para medição do projeto de *${p}*.\n\nQual a melhor data e horário?`,
-  proposta: (n,p)=>`Olá ${n}! 📋\n\nSua proposta para *${p}* está pronta! Vou encaminhar os detalhes agora. 😊`,
-  aprovado: (n,p)=>`Olá ${n}! 🎉\n\nSeu projeto de *${p}* foi aprovado e já entra na fila de produção!`,
-  producao: (n,p)=>`Olá ${n}! 🪵\n\nSeu projeto de *${p}* já está em produção. Qualquer dúvida, é só chamar!`,
-  entrega:  (n,p)=>`Olá ${n}! 🚚\n\nSeu projeto de *${p}* está pronto para entrega! Quando podemos agendar?`,
-  concluido:(n,p)=>`Olá ${n}! ✅\n\nO projeto de *${p}* foi concluído! Obrigado pela confiança. 🙏`,
-};
-
-// ════════════════════════════════════════════════════════════════════════
-//  ESTADO
-// ════════════════════════════════════════════════════════════════════════
-let leads=[], tasks=[], sellers=[];
-let currentLeadId=null, currentSellerId=null, taskFilter='all', dragId=null, selectedColor='#592419';
-let chartFunil=null, chartOrigem=null;
-let prevLeadCount=0, firstSnapshot=true;
-let unsubLeads=null, unsubTasks=null, unsubSellers=null;
-
-// ════════════════════════════════════════════════════════════════════════
-//  DEBUG HELPERS — exibem erros visivelmente na barra inferior
-// ════════════════════════════════════════════════════════════════════════
-function dbg(msg, isErr=false) {
-  console.log('[CRM]', msg);
-  const bar = document.getElementById('debug-bar');
-  const el  = document.getElementById('debug-msg');
-  el.textContent = msg;
-  el.className = isErr ? 'debug-err' : 'debug-ok';
-  bar.classList.add('show');
-  if (!isErr) setTimeout(()=>bar.classList.remove('show'), 4000);
-}
-
-function errMsg(e) {
-  // Traduz os códigos de erro mais comuns do Firebase/Firestore
-  const map = {
-    'permission-denied':       'PERMISSÃO NEGADA — Ajuste as Regras do Firestore para allow read, write: if true',
-    'unavailable':             'FIRESTORE INDISPONÍVEL — Verifique sua conexão com a internet',
-    'unauthenticated':         'NÃO AUTENTICADO — Faça login novamente',
-    'not-found':               'PROJETO NÃO ENCONTRADO — Confirme o projectId no Firebase Console',
-    'invalid-argument':        'ARGUMENTO INVÁLIDO — Dado malformado enviado ao Firestore',
-    'resource-exhausted':      'COTA ESGOTADA — Limite gratuito do Firebase atingido',
-    'auth/user-not-found':     'USUÁRIO NÃO CADASTRADO — Crie o usuário no Firebase Auth',
-    'auth/wrong-password':     'SENHA INCORRETA',
-    'auth/invalid-email':      'E-MAIL INVÁLIDO',
-    'auth/invalid-credential': 'CREDENCIAIS INVÁLIDAS — Verifique e-mail e senha',
-    'auth/too-many-requests':  'MUITAS TENTATIVAS — Aguarde alguns minutos',
-    'auth/network-request-failed': 'ERRO DE REDE — Sem conexão com a internet',
-  };
-  const code = e?.code?.replace('firestore/','') || '';
-  return map[code] || `${e?.code || 'ERRO'}: ${e?.message || e}`;
-}
-
-// ════════════════════════════════════════════════════════════════════════
-//  ÁUDIO — alerta de novo lead
-// ════════════════════════════════════════════════════════════════════════
-function playLeadSound() {
-  try {
-    const ctx  = new (window.AudioContext||window.webkitAudioContext)();
-    const osc  = ctx.createOscillator();
-    const gain = ctx.createGain();
-    osc.connect(gain); gain.connect(ctx.destination);
-    osc.type = 'sine';
-    osc.frequency.setValueAtTime(880, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime+.3);
-    gain.gain.setValueAtTime(.25, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(.001, ctx.currentTime+.4);
-    osc.start(); osc.stop(ctx.currentTime+.4);
-  } catch(e){}
-}
-
-function showLeadNotif() {
-  const el = document.getElementById('lead-notif');
-  el.classList.add('show');
-  setTimeout(()=>el.classList.remove('show'), 3500);
-}
-
-// ════════════════════════════════════════════════════════════════════════
-//  AUTH
-// ════════════════════════════════════════════════════════════════════════
-onAuthStateChanged(auth, user => {
-  if (user) {
-    document.getElementById('login-screen').classList.add('hidden');
-    dbg(`Autenticado como ${user.email}`);
-    initListeners();
-  } else {
-    document.getElementById('login-screen').classList.remove('hidden');
-    setSynced(false, 'Faça login');
-    // Para os listeners ao sair
-    if (unsubLeads)   { unsubLeads();   unsubLeads=null; }
-    if (unsubTasks)   { unsubTasks();   unsubTasks=null; }
-    if (unsubSellers) { unsubSellers(); unsubSellers=null; }
-    leads=[]; tasks=[]; sellers=[];
-    firstSnapshot=true; prevLeadCount=0;
-  }
-});
-
-window.doLogin = async () => {
-  const email = document.getElementById('li-email').value.trim();
-  const pass  = document.getElementById('li-pass').value;
-  const btn   = document.getElementById('login-btn');
-  const errEl = document.getElementById('login-err');
-  errEl.style.display='none';
-  if (!email || !pass) { errEl.textContent='Preencha e-mail e senha.'; errEl.style.display='block'; return; }
-  btn.disabled=true; btn.textContent='Entrando...';
-  try {
-    await signInWithEmailAndPassword(auth, email, pass);
-  } catch(e) {
-    const msg = errMsg(e);
-    errEl.textContent = msg;
-    errEl.style.display = 'block';
-    dbg('LOGIN FALHOU: '+msg, true);
-    btn.disabled=false; btn.textContent='Entrar';
-  }
-};
-
-window.doLogout = async () => {
-  try { await signOut(auth); } catch(e) { dbg('Erro ao sair: '+errMsg(e), true); }
-};
-
-document.getElementById('li-pass').addEventListener('keydown', e => { if(e.key==='Enter') window.doLogin(); });
-
-// ════════════════════════════════════════════════════════════════════════
-//  LISTENERS FIRESTORE — somente após login autenticado
-// ════════════════════════════════════════════════════════════════════════
-function initListeners() {
-  dbg('Conectando ao Firestore...');
-
-  // ── LEADS ──
-  unsubLeads = onSnapshot(
-    query(collection(db,'leads'), orderBy('createdAt','desc')),
-    snapshot => {
-      const newCount = snapshot.docs.length;
-      leads = snapshot.docs.map(d => ({id:d.id, ...d.data()}));
-
-      if (!firstSnapshot && newCount > prevLeadCount) {
-        playLeadSound();
-        showLeadNotif();
-        dbg(`Novo lead recebido! Total: ${newCount}`);
-      }
-      prevLeadCount = newCount;
-      firstSnapshot = false;
-
-      render();
-      setSynced(true, 'Sincronizado');
-      dbg(`Leads carregados: ${leads.length}`);
-    },
-    error => {
-      const msg = errMsg(error);
-      setSynced(false, 'Erro');
-      dbg('ERRO AO LER LEADS: '+msg, true);
-    }
-  );
-
-  // ── TASKS ──
-  unsubTasks = onSnapshot(
-    query(collection(db,'tasks'), orderBy('createdAt','desc')),
-    snapshot => {
-      tasks = snapshot.docs.map(d => ({id:d.id, ...d.data()}));
-      renderTasks(); renderDashTasks(); updateCounts();
-    },
-    error => dbg('ERRO AO LER TASKS: '+errMsg(error), true)
-  );
-
-  // ── SELLERS ──
-  unsubSellers = onSnapshot(
-    query(collection(db,'sellers'), orderBy('createdAt','asc')),
-    snapshot => {
-      sellers = snapshot.docs.map(d => ({id:d.id, ...d.data()}));
-      renderTeam(); updateSellerSelects(); updateCounts();
-    },
-    error => dbg('ERRO AO LER SELLERS: '+errMsg(error), true)
-  );
-}
-
-// ════════════════════════════════════════════════════════════════════════
-//  HELPERS
-// ════════════════════════════════════════════════════════════════════════
-function setSynced(ok, label) {
-  const dot = document.getElementById('syncDot');
-  dot.className = 'sync-dot' + (ok ? ' live' : ' err');
-  document.getElementById('syncLabel').textContent = label || (ok ? 'Sincronizado' : 'Sem conexão');
-}
-function fmt(n)   { return (n||0).toLocaleString('pt-BR'); }
-function initials(n){ return (n||'?').split(' ').slice(0,2).map(w=>w[0]).join('').toUpperCase(); }
-function hexLight(h){ const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16); return `rgba(${r},${g},${b},0.13)`; }
-function toast(m) { const e=document.getElementById('toast'); e.textContent=m; e.classList.add('show'); setTimeout(()=>e.classList.remove('show'),2800); }
-const wppSVG=`<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
-
-// ════════════════════════════════════════════════════════════════════════
-//  RENDER
-// ════════════════════════════════════════════════════════════════════════
-function render() {
-  renderMetrics(); renderRecent(); renderPipeline(); renderClients();
-  renderTeam(); renderAnalytics(); renderMarketing(); updateCounts();
-}
-
-function updateCounts() {
-  document.getElementById('cnt-pipeline').textContent = leads.filter(l=>ACTIVE_STAGES.includes(l.stage)).length;
-  document.getElementById('cnt-tarefas').textContent  = tasks.filter(t=>!t.done).length;
-  document.getElementById('cnt-clientes').textContent = leads.filter(l=>l.stage==='Fechado').length;
-  document.getElementById('cnt-equipe').textContent   = sellers.length;
-}
-
-function renderMetrics() {
-  const ativos   = leads.filter(l=>ACTIVE_STAGES.includes(l.stage));
-  const fechados = leads.filter(l=>l.stage==='Fechado');
-  const pipeline = ativos.reduce((s,l)=>s+(parseFloat(l.value)||0),0);
-  const receita  = fechados.reduce((s,l)=>s+(parseFloat(l.value)||0),0);
-  document.getElementById('metrics').innerHTML=`
-    <div class="mc"><div class="mc-label">Total de leads</div><div class="mc-val">${leads.length}</div><div class="mc-sub">${ativos.length} em andamento</div></div>
-    <div class="mc accent"><div class="mc-label">Receita fechada</div><div class="mc-val">R$&nbsp;${fmt(receita)}</div><div class="mc-sub">${fechados.length} negócios</div></div>
-    <div class="mc"><div class="mc-label">Pipeline ativo</div><div class="mc-val">R$&nbsp;${fmt(pipeline)}</div><div class="mc-sub">${ativos.length} leads</div></div>
-    <div class="mc"><div class="mc-label">Tarefas pendentes</div><div class="mc-val">${tasks.filter(t=>!t.done).length}</div><div class="mc-sub">${tasks.filter(t=>!t.done&&t.priority==='urgente').length} urgentes</div></div>`;
-}
-
-function renderRecent() {
-  const el=document.getElementById('recent-leads');
-  if (!leads.length){el.innerHTML='<div class="empty"><p>Nenhum lead ainda.<br>Clique em "+ Novo lead" para criar o primeiro.</p></div>';return;}
-  el.innerHTML=leads.slice(0,8).map(l=>{
-    const st=SST[l.stage]||SST['Novo Lead'];
-    const seller=l.sellerId?sellers.find(s=>s.id===l.sellerId):null;
-    return `<div class="lead-row" onclick="openDetail('${l.id}')">
-      <div class="avatar">${(l.name||'?')[0].toUpperCase()}</div>
-      <div class="lead-info"><div class="lead-name">${l.name}</div><div class="lead-sub">${l.product||'—'}${seller?' · '+seller.name:''}</div></div>
-      <span class="badge" style="${st.badge}">${l.stage}</span></div>`;
-  }).join('');
-}
-
-function renderDashTasks() {
-  const el=document.getElementById('dash-tasks');
-  const pend=tasks.filter(t=>!t.done).slice(0,6);
-  if (!pend.length){el.innerHTML='<div class="empty"><p>Nenhuma tarefa pendente.</p></div>';return;}
-  el.innerHTML=pend.map(t=>{
-    const lead=t.leadId?leads.find(l=>l.id===t.leadId):null;
-    const seller=t.sellerId?sellers.find(s=>s.id===t.sellerId):null;
-    return `<div class="lead-row" style="cursor:default">
-      <div style="width:8px;height:8px;border-radius:50%;background:${t.priority==='urgente'?'#e24b4a':'#9e9990'};flex-shrink:0"></div>
-      <div class="lead-info"><div class="lead-name">${t.title}</div><div class="lead-sub">${lead?lead.name:'—'}${seller?' · '+seller.name:''}</div></div></div>`;
-  }).join('');
-}
-
-function renderPipeline() {
-  document.getElementById('kanban-board').innerHTML=STAGES.map(stage=>{
-    const st=SST[stage];
-    const cols=leads.filter(l=>l.stage===stage);
-    return `<div class="kcol" data-stage="${stage}"
-      ondragover="event.preventDefault();event.currentTarget.classList.add('drag-over')"
-      ondragleave="event.currentTarget.classList.remove('drag-over')"
-      ondrop="dropCard(event,'${stage}')">
-      <div class="kcol-head"><div class="kcol-name"><span class="col-dot" style="background:${st.dot}"></span>${stage}</div><span class="kcol-cnt">${cols.length}</span></div>
-      <div class="kcol-cards">
-        ${cols.map(l=>{
-          const seller=l.sellerId?sellers.find(s=>s.id===l.sellerId):null;
-          return `<div class="kcard" draggable="true" ondragstart="startDrag(event,'${l.id}')" ondragend="endDrag(event)" onclick="openDetail('${l.id}')">
-            <div class="kcard-name">${l.name}</div>
-            <div class="kcard-product">${l.product||'—'}</div>
-            <div class="kcard-foot">
-              <span class="kcard-value">${l.value?'R$ '+fmt(parseFloat(l.value)):''}</span>
-              ${seller?`<span class="kcard-seller" style="color:${seller.color||'#592419'}">${seller.name.split(' ')[0]}</span>`:''}
-            </div></div>`;
-        }).join('')}
-        <button class="col-add" onclick="openModalForStage('${stage}')">+ Adicionar</button>
-      </div></div>`;
-  }).join('');
-}
-
-window.startDrag=(e,id)=>{dragId=id;e.currentTarget.classList.add('dragging');e.dataTransfer.effectAllowed='move';};
-window.endDrag=(e)=>{e.currentTarget.classList.remove('dragging');document.querySelectorAll('.kcol').forEach(c=>c.classList.remove('drag-over'));};
-window.dropCard=async(e,stage)=>{
-  e.currentTarget.classList.remove('drag-over');
-  if(!dragId)return;
-  try {
-    await updateDoc(doc(db,'leads',dragId),{stage});
-    toast('Movido para '+stage);
-  } catch(err) { dbg('ERRO AO MOVER: '+errMsg(err), true); alert('Erro ao mover lead: '+errMsg(err)); }
-  dragId=null;
-};
-
-function renderTasks() {
-  const el=document.getElementById('tasks-list');if(!el)return;
-  let list=[...tasks];
-  if(taskFilter==='pending')list=list.filter(t=>!t.done);
-  if(taskFilter==='done')list=list.filter(t=>t.done);
-  list.sort((a,b)=>a.done===b.done?0:a.done?1:-1);
-  if(!list.length){el.innerHTML='<div class="empty"><p>Nenhuma tarefa encontrada.</p></div>';return;}
-  el.innerHTML=list.map(t=>{
-    const lead=t.leadId?leads.find(l=>l.id===t.leadId):null;
-    const seller=t.sellerId?sellers.find(s=>s.id===t.sellerId):null;
-    const ds=t.date?new Date(t.date).toLocaleString('pt-BR',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'}):'';
-    return `<div class="tcard${t.done?' done':''}">
-      <div class="tcheck${t.done?' checked':''}" onclick="toggleTask('${t.id}','${t.done}')"></div>
-      <div class="t-body">
-        <div class="t-title">${t.title}</div>
-        <div class="t-meta">
-          ${lead?`<span class="t-lead">${lead.name}</span>`:''}
-          ${seller?`<span class="t-seller">${seller.name.split(' ')[0]}</span>`:''}
-          ${t.priority==='urgente'?'<span class="t-urgent">urgente</span>':''}
-          ${ds?`<span class="t-date">${ds}</span>`:''}
-        </div>
-      </div>
-      <button class="tdel" onclick="deleteTask('${t.id}')">×</button></div>`;
-  }).join('');
-}
-
-window.filterTasks=(f,btn)=>{taskFilter=f;document.querySelectorAll('.fbtn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderTasks();};
-window.toggleTask=async(id,done)=>{
-  try { await updateDoc(doc(db,'tasks',id),{done:done!=='true'}); }
-  catch(e){ dbg('ERRO AO ATUALIZAR TAREFA: '+errMsg(e),true); }
-};
-window.deleteTask=async(id)=>{
-  if(!confirm('Excluir tarefa?'))return;
-  try { await deleteDoc(doc(db,'tasks',id)); toast('Tarefa excluída'); }
-  catch(e){ dbg('ERRO AO EXCLUIR TAREFA: '+errMsg(e),true); }
-};
-
-function renderClients() {
-  const el=document.getElementById('clients-grid');
-  const closed=leads.filter(l=>l.stage==='Fechado');
-  if(!closed.length){el.innerHTML='<div class="empty"><p>Nenhum cliente com negócio fechado ainda.</p></div>';return;}
-  el.innerHTML=closed.map(l=>{
-    const seller=l.sellerId?sellers.find(s=>s.id===l.sellerId):null;
-    return `<div class="client-card" onclick="openDetail('${l.id}')">
-      <div class="cc-head"><div class="cc-av">${(l.name||'?')[0].toUpperCase()}</div><div><div class="cc-name">${l.name}</div><div class="cc-product">${l.product||'—'}</div></div></div>
-      ${l.city?`<div class="cc-row"><span>Cidade</span><span>${l.city}</span></div>`:''}
-      ${l.value?`<div class="cc-row"><span>Valor</span><span>R$ ${fmt(parseFloat(l.value))}</span></div>`:''}
-      ${seller?`<div class="cc-row"><span>Vendedor</span><span>${seller.name}</span></div>`:''}
-      ${l.source?`<div class="cc-row"><span>Canal</span><span>${l.source}</span></div>`:''}
-      ${l.phone?`<button class="wpp-btn" onclick="event.stopPropagation();window.open('https://wa.me/55${l.phone.replace(/\D/g,'')}')">
-        ${wppSVG} Chamar no WhatsApp</button>`:''}
-    </div>`;
-  }).join('');
-}
-
-function sellerStats(s){
-  const ml=leads.filter(l=>l.sellerId===s.id);
-  const fc=ml.filter(l=>l.stage==='Fechado');
-  const receita=fc.reduce((sum,l)=>sum+(parseFloat(l.value)||0),0);
-  const conv=ml.length?Math.round(fc.length/ml.length*100):0;
-  const now=new Date();
-  const mesRec=fc.filter(l=>{if(!l.createdAt?.toDate)return false;const d=l.createdAt.toDate();return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();}).reduce((s,l)=>s+(parseFloat(l.value)||0),0);
-  return{total:ml.length,fechados:fc.length,receita,conv,receitaMes:mesRec};
-}
-
-function renderTeam(){renderSellerCards();renderRanking();}
-
-function renderSellerCards(){
-  const el=document.getElementById('sellers-list');
-  if(!sellers.length){el.innerHTML='<div class="empty"><p>Nenhum vendedor cadastrado.</p></div>';return;}
-  el.innerHTML=sellers.map(s=>{
-    const st=sellerStats(s);const goal=parseFloat(s.goal)||0;const pct=goal>0?Math.min(Math.round(st.receitaMes/goal*100),150):0;const c=s.color||'#592419';
-    return `<div class="seller-card" onclick="openSellerEdit('${s.id}')">
-      <div class="sc-head"><div class="sc-av" style="background:${hexLight(c)};color:${c}">${initials(s.name)}</div><div><div class="sc-name">${s.name}</div><div class="sc-role">${s.role||'Vendedor'}</div></div></div>
-      ${goal>0?`<div class="meta-bar"><div class="meta-bar-label"><span>Meta do mês</span><span>R$ ${fmt(st.receitaMes)} / R$ ${fmt(goal)} (${pct}%)</span></div><div class="bar-track"><div class="bar-fill${pct>=100?' over':''}" style="width:${Math.min(pct,100)}%"></div></div></div>`:''}
-      <div class="sc-stats"><div class="sc-stat"><div class="sc-stat-val">${st.total}</div><div class="sc-stat-lbl">Leads</div></div><div class="sc-stat"><div class="sc-stat-val">${st.fechados}</div><div class="sc-stat-lbl">Fechados</div></div><div class="sc-stat"><div class="sc-stat-val">${st.conv}%</div><div class="sc-stat-lbl">Conversão</div></div></div></div>`;
-  }).join('');
-}
-
-function renderRanking(){
-  const el=document.getElementById('ranking-panel');
-  if(!sellers.length){el.innerHTML='<div class="empty"><p>Cadastre vendedores para ver o ranking.</p></div>';return;}
-  const ranked=sellers.map(s=>({...s,...sellerStats(s)})).sort((a,b)=>b.receita-a.receita);
-  const maxR=ranked[0]?.receita||1;const pc=(i)=>i===0?'gold':i===1?'silver':i===2?'bronze':'other';
-  el.innerHTML=`<div class="panel-head"><span class="panel-title">Ranking — receita total</span></div>`+
-    ranked.map((s,i)=>{const c=s.color||'#592419';return `<div class="rank-row">
-      <div class="rank-pos ${pc(i)}">${i+1}</div>
-      <div style="width:32px;height:32px;border-radius:50%;background:${hexLight(c)};color:${c};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">${initials(s.name)}</div>
-      <div class="rank-info"><div class="rank-name">${s.name}</div><div class="rank-detail">${s.total} leads · ${s.conv}% conversão</div><div class="rank-bar"><div class="rank-bar-f" style="width:${Math.round(s.receita/maxR*100)}%"></div></div></div>
-      <div><div class="rank-brl">R$ ${fmt(s.receita)}</div><div class="rank-conv">${s.fechados} fechados</div></div>
-    </div>`;}).join('');
-}
-
-function renderAnalytics() {
-  const ativos=leads.filter(l=>ACTIVE_STAGES.includes(l.stage));
-  const fechados=leads.filter(l=>l.stage==='Fechado');
-  const perdidos=leads.filter(l=>l.stage==='Perdido');
-  const pipeline=ativos.reduce((s,l)=>s+(parseFloat(l.value)||0),0);
-  const receita=fechados.reduce((s,l)=>s+(parseFloat(l.value)||0),0);
-  const txGeral=leads.length?Math.round(fechados.length/leads.length*100):0;
-  const ticket=fechados.length?receita/fechados.length:0;
-  document.getElementById('analytics-metrics').innerHTML=`
-    <div class="mc"><div class="mc-label">Taxa de conversão</div><div class="mc-val">${txGeral}%</div><div class="mc-sub">${fechados.length} de ${leads.length} leads</div></div>
-    <div class="mc accent"><div class="mc-label">Pipeline value</div><div class="mc-val">R$&nbsp;${fmt(pipeline)}</div><div class="mc-sub">${ativos.length} ativos</div></div>
-    <div class="mc"><div class="mc-label">Ticket médio</div><div class="mc-val">R$&nbsp;${fmt(Math.round(ticket))}</div><div class="mc-sub">por fechamento</div></div>
-    <div class="mc"><div class="mc-label">Taxa de perda</div><div class="mc-val">${leads.length?Math.round(perdidos.length/leads.length*100):0}%</div><div class="mc-sub">${perdidos.length} perdidos</div></div>`;
-
-  // Gráfico barras — valor por etapa
-  const stageVals=STAGES.map(st=>leads.filter(l=>l.stage===st).reduce((s,l)=>s+(parseFloat(l.value)||0),0));
-  const ctxF=document.getElementById('chartFunil');
-  if(chartFunil){chartFunil.data.datasets[0].data=stageVals;chartFunil.update();}
-  else{chartFunil=new Chart(ctxF,{type:'bar',data:{labels:STAGES,datasets:[{label:'Valor (R$)',data:stageVals,backgroundColor:['#c4b0ac','#b8c9e8','#b8d8c0','#f0d8b0','#f0c0a8','#a8d8c8','#f0b8b8'],borderColor:['#9e9990','#1a4a7a','#1a5c2a','#92530a','#b04010','#0f5c4a','#8a1f1f'],borderWidth:1.5,borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>'R$ '+fmt(c.raw)}}},scales:{y:{beginAtZero:true,ticks:{callback:v=>'R$'+fmt(v)},grid:{color:'rgba(0,0,0,.05)'}},x:{grid:{display:false}}}}});}
-
-  // Gráfico rosca — origens
-  const srcMap={};leads.forEach(l=>{const s=l.source||'Não informado';srcMap[s]=(srcMap[s]||0)+1;});
-  const srcL=Object.keys(srcMap);const srcV=Object.values(srcMap);
-  const srcC=BRAND_COLORS.concat(['#1a4a7a','#1a5c2a','#92530a','#4a2d8a','#9e9990']).slice(0,srcL.length);
-  const ctxO=document.getElementById('chartOrigem');
-  if(chartOrigem){chartOrigem.data.labels=srcL;chartOrigem.data.datasets[0].data=srcV;chartOrigem.data.datasets[0].backgroundColor=srcC;chartOrigem.update();}
-  else if(srcL.length){chartOrigem=new Chart(ctxO,{type:'doughnut',data:{labels:srcL,datasets:[{data:srcV,backgroundColor:srcC,borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12,padding:10}}}}});}
-
-  // Tabela origens
-  const sources=[...new Set(leads.map(l=>l.source||'Não informado'))];
-  const srcData=sources.map(src=>{const sl=leads.filter(l=>(l.source||'Não informado')===src);const sf=sl.filter(l=>l.stage==='Fechado');return{src,total:sl.length,fechados:sf.length,conv:sl.length?Math.round(sf.length/sl.length*100):0,valor:sf.reduce((s,l)=>s+(parseFloat(l.value)||0),0)};}).sort((a,b)=>b.total-a.total);
-  const maxC=Math.max(...srcData.map(s=>s.conv),1);
-  document.getElementById('source-table-wrap').innerHTML=srcData.length?`<table class="source-table"><thead><tr><th>Origem</th><th>Leads</th><th>Fechados</th><th>Receita</th><th style="width:120px">Conversão</th></tr></thead><tbody>${srcData.map(s=>`<tr><td style="font-weight:500">${s.src}</td><td>${s.total}</td><td>${s.fechados}</td><td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--brand)">R$ ${fmt(s.valor)}</td><td><div style="font-size:12px;font-weight:500;margin-bottom:3px">${s.conv}%</div><div class="conv-bar"><div class="conv-bar-f" style="width:${Math.round(s.conv/maxC*100)}%"></div></div></td></tr>`).join('')}</tbody></table>`:'<div class="empty"><p>Nenhum dado disponível.</p></div>';
-
-  // Tabela produtos
-  const products=[...new Set(leads.map(l=>l.product||'Não informado').filter(Boolean))];
-  const pData=products.map(p=>{const pl=leads.filter(l=>(l.product||'Não informado')===p);const pf=pl.filter(l=>l.stage==='Fechado');return{p,total:pl.length,fechados:pf.length,conv:pl.length?Math.round(pf.length/pl.length*100):0,valor:pf.reduce((s,l)=>s+(parseFloat(l.value)||0),0)};}).sort((a,b)=>b.valor-a.valor);
-  document.getElementById('product-table-wrap').innerHTML=pData.length?`<table class="source-table"><thead><tr><th>Produto</th><th>Leads</th><th>Fechados</th><th>Receita</th><th>Conversão</th></tr></thead><tbody>${pData.map(p=>`<tr><td style="font-weight:500">${p.p}</td><td>${p.total}</td><td>${p.fechados}</td><td style="font-family:'DM Mono',monospace;font-size:12px;color:var(--brand)">R$ ${fmt(p.valor)}</td><td style="font-weight:500">${p.conv}%</td></tr>`).join('')}</tbody></table>`:'<div class="empty"><p>Cadastre leads com produto para ver este relatório.</p></div>';
-}
-
-function renderMarketing() {
-  const mS=['Instagram','Facebook'];const mL=leads.filter(l=>mS.includes(l.source));const mF=mL.filter(l=>l.stage==='Fechado');
-  document.getElementById('meta-leads').textContent=mL.length;document.getElementById('meta-fechados').textContent=mF.length;document.getElementById('meta-conv').textContent=(mL.length?Math.round(mF.length/mL.length*100):0)+'%';
-  const gS=['Google','Google Ads'];const gL=leads.filter(l=>gS.includes(l.source));const gF=gL.filter(l=>l.stage==='Fechado');
-  document.getElementById('google-leads').textContent=gL.length;document.getElementById('google-fechados').textContent=gF.length;document.getElementById('google-conv').textContent=(gL.length?Math.round(gF.length/gL.length*100):0)+'%';
-  const pvRows=ACTIVE_STAGES.map(st=>{const sl=leads.filter(l=>l.stage===st);return{stage:st,count:sl.length,val:sl.reduce((s,l)=>s+(parseFloat(l.value)||0),0)};}).filter(r=>r.count>0);
-  const totalPV=pvRows.reduce((s,r)=>s+r.val,0);
-  document.getElementById('pipeline-value-detail').innerHTML=pvRows.length?`<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px">${pvRows.map(r=>`<div style="background:var(--surface2);border-radius:var(--rs);padding:12px 14px"><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px"><span style="width:8px;height:8px;border-radius:50%;background:${SST[r.stage]?.dot||'#ccc'};flex-shrink:0"></span><span style="font-size:12px;font-weight:500">${r.stage}</span></div><div style="font-size:18px;font-weight:700;font-family:'DM Mono',monospace;color:var(--brand)">R$ ${fmt(r.val)}</div><div style="font-size:11px;color:var(--text3);margin-top:2px">${r.count} lead${r.count>1?'s':''}</div></div>`).join('')}<div style="background:var(--brand);border-radius:var(--rs);padding:12px 14px"><div style="font-size:12px;font-weight:500;color:#e8b8ae;margin-bottom:6px">TOTAL EM ABERTO</div><div style="font-size:18px;font-weight:700;font-family:'DM Mono',monospace;color:#fff">R$ ${fmt(totalPV)}</div><div style="font-size:11px;color:#e8b8ae;margin-top:2px">${pvRows.reduce((s,r)=>s+r.count,0)} leads ativos</div></div></div>`:'<div class="empty"><p>Nenhum lead ativo no pipeline.</p></div>';
-}
-
-// ════════════════════════════════════════════════════════════════════════
-//  WEBHOOK — salvo apenas em memória (sem localStorage)
-// ════════════════════════════════════════════════════════════════════════
-let webhookUrl = '';
-window.updateWhStatus=()=>{
-  const url=document.getElementById('webhook-url').value.trim();
-  const badge=document.getElementById('wh-badge');
-  const valid=url.startsWith('https://');
-  badge.textContent=valid?'Configurado':'Não configurado';
-  badge.className='wh-status '+(valid?'active':'inactive');
-};
-window.saveWh=()=>{
-  webhookUrl=document.getElementById('webhook-url').value.trim();
-  window.updateWhStatus();
-  toast('URL salva na sessão atual');
-  dbg('Webhook URL salvo: '+webhookUrl);
-};
-
-// ════════════════════════════════════════════════════════════════════════
-//  CRUD — todas as funções com await + catch + alert explícito
-// ════════════════════════════════════════════════════════════════════════
-window.saveLead=async()=>{
-  const name=document.getElementById('nl-name').value.trim();
-  if(!name){alert('Informe o nome do cliente.');return;}
-  const btn=document.getElementById('btn-save-lead');
-  btn.disabled=true; btn.textContent='Salvando...';
-  const data={
-    name,
-    phone:   document.getElementById('nl-phone').value.trim(),
-    city:    document.getElementById('nl-city').value.trim(),
-    product: document.getElementById('nl-product').value.trim(),
-    value:   document.getElementById('nl-value').value,
-    stage:   document.getElementById('nl-stage').value,
-    sellerId:document.getElementById('nl-seller').value,
-    source:  document.getElementById('nl-source').value,
-    obs:     document.getElementById('nl-obs').value.trim(),
-    createdAt: serverTimestamp()
-  };
-  try {
-    const ref = await addDoc(collection(db,'leads'), data);
-    dbg('Lead salvo com sucesso! ID: '+ref.id);
-    closeModal('lead');
-    toast('Lead salvo!');
-  } catch(e) {
-    const msg = errMsg(e);
-    dbg('ERRO AO SALVAR LEAD: '+msg, true);
-    alert('❌ Erro ao salvar lead no Firebase:\n\n'+msg+'\n\nVerifique as Regras do Firestore e tente novamente.');
-  } finally {
-    btn.disabled=false; btn.textContent='Salvar lead';
-  }
-};
-
-window.saveTask=async()=>{
-  const title=document.getElementById('nt-title').value.trim();
-  if(!title){alert('Informe a descrição.');return;}
-  try {
-    const ref=await addDoc(collection(db,'tasks'),{title,leadId:document.getElementById('nt-lead').value,sellerId:document.getElementById('nt-seller').value,date:document.getElementById('nt-date').value,priority:document.getElementById('nt-priority').value,done:false,createdAt:serverTimestamp()});
-    dbg('Tarefa salva! ID: '+ref.id);
-    closeModal('task'); toast('Tarefa criada!');
-  } catch(e){
-    const msg=errMsg(e);
-    dbg('ERRO AO SALVAR TAREFA: '+msg,true);
-    alert('❌ Erro ao salvar tarefa:\n\n'+msg);
-  }
-};
-
-window.saveSeller=async()=>{
-  const name=document.getElementById('sv-name').value.trim();
-  if(!name){alert('Informe o nome.');return;}
-  const data={name,phone:document.getElementById('sv-phone').value.trim(),email:document.getElementById('sv-email').value.trim(),role:document.getElementById('sv-role').value.trim(),goal:document.getElementById('sv-goal').value,color:document.getElementById('sv-color').value};
-  try {
-    if(currentSellerId){await updateDoc(doc(db,'sellers',currentSellerId),data);toast('Vendedor atualizado!');dbg('Vendedor atualizado: '+currentSellerId);}
-    else{const ref=await addDoc(collection(db,'sellers'),{...data,createdAt:serverTimestamp()});toast('Vendedor cadastrado!');dbg('Vendedor criado! ID: '+ref.id);}
-    closeModal('seller');
-  } catch(e){
-    const msg=errMsg(e);
-    dbg('ERRO AO SALVAR VENDEDOR: '+msg,true);
-    alert('❌ Erro ao salvar vendedor:\n\n'+msg);
-  }
-};
-
-window.deleteSeller=async()=>{
-  if(!confirm('Excluir este vendedor?'))return;
-  try{await deleteDoc(doc(db,'sellers',currentSellerId));closeModal('seller');toast('Vendedor removido');}
-  catch(e){alert('❌ Erro ao excluir: '+errMsg(e));}
-};
-
-window.updateLeadStage=async()=>{
-  if(!currentLeadId)return;
-  try{await updateDoc(doc(db,'leads',currentLeadId),{stage:document.getElementById('det-stage').value});toast('Etapa atualizada');}
-  catch(e){dbg('ERRO AO ATUALIZAR ETAPA: '+errMsg(e),true);alert('❌ Erro ao atualizar etapa: '+errMsg(e));}
-};
-
-window.updateLeadSeller=async()=>{
-  if(!currentLeadId)return;
-  try{await updateDoc(doc(db,'leads',currentLeadId),{sellerId:document.getElementById('det-seller').value});toast('Vendedor atribuído');}
-  catch(e){dbg('ERRO: '+errMsg(e),true);}
-};
-
-window.deleteLead=async()=>{
-  if(!confirm('Excluir este lead permanentemente?'))return;
-  try{await deleteDoc(doc(db,'leads',currentLeadId));closeModal('detail');toast('Lead excluído');}
-  catch(e){alert('❌ Erro ao excluir: '+errMsg(e));}
-};
-
-// ════════════════════════════════════════════════════════════════════════
-//  MODAIS
-// ════════════════════════════════════════════════════════════════════════
-window.openModal=(name)=>{
-  if(name==='lead'){
-    // Reset COMPLETO do formulário
-    ['nl-name','nl-phone','nl-city','nl-product','nl-value','nl-obs'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('nl-stage').value='Novo Lead';
-    document.getElementById('nl-source').value='';
-    updateSellerSelects();
-    document.getElementById('nl-seller').value='';
-    document.getElementById('btn-save-lead').disabled=false;
-    document.getElementById('btn-save-lead').textContent='Salvar lead';
-  }
-  if(name==='task'){
-    document.getElementById('nt-title').value='';document.getElementById('nt-date').value='';document.getElementById('nt-priority').value='normal';
-    document.getElementById('nt-lead').innerHTML='<option value="">— nenhum —</option>'+leads.map(l=>`<option value="${l.id}">${l.name}</option>`).join('');
-    updateSellerSelects();document.getElementById('nt-seller').value='';
-  }
-  if(name==='seller'){
-    currentSellerId=null;
-    document.getElementById('seller-modal-title').textContent='Novo vendedor';
-    document.getElementById('btn-del-seller').style.display='none';
-    ['sv-name','sv-phone','sv-email','sv-role','sv-goal'].forEach(id=>document.getElementById(id).value='');
-    selectColor('#592419',document.querySelector('.cp-opt'));
-  }
-  document.getElementById(`overlay-${name}`).classList.add('open');
-};
-window.closeModal=(name)=>document.getElementById(`overlay-${name}`).classList.remove('open');
-
-window.openSellerEdit=(id)=>{
-  currentSellerId=id;const s=sellers.find(s=>s.id===id);if(!s)return;
-  document.getElementById('seller-modal-title').textContent='Editar vendedor';
-  document.getElementById('btn-del-seller').style.display='block';
-  document.getElementById('sv-name').value=s.name||'';document.getElementById('sv-phone').value=s.phone||'';
-  document.getElementById('sv-email').value=s.email||'';document.getElementById('sv-role').value=s.role||'';document.getElementById('sv-goal').value=s.goal||'';
-  const cpOpt=document.querySelector(`.cp-opt[data-color="${s.color||'#592419'}"]`)||document.querySelector('.cp-opt');
-  selectColor(s.color||'#592419',cpOpt);
-  document.getElementById('overlay-seller').classList.add('open');
-};
-
-window.selectColor=(color,el)=>{
-  selectedColor=color;document.getElementById('sv-color').value=color;
-  document.querySelectorAll('.cp-opt').forEach(o=>o.style.border='3px solid transparent');
-  if(el)el.style.border='3px solid var(--text)';
-};
-
-function updateSellerSelects(){
-  const opts=sellers.map(s=>`<option value="${s.id}">${s.name}</option>`).join('');
-  document.getElementById('nl-seller').innerHTML='<option value="">— nenhum —</option>'+opts;
-  document.getElementById('nt-seller').innerHTML='<option value="">— nenhum —</option>'+opts;
-  document.getElementById('det-seller').innerHTML='<option value="">— sem atribuição —</option>'+opts;
-}
-
-window.openDetail=(id)=>{
-  currentLeadId=id;const l=leads.find(l=>l.id===id);if(!l)return;
-  updateSellerSelects();
-  document.getElementById('det-title').textContent=l.name;
-  document.getElementById('det-stage').value=l.stage;document.getElementById('det-seller').value=l.sellerId||'';
-  document.getElementById('det-wpp-tpl').value='';document.getElementById('det-wpp-preview').style.display='none';document.getElementById('btn-open-wpp').style.display='none';
-  const seller=l.sellerId?sellers.find(s=>s.id===l.sellerId):null;
-  document.getElementById('det-info').innerHTML=`
-    <div class="det-row"><span>Projeto</span><span>${l.product||'—'}</span></div>
-    <div class="det-row"><span>Valor</span><span>${l.value?'R$ '+fmt(parseFloat(l.value)):'—'}</span></div>
-    <div class="det-row"><span>WhatsApp</span><span>${l.phone||'—'}</span></div>
-    ${l.city?`<div class="det-row"><span>Cidade</span><span>${l.city}</span></div>`:''}
-    ${l.source?`<div class="det-row"><span>Canal</span><span>${l.source}</span></div>`:''}
-    ${seller?`<div class="det-row"><span>Vendedor</span><span>${seller.name}</span></div>`:''}
-    ${l.obs?`<div class="det-row"><span>Obs</span><span>${l.obs}</span></div>`:''}`;
-  openModal('detail');
-};
-
-window.previewWpp=()=>{
-  const tpl=document.getElementById('det-wpp-tpl').value;const l=leads.find(l=>l.id===currentLeadId);
-  const el=document.getElementById('det-wpp-preview');const btn=document.getElementById('btn-open-wpp');
-  if(!tpl||!l){el.style.display='none';btn.style.display='none';return;}
-  el.textContent=WPP[tpl](l.name,l.product||'seu projeto');
-  el.style.display='block';btn.style.display=l.phone?'flex':'none';
-};
-window.openWpp=()=>{
-  const tpl=document.getElementById('det-wpp-tpl').value;const l=leads.find(l=>l.id===currentLeadId);
-  if(!l||!l.phone||!tpl)return;
-  window.open(`https://wa.me/55${l.phone.replace(/\D/g,'')}?text=${encodeURIComponent(WPP[tpl](l.name,l.product||'seu projeto'))}`);
-};
-window.openModalForStage=(stage)=>{openModal('lead');document.getElementById('nl-stage').value=stage;};
-
-// ════════════════════════════════════════════════════════════════════════
-//  NAVEGAÇÃO + CAPTAÇÃO
-// ════════════════════════════════════════════════════════════════════════
-window.showView=(name,btn)=>{
-  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById(`view-${name}`).classList.add('active');btn.classList.add('active');
-};
-
-window.copyLink=()=>{
-  const base=window.location.href.replace(/\/[^\/]*$/,'')+'/formulario.html';
-  document.getElementById('form-link').textContent=base;
-  navigator.clipboard.writeText(base).then(()=>toast('Link copiado!')).catch(()=>toast('Copie o link acima'));
-};
-
-// ════════════════════════════════════════════════════════════════════════
-//  INIT
-// ════════════════════════════════════════════════════════════════════════
-document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
-document.getElementById('form-link').textContent=window.location.href.replace(/\/[^\/]*$/,'')+'/formulario.html';
-document.querySelector('.cp-opt').style.border='3px solid var(--text)';
-
-dbg('CRM iniciado. Aguardando autenticação Firebase...');
-</script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBJ4_iiknBGZX1ciwKtOfhfDPytsRqYW9A",
+            authDomain: "crm-marcenaria-ac88a.firebaseapp.com",
+            projectId: "crm-marcenaria-ac88a",
+            storageBucket: "crm-marcenaria-ac88a.firebasestorage.app",
+            messagingSenderId: "763443542872",
+            appId: "1:763443542872:web:8046db5950bf66ddd1432d"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        let leads = [];
+        let chartE, chartF;
+
+        // AUTH
+        window.handleLogin = () => {
+            const email = document.getElementById('login-email').value;
+            const pass = document.getElementById('login-pass').value;
+            signInWithEmailAndPassword(auth, email, pass).catch(err => alert("Acesso negado: Verifique e-mail e senha."));
+        };
+        window.handleLogout = () => signOut(auth);
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('auth-screen').style.display = 'none';
+                document.getElementById('main-app').style.display = 'flex';
+                startRealtimeSync();
+            } else {
+                document.getElementById('auth-screen').style.display = 'flex';
+                document.getElementById('main-app').style.display = 'none';
+            }
+        });
+
+        // SINCRONIZAÇÃO EM TEMPO REAL
+        function startRealtimeSync() {
+            const q = query(collection(db, "leads"), orderBy("date", "desc"));
+            onSnapshot(q, (snapshot) => {
+                leads = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                renderAll();
+            }, (error) => {
+                console.error("Erro na nuvem:", error);
+                alert("Erro de conexão com o banco de dados.");
+            });
+        }
+
+        // SALVAR NA NUVEM
+        document.getElementById('form-lead').onsubmit = async (e) => {
+            e.preventDefault();
+            const newLead = {
+                name: document.getElementById('l-name').value,
+                phone: document.getElementById('l-phone').value,
+                product: document.getElementById('l-product').value,
+                value: parseFloat(document.getElementById('l-value').value) || 0,
+                stage: document.getElementById('l-stage').value,
+                date: new Date().toISOString()
+            };
+            try {
+                await addDoc(collection(db, "leads"), newLead);
+                closeModal();
+            } catch (err) { alert("Erro ao salvar: " + err.message); }
+        };
+
+        window.deleteLead = async (id) => {
+            if(confirm("Deseja excluir este lead permanentemente?")) {
+                await deleteDoc(doc(db, "leads", id));
+            }
+        };
+
+        function renderAll() {
+            renderLeadsTable();
+            renderStats();
+            renderCharts();
+        }
+
+        function renderLeadsTable() {
+            const tbody = document.getElementById('list-leads');
+            tbody.innerHTML = leads.map(l => `
+                <tr>
+                    <td><strong>${l.name}</strong></td>
+                    <td>${l.product}</td>
+                    <td><span style="background:#f0e6e4; color:var(--primary); padding:5px 10px; border-radius:15px; font-size:0.85rem; font-weight:bold;">${l.stage}</span></td>
+                    <td>R$ ${l.value.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</td>
+                    <td>
+                        <button onclick="window.open('https://wa.me/${l.phone}')" style="background:#25d366; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer; margin-right:5px;">Whats</button>
+                        <button onclick="deleteLead('${l.id}')" style="background:#ff4d4d; color:white; border:none; padding:5px 10px; border-radius:4px; cursor:pointer;">X</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderStats() {
+            const total = leads.reduce((acc, l) => acc + l.value, 0);
+            document.getElementById('stats-summary').innerHTML = `
+                <div class="stat-card"><h3>${leads.length}</h3><p>Leads Ativos</p></div>
+                <div class="stat-card"><h3>R$ ${total.toLocaleString('pt-BR')}</h3><p>Pipeline Total</p></div>
+            `;
+        }
+
+        function renderCharts() {
+            const stages = ["Prospecção", "Visita Técnica", "Orçamento", "Aguardando Contrato", "Fechado"];
+            const counts = stages.map(s => leads.filter(l => l.stage === s).length);
+            const values = stages.map(s => leads.filter(l => l.stage === s).reduce((a,b) => a + b.value, 0));
+
+            if(chartE) chartE.destroy();
+            chartE = new Chart(document.getElementById('chartEtapas'), {
+                type: 'doughnut',
+                data: { labels: stages, datasets: [{ data: counts, backgroundColor: ['#8c5a4d', '#592419', '#d9c5b2', '#a67b5b', '#25d366'] }] },
+                options: { plugins: { legend: { position: 'bottom' } } }
+            });
+
+            if(chartF) chartF.destroy();
+            chartF = new Chart(document.getElementById('chartFinanceiro'), {
+                type: 'bar',
+                data: { labels: stages, datasets: [{ label: 'Valor (R$)', data: values, backgroundColor: '#592419' }] },
+                options: { scales: { y: { beginAtZero: true } } }
+            });
+        }
+
+        window.showView = (id, btn) => {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('view-' + id).classList.add('active');
+            btn.classList.add('active');
+        };
+        window.openModalLead = () => { document.getElementById('form-lead').reset(); document.getElementById('modal-lead').style.display = 'flex'; };
+        window.closeModal = () => document.getElementById('modal-lead').style.display = 'none';
+    </script>
 </body>
 </html>
