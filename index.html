@@ -711,6 +711,7 @@ window.doLogin = async () => {
   try {
     await signInWithEmailAndPassword(auth, email, pass);
   } catch(e) {
+    // ── Diagnóstico imediato — mostra o código técnico exato do Firebase ──
     alert('ERRO DE LOGIN: ' + e.code);
     console.error('[CRM] Login error:', e);
     const msgs = {
@@ -720,8 +721,8 @@ window.doLogin = async () => {
       'auth/invalid-email':          'E-mail inválido.',
       'auth/too-many-requests':      'Muitas tentativas. Aguarde.',
       'auth/network-request-failed': 'Sem conexão com a internet.',
-      'auth/operation-not-allowed':  'Método de login não ativado no Firebase Console.',
-      'auth/unauthorized-domain':    'Domínio não autorizado — adicione no Firebase Console.',
+      'auth/operation-not-allowed':  'Ative E-mail/Senha no Firebase Console → Authentication → Sign-in method.',
+      'auth/unauthorized-domain':    'Adicione este domínio em Firebase Console → Authentication → Authorized Domains.',
     };
     const msg = msgs[e.code] || ('Erro: ' + e.code);
     errEl.textContent = msg; errEl.style.display = 'block';
