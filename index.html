@@ -632,7 +632,8 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
 
 <script type="module">
 // ════════════════════════════════════════════════════════════════════════
-//  IMPORTS — Firebase v10 Modular SDK (sem persistência local)
+//  FIREBASE SDK v10.7.1 — Modular, sem persistência local, sem databaseURL
+//  databaseURL removido intencionalmente: evita auth/operation-not-allowed
 // ════════════════════════════════════════════════════════════════════════
 import { initializeApp }
   from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -646,10 +647,7 @@ import {
 
 // ════════════════════════════════════════════════════════════════════════
 //  CONFIGURAÇÃO FIREBASE
-//  getFirestore() simples — sem IndexedDB cache, sem localStorage.
-//  Isso garante que cada escrita vai DIRETO para o servidor.
 // ════════════════════════════════════════════════════════════════════════
-// ── Configuração Firebase (sem databaseURL — evita auth/operation-not-allowed) ──
 const firebaseConfig = {
   apiKey:            "AIzaSyBJ4_iiknBGZX1ciwKtOfhfDPytsRqYW9A",
   authDomain:        "crm-marcenaria-ac88a.firebaseapp.com",
@@ -663,7 +661,7 @@ const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db   = getFirestore(app);
 
-// ════════════════════════════════════════════════════════════════════════
+═══════
 //  CONSTANTES
 // ════════════════════════════════════════════════════════════════════════
 const STAGES        = ['Novo Lead','Primeiro Contato','Qualificação','Proposta','Negociação','Fechado','Perdido'];
@@ -1310,24 +1308,35 @@ window.copyLink=()=>{
 // ════════════════════════════════════════════════════════════════════════
 document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
 
-// Kanban drag-and-drop
-document.querySelectorAll('.kcol').forEach(col=>{
-  col.addEventListener('dragover',e=>{e.preventDefault();col.classList.add('drag-over');});
-  col.addEventListener('dragleave',()=>col.classList.remove('drag-over'));
-  col.addEventListener('drop',async e=>{
-    e.preventDefault();col.classList.remove('drag-over');
-    const stage=col.dataset.stage;
-    if(dragId&&stage){
-      try{await updateDoc(doc(db,'leads',dragId),{stage});toast('Etapa atualizada');}
-      catch(err){
-        const msg=errMsg(err);
-        dbg('ERRO AO MOVER CARD: '+msg,true);
-        alert('❌ Erro ao mover card: '+msg);
+document.getElementById('form-captacao-link')?.addEventListener('click', window.copyLink);
+
+// ════════════════════════════════════════════════════════════════════════
+//  KANBAN DRAG-AND-DROP
+// ════════════════════════════════════════════════════════════════════════
+document.querySelectorAll('.kcol').forEach(col => {
+  col.addEventListener('dragover', e => {
+    e.preventDefault();
+    col.classList.add('drag-over');
+  });
+  col.addEventListener('dragleave', () => col.classList.remove('drag-over'));
+  col.addEventListener('drop', async e => {
+    e.preventDefault();
+    col.classList.remove('drag-over');
+    const stage = col.dataset.stage;
+    if (dragId && stage) {
+      try {
+        await updateDoc(doc(db, 'leads', dragId), { stage });
+        toast('Etapa atualizada');
+      } catch(err) {
+        const msg = errMsg(err);
+        dbg('ERRO AO MOVER CARD: ' + msg, true);
+        alert('❌ Erro ao mover card:\n\n' + msg);
       }
     }
-    dragId=null;
+    dragId = null;
   });
 });
+
 </script>
 </body>
 </html>
