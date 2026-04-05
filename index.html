@@ -632,8 +632,7 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
 
 <script type="module">
 // ════════════════════════════════════════════════════════════════════════
-//  FIREBASE SDK v10.7.1 — Modular
-//  IMPORTANTE: sem databaseURL → evita auth/operation-not-allowed
+//  FIREBASE SDK v10.7.1 — Modular (sem databaseURL → evita operation-not-allowed)
 // ════════════════════════════════════════════════════════════════════════
 import { initializeApp }
   from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -646,7 +645,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 // ════════════════════════════════════════════════════════════════════════
-//  CONFIG — credenciais exatas do projeto crm-marcenaria-ac88a
+//  CONFIGURAÇÃO — credenciais exatas, sem databaseURL
 // ════════════════════════════════════════════════════════════════════════
 const firebaseConfig = {
   apiKey:            "AIzaSyBJ4_iiknBGZX1ciwKtOfhfDPytsRqYW9A",
@@ -758,17 +757,16 @@ function showLeadNotif() {
 onAuthStateChanged(auth, user => {
   if (user) {
     document.getElementById('login-screen').classList.add('hidden');
-    dbg(`Autenticado como ${user.email}`);
+    dbg('Autenticado como ' + user.email);
     initListeners();
   } else {
     document.getElementById('login-screen').classList.remove('hidden');
     setSynced(false, 'Faça login');
-    // Para os listeners ao sair
-    if (unsubLeads)   { unsubLeads();   unsubLeads=null; }
-    if (unsubTasks)   { unsubTasks();   unsubTasks=null; }
-    if (unsubSellers) { unsubSellers(); unsubSellers=null; }
-    leads=[]; tasks=[]; sellers=[];
-    firstSnapshot=true; prevLeadCount=0;
+    if (unsubLeads)   { unsubLeads();   unsubLeads   = null; }
+    if (unsubTasks)   { unsubTasks();   unsubTasks   = null; }
+    if (unsubSellers) { unsubSellers(); unsubSellers = null; }
+    leads = []; tasks = []; sellers = [];
+    firstSnapshot = true; prevLeadCount = 0;
   }
 });
 
@@ -777,27 +775,41 @@ window.doLogin = async () => {
   const pass  = document.getElementById('li-pass').value;
   const btn   = document.getElementById('login-btn');
   const errEl = document.getElementById('login-err');
-  errEl.style.display='none';
-  if (!email || !pass) { errEl.textContent='Preencha e-mail e senha.'; errEl.style.display='block'; return; }
-  btn.disabled=true; btn.textContent='Entrando...';
-  try {
-    await signInWithEmailAndPassword(auth, email, pass);
-  } catch(e) {
-    const msg = errMsg(e);
-    errEl.textContent = msg;
+  errEl.style.display = 'none';
+  if (!email || !pass) {
+    errEl.textContent = 'Preencha e-mail e senha.';
     errEl.style.display = 'block';
-    dbg('LOGIN FALHOU: '+msg, true);
-    // Alerta explícito com o código técnico do erro (ex: auth/operation-not-allowed)
-    alert('Erro no Login: ' + (e.code || e.message));
-    btn.disabled=false; btn.textContent='Entrar';
+    return;
   }
+  btn.disabled = true;
+  btn.textContent = 'Entrando...';
+  signInWithEmailAndPassword(auth, email, pass)
+    .then(() => {
+      // sucesso — onAuthStateChanged trata o resto
+    })
+    .catch((error) => {
+      // ── Alerta OBRIGATÓRIO com código técnico do erro ──────────────────
+      alert('ERRO DE LOGIN: ' + error.code);
+      console.error('[CRM] Login error:', error);
+      // ── Tradução amigável na tela ──────────────────────────────────────
+      const msg = errMsg(error);
+      errEl.textContent = msg;
+      errEl.style.display = 'block';
+      dbg('LOGIN FALHOU: ' + msg, true);
+      btn.disabled = false;
+      btn.textContent = 'Entrar';
+    });
 };
 
 window.doLogout = async () => {
-  try { await signOut(auth); } catch(e) { dbg('Erro ao sair: '+errMsg(e), true); }
+  try { await signOut(auth); } catch(e) { dbg('Erro ao sair: ' + errMsg(e), true); }
 };
 
-document.getElementById('li-pass').addEventListener('keydown', e => { if(e.key==='Enter') window.doLogin(); });
+document.getElementById('li-pass').addEventListener('keydown', e => {
+  if (e.key === 'Enter') window.doLogin();
+});
+
+
 
 // ════════════════════════════════════════════════════════════════════════
 //  LISTENERS FIRESTORE — somente após login autenticado
@@ -1309,14 +1321,16 @@ window.copyLink=()=>{
 //  INIT
 // ════════════════════════════════════════════════════════════════════════
 document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
-
 document.getElementById('form-captacao-link')?.addEventListener('click', window.copyLink);
 
 // ════════════════════════════════════════════════════════════════════════
-//  KANBAN DRAG-AND-DROP (arrastar cards entre colunas)
+//  KANBAN DRAG-AND-DROP
 // ════════════════════════════════════════════════════════════════════════
 document.querySelectorAll('.kcol').forEach(col => {
-  col.addEventListener('dragover', e => { e.preventDefault(); col.classList.add('drag-over'); });
+  col.addEventListener('dragover', e => {
+    e.preventDefault();
+    col.classList.add('drag-over');
+  });
   col.addEventListener('dragleave', () => col.classList.remove('drag-over'));
   col.addEventListener('drop', async e => {
     e.preventDefault();
@@ -1330,7 +1344,7 @@ document.querySelectorAll('.kcol').forEach(col => {
       } catch(err) {
         const msg = errMsg(err);
         dbg('ERRO AO MOVER CARD: ' + msg, true);
-        alert('Erro ao mover card: ' + err.code + '\n' + err.message);
+        alert('ERRO DE LOGIN: ' + err.code + '\n' + err.message);
       }
     }
     dragId = null;
