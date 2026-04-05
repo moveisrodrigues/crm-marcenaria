@@ -23,8 +23,6 @@
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px}
-
-/* LOGIN */
 #login-screen{position:fixed;inset:0;background:var(--brand);display:flex;align-items:center;justify-content:center;z-index:999;padding:20px}
 #login-screen.hidden{display:none}
 .login-box{background:#fff;border-radius:16px;padding:40px 36px;width:100%;max-width:400px;box-shadow:0 24px 60px rgba(0,0,0,.3)}
@@ -39,22 +37,15 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
 .login-btn:hover{background:var(--brand-m)}
 .login-btn:disabled{opacity:.6;cursor:not-allowed}
 .login-hint{font-size:11px;color:var(--text3);margin-top:12px;padding:10px;background:var(--surface2);border-radius:var(--rs);line-height:1.5}
-
-/* DEBUG OVERLAY */
 #debug-bar{position:fixed;bottom:0;left:0;right:0;background:#1a1512;color:#e8c9b8;font-family:'DM Mono',monospace;font-size:11px;padding:6px 14px;z-index:500;display:none;gap:12px;align-items:center;flex-wrap:wrap}
 #debug-bar.show{display:flex}
 #debug-msg{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.debug-ok{color:#7ec880}
-.debug-err{color:#e87878}
+.debug-ok{color:#7ec880}.debug-err{color:#e87878}
 .debug-close{background:none;border:none;color:#9e8880;cursor:pointer;font-size:14px;padding:0 4px}
-
-/* NOTIFICAÇÃO */
 #lead-notif{position:fixed;top:68px;right:20px;background:var(--brand);color:#fff;padding:11px 18px;border-radius:var(--r);font-size:13px;font-weight:700;box-shadow:var(--sh-md);transform:translateY(-16px);opacity:0;transition:all .3s;z-index:300;pointer-events:none;display:flex;align-items:center;gap:8px}
 #lead-notif.show{transform:translateY(0);opacity:1}
 #lead-notif::before{content:'';width:8px;height:8px;border-radius:50%;background:#fff;flex-shrink:0;animation:pdot .8s ease-in-out infinite}
 @keyframes pdot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.6)}}
-
-/* TOPBAR */
 .topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
 .logo{display:flex;align-items:center;gap:10px}
 .logo-mark{width:36px;height:36px;background:var(--brand);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -67,19 +58,13 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
 .sync-dot.err{background:#e24b4a;box-shadow:0 0 0 2px #f9c0c0}
 .btn-logout{padding:6px 14px;font-size:12px;font-weight:500;font-family:'Ubuntu',sans-serif;border:1px solid var(--border);background:var(--surface);color:var(--text2);border-radius:var(--rs);cursor:pointer;transition:all .15s;display:flex;align-items:center;gap:5px}
 .btn-logout:hover{background:var(--red-l);border-color:#e8b4b4;color:var(--red)}
-
-/* NAV */
 .nav{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;gap:2px;overflow-x:auto}
 .nav-btn{padding:12px 16px;font-size:13px;font-weight:500;font-family:'Ubuntu',sans-serif;color:var(--text2);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;transition:all .15s;white-space:nowrap;display:flex;align-items:center;gap:6px}
 .nav-btn:hover{color:var(--text)}.nav-btn.active{color:var(--brand);border-bottom-color:var(--brand)}
 .nav-cnt{font-size:11px;padding:1px 6px;background:var(--surface2);border-radius:20px;color:var(--text3);font-weight:400}
 .nav-btn.active .nav-cnt{background:var(--brand-l);color:var(--brand)}
-
-/* LAYOUT */
 .content{padding:24px;max-width:1440px;margin:0 auto;width:100%}
 .view{display:none}.view.active{display:block}
-
-/* METRICS */
 .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:22px}
 .mc{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;box-shadow:var(--sh)}
 .mc-label{font-size:11px;color:var(--text3);font-weight:500;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
@@ -87,14 +72,10 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
 .mc-sub{font-size:12px;color:var(--text3);margin-top:4px}
 .mc.accent{background:var(--brand);border-color:var(--brand)}
 .mc.accent .mc-label{color:#e8b8ae}.mc.accent .mc-val{color:#fff}.mc.accent .mc-sub{color:#e8b8ae}
-
-/* PANELS */
 .dash-grid{display:grid;grid-template-columns:1fr 320px;gap:14px}
 .panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
 .panel-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
 .panel-title{font-size:14px;font-weight:700}
-
-/* ROWS */
 .lead-row{display:flex;align-items:center;gap:12px;padding:10px 18px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s}
 .lead-row:last-child{border-bottom:none}.lead-row:hover{background:var(--bg)}
 .avatar{width:34px;height:34px;border-radius:50%;background:var(--brand-l);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--brand);flex-shrink:0}
@@ -102,8 +83,6 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
 .lead-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .lead-sub{font-size:12px;color:var(--text3);margin-top:1px}
 .badge{font-size:11px;font-weight:500;padding:3px 9px;border-radius:20px;white-space:nowrap;flex-shrink:0}
-
-/* KANBAN */
 .kanban-wrap{overflow-x:auto;padding-bottom:8px}
 .kanban{display:flex;gap:12px;min-width:max-content;padding:4px 2px}
 .kcol{width:220px;flex-shrink:0;background:var(--surface2);border-radius:var(--r);border:1px solid var(--border);display:flex;flex-direction:column;max-height:calc(100vh - 180px)}
@@ -122,8 +101,6 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
 .kcard-seller{font-size:11px;color:var(--text3);background:var(--surface2);padding:2px 7px;border-radius:10px;max-width:88px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .col-add{width:100%;padding:7px;background:none;border:1px dashed var(--border2);border-radius:var(--rs);color:var(--text3);font-size:12px;font-family:'Ubuntu',sans-serif;cursor:pointer;transition:all .15s;margin-top:2px}
 .col-add:hover{border-color:var(--brand-m);color:var(--brand);background:var(--brand-l)}
-
-/* TASKS */
 .tasks-tb{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap}
 .fbtn{padding:6px 14px;font-size:12px;font-family:'Ubuntu',sans-serif;font-weight:500;border:1px solid var(--border);background:var(--surface);border-radius:20px;cursor:pointer;color:var(--text2);transition:all .15s}
 .fbtn.active{background:var(--brand);border-color:var(--brand);color:#fff}
@@ -142,8 +119,6 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
 .t-urgent{font-size:11px;padding:2px 8px;background:var(--red-l);color:var(--red);border-radius:10px;font-weight:500}
 .tdel{background:none;border:none;cursor:pointer;color:var(--text3);font-size:18px;padding:2px 4px;line-height:1;transition:color .1s}
 .tdel:hover{color:var(--red)}
-
-/* CLIENTS */
 .clients-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
 .client-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:16px 18px;box-shadow:var(--sh);cursor:pointer;transition:box-shadow .15s}
 .client-card:hover{box-shadow:var(--sh-md)}
@@ -154,8 +129,6 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
 .cc-row span:first-child{color:var(--text3)}.cc-row span:last-child{font-weight:500}
 .wpp-btn{width:100%;margin-top:12px;padding:8px;background:#25d366;color:#fff;border:none;border-radius:var(--rs);font-size:13px;font-weight:500;font-family:'Ubuntu',sans-serif;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:background .15s}
 .wpp-btn:hover{background:#1ebe5d}
-
-/* TEAM */
 .team-layout{display:grid;grid-template-columns:360px 1fr;gap:16px;align-items:start}
 .sellers-list{display:flex;flex-direction:column;gap:8px}
 .seller-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;box-shadow:var(--sh);cursor:pointer;transition:all .15s}
@@ -183,8 +156,6 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
 .rank-conv{font-size:11px;color:var(--text3);text-align:right;margin-top:2px}
 .rank-bar{height:4px;background:var(--surface2);border-radius:2px;margin-top:4px;overflow:hidden}
 .rank-bar-f{height:100%;background:var(--brand);border-radius:2px;transition:width .6s ease}
-
-/* ANALYTICS */
 .analytics-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
 .chart-panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
 .source-table{width:100%;border-collapse:collapse;font-size:13px}
@@ -194,8 +165,6 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
 .source-table tr:hover td{background:var(--bg)}
 .conv-bar{height:6px;background:var(--surface2);border-radius:3px;overflow:hidden;margin-top:4px}
 .conv-bar-f{height:100%;background:var(--brand);border-radius:3px}
-
-/* MARKETING */
 .mkt-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
 .mkt-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;box-shadow:var(--sh)}
 .mkt-card-head{display:flex;align-items:center;gap:12px;margin-bottom:14px}
@@ -212,8 +181,6 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
 .wh-status.inactive{background:var(--surface2);color:var(--text3)}
 .code-block{background:#1a1512;color:#e8c9b8;padding:14px 16px;border-radius:var(--rs);font-family:'DM Mono',monospace;font-size:11.5px;line-height:1.8;overflow-x:auto;margin-top:10px}
 .cm{color:#7a6258}.ck{color:#e8a898}.cv{color:#f0d080}.cs{color:#90c0e0}
-
-/* MODAIS */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
 .overlay.open{display:flex}
 .modal{background:var(--surface);border-radius:14px;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
@@ -222,16 +189,12 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
 .modal-close{background:none;border:none;font-size:22px;cursor:pointer;color:var(--text3);line-height:1;padding:2px}
 .modal-close:hover{color:var(--text)}
 .modal-body{padding:18px 22px}.modal-foot{padding:14px 22px;border-top:1px solid var(--border);display:flex;gap:8px;justify-content:flex-end}
-
-/* FORMS */
 .fg{margin-bottom:13px}
 .fg label{display:block;font-size:12px;font-weight:500;color:var(--text2);margin-bottom:4px}
 .fg input,.fg select,.fg textarea{width:100%;padding:9px 12px;font-size:13px;font-family:'Ubuntu',sans-serif;border:1px solid var(--border);border-radius:var(--rs);background:var(--surface);color:var(--text);outline:none;transition:border-color .15s}
 .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(89,36,25,.1)}
 .fg textarea{resize:vertical;min-height:68px}
 .fg-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-
-/* BUTTONS */
 .btn{padding:8px 18px;font-size:13px;font-weight:500;font-family:'Ubuntu',sans-serif;border-radius:var(--rs);border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;transition:all .15s}
 .btn:hover{background:var(--surface2)}
 .btn-primary{background:var(--brand);border-color:var(--brand);color:#fff}
@@ -239,8 +202,6 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
 .btn-danger{background:none;border-color:#e8b4b4;color:var(--red)}.btn-danger:hover{background:var(--red-l)}
 .btn-wpp{background:#25d366;border-color:#25d366;color:#fff;display:flex;align-items:center;gap:6px}
 .btn-wpp:hover{background:#1ebe5d}
-
-/* DETAIL */
 .det-section{margin-bottom:16px}
 .det-section-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text3);margin-bottom:8px}
 .det-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-size:13px}
@@ -249,15 +210,12 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
 .wpp-preview{background:#e9f9ee;border:1px solid #b2e5c4;border-radius:var(--rs);padding:12px;font-size:12.5px;color:#1a4a2e;line-height:1.7;white-space:pre-wrap;margin-top:8px}
 .sel-inp{width:100%;padding:9px 12px;font-size:13px;font-family:'Ubuntu',sans-serif;border:1px solid var(--border);border-radius:var(--rs);background:var(--surface);color:var(--text);outline:none}
 .sel-inp:focus{border-color:var(--brand)}
-
-/* MISC */
 .section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
 .section-head h2{font-size:16px;font-weight:700}
 .empty{text-align:center;padding:48px 20px;color:var(--text3)}
 .empty p{font-size:13px;line-height:1.6}
 .toast{position:fixed;bottom:32px;right:24px;background:var(--text);color:#fff;padding:10px 18px;border-radius:var(--rs);font-size:13px;font-weight:500;box-shadow:0 4px 16px rgba(0,0,0,.2);transform:translateY(80px);opacity:0;transition:all .25s cubic-bezier(.34,1.56,.64,1);z-index:200;pointer-events:none}
 .toast.show{transform:translateY(0);opacity:1}
-
 @media(max-width:960px){.metrics{grid-template-columns:repeat(2,1fr)}.dash-grid{grid-template-columns:1fr}.team-layout{grid-template-columns:1fr}.analytics-grid{grid-template-columns:1fr}.mkt-grid{grid-template-columns:1fr}}
 @media(max-width:600px){.content{padding:14px}.metrics{grid-template-columns:repeat(2,1fr);gap:10px}.topbar{padding:0 14px}.nav{padding:0 14px}.fg-row{grid-template-columns:1fr}}
 </style>
@@ -271,10 +229,7 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
       <div class="login-logo-mark">
         <svg viewBox="0 0 30 30" fill="none"><text x="2" y="22" font-family="Ubuntu" font-weight="700" font-size="18" fill="#fff">RR</text></svg>
       </div>
-      <div>
-        <div class="ll-text">Rodrigues</div>
-        <div class="ll-sub">Móveis Planejados</div>
-      </div>
+      <div><div class="ll-text">Rodrigues</div><div class="ll-sub">Móveis Planejados</div></div>
     </div>
     <div class="login-title">Acesso ao CRM</div>
     <div class="login-sub">Entre com suas credenciais para continuar</div>
@@ -282,18 +237,7 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
     <div class="fg"><label>E-mail</label><input id="li-email" type="email" placeholder="seu@email.com"></div>
     <div class="fg"><label>Senha</label><input id="li-pass" type="password" placeholder="••••••••"></div>
     <button class="login-btn" id="login-btn">Entrar</button>
-    <div class="login-hint">
-      <strong>Credenciais:</strong> contato@rodriguesoveisplanejados.com.br<br>
-      Certifique-se de ter ativado o <strong>Firebase Authentication</strong> no console e criado este usuário.
-    </div>
-    <div id="setup-banner" style="display:none;margin-top:14px;padding:12px;background:#fff3cd;border:1px solid #ffc107;border-radius:8px;font-size:12px;color:#664d03;line-height:1.7">
-      <strong>⚠️ Firestore não encontrado. Siga os passos:</strong><br>
-      1. <a href="https://console.firebase.google.com/project/crm-marcenaria-ac88a/firestore" target="_blank" style="color:#592419;font-weight:700">Clique aqui → Firebase Console</a><br>
-      2. Clique em <strong>"Criar banco de dados"</strong><br>
-      3. Escolha <strong>Modo produção</strong> → região <strong>us-east1</strong><br>
-      4. Em <strong>Regras</strong>, publique: <code style="background:#eee;padding:1px 4px;border-radius:3px">allow read, write: if request.auth != null;</code><br>
-      5. Recarregue esta página
-    </div>
+    <div class="login-hint">Certifique-se de ter ativado o <strong>Firebase Authentication</strong> e criado o usuário no console.</div>
   </div>
 </div>
 
@@ -304,19 +248,14 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
   <button class="debug-close" onclick="document.getElementById('debug-bar').classList.remove('show')">×</button>
 </div>
 
-<!-- NOTIFICAÇÃO NOVO LEAD -->
+<!-- NOTIFICAÇÃO -->
 <div id="lead-notif">Novo lead recebido!</div>
 
-<!-- APP -->
+<!-- TOPBAR -->
 <header class="topbar">
   <div class="logo">
-    <div class="logo-mark">
-      <svg viewBox="0 0 22 22" fill="none"><text x="1" y="17" font-family="Ubuntu" font-weight="700" font-size="14" fill="#fff">RR</text></svg>
-    </div>
-    <div>
-      <div class="logo-text">Rodrigues CRM</div>
-      <div class="logo-sub-text">Móveis Planejados</div>
-    </div>
+    <div class="logo-mark"><svg viewBox="0 0 22 22" fill="none"><text x="1" y="17" font-family="Ubuntu" font-weight="700" font-size="14" fill="#fff">RR</text></svg></div>
+    <div><div class="logo-text">Rodrigues CRM</div><div class="logo-sub-text">Móveis Planejados</div></div>
   </div>
   <div class="topbar-r">
     <div class="sync"><div class="sync-dot" id="syncDot"></div><span id="syncLabel">Aguardando login...</span></div>
@@ -328,6 +267,7 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
   </div>
 </header>
 
+<!-- NAV -->
 <nav class="nav">
   <button class="nav-btn active" onclick="showView('dashboard',this)">Painel</button>
   <button class="nav-btn" onclick="showView('pipeline',this)">Pipeline <span class="nav-cnt" id="cnt-pipeline">0</span></button>
@@ -438,25 +378,14 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
         <div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.4px">JSON esperado (Make.com → Firebase)</div>
         <div class="code-block">
 <span class="cm">// Cenário: Meta Lead Ads → Webhook → HTTP POST → Firestore</span><br>
-{<br>
-&nbsp;&nbsp;<span class="ck">"name"</span>: <span class="cv">"{{lead.name}}"</span>,<br>
-&nbsp;&nbsp;<span class="ck">"phone"</span>: <span class="cv">"{{lead.phone}}"</span>,<br>
-&nbsp;&nbsp;<span class="ck">"product"</span>: <span class="cv">"{{lead.product}}"</span>,<br>
-&nbsp;&nbsp;<span class="ck">"source"</span>: <span class="cv">"{{utm_source}}"</span>,&nbsp;&nbsp;<span class="cm">// "Instagram", "Google"…</span><br>
-&nbsp;&nbsp;<span class="ck">"utm_campaign"</span>: <span class="cv">"{{utm_campaign}}"</span>,<br>
-&nbsp;&nbsp;<span class="ck">"stage"</span>: <span class="cs">"Novo Lead"</span>,<br>
-&nbsp;&nbsp;<span class="ck">"city"</span>: <span class="cv">"{{lead.city}}"</span><br>
-}<br>
-<span class="cm">// O campo "source" alimenta os gráficos de Analytics automaticamente.</span>
+{<br>&nbsp;&nbsp;<span class="ck">"name"</span>: <span class="cv">"{{lead.name}}"</span>,<br>&nbsp;&nbsp;<span class="ck">"phone"</span>: <span class="cv">"{{lead.phone}}"</span>,<br>&nbsp;&nbsp;<span class="ck">"product"</span>: <span class="cv">"{{lead.product}}"</span>,<br>&nbsp;&nbsp;<span class="ck">"source"</span>: <span class="cv">"{{utm_source}}"</span>,<span class="cm"> // "Instagram", "Google"</span><br>&nbsp;&nbsp;<span class="ck">"utm_campaign"</span>: <span class="cv">"{{utm_campaign}}"</span>,<br>&nbsp;&nbsp;<span class="ck">"stage"</span>: <span class="cs">"Novo Lead"</span>,<br>&nbsp;&nbsp;<span class="ck">"city"</span>: <span class="cv">"{{lead.city}}"</span><br>}<br><span class="cm">// O campo "source" alimenta Analytics automaticamente.</span>
         </div>
       </div>
     </div>
     <div class="mkt-grid">
       <div class="mkt-card">
         <div class="mkt-card-head">
-          <div class="mkt-icon" style="background:#f0e6f8">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="#833ab4"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-          </div>
+          <div class="mkt-icon" style="background:#f0e6f8"><svg width="22" height="22" viewBox="0 0 24 24" fill="#833ab4"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></div>
           <div><div class="mkt-card-title">Meta Ads</div><div class="mkt-card-sub">Instagram & Facebook</div></div>
         </div>
         <div class="mkt-stat-row">
@@ -468,9 +397,7 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
       </div>
       <div class="mkt-card">
         <div class="mkt-card-head">
-          <div class="mkt-icon" style="background:#e8f0fe">
-            <svg width="22" height="22" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
-          </div>
+          <div class="mkt-icon" style="background:#e8f0fe"><svg width="22" height="22" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg></div>
           <div><div class="mkt-card-title">Google Ads</div><div class="mkt-card-sub">Search & Display</div></div>
         </div>
         <div class="mkt-stat-row">
@@ -503,7 +430,7 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
     </div>
   </div>
 
-</div>
+</div><!-- /content -->
 
 <!-- MODAL NOVO LEAD -->
 <div class="overlay" id="overlay-lead">
@@ -598,10 +525,7 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
   <div class="modal" style="max-width:520px">
     <div class="modal-head"><h2 id="det-title">Lead</h2><button class="modal-close" onclick="closeModal('detail')">×</button></div>
     <div class="modal-body">
-      <div class="det-section">
-        <div class="det-section-title">Informações</div>
-        <div id="det-info"></div>
-      </div>
+      <div class="det-section"><div class="det-section-title">Informações</div><div id="det-info"></div></div>
       <div class="det-section">
         <div class="det-section-title">Vendedor responsável</div>
         <select id="det-seller" class="sel-inp" onchange="updateLeadSeller()"><option value="">— sem atribuição —</option></select>
@@ -638,10 +562,14 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
 
 <div class="toast" id="toast"></div>
 
+<!-- ═══════════════════════════════════════════════════════════════════════
+     MOTOR — Firebase SDK v10.7.1 Modular Puro
+     Zero localStorage · Zero databaseURL · Cloud Firestore exclusivo
+     onSnapshot em todas as coleções → sincronização em tempo real
+════════════════════════════════════════════════════════════════════════ -->
 <script type="module">
-// ════════════════════════════════════════════════════════════════════════
-//  FIREBASE SDK v10.7.1 — Cloud Firestore exclusivo (sem databaseURL)
-// ════════════════════════════════════════════════════════════════════════
+
+// ── IMPORTS ──────────────────────────────────────────────────────────────────
 import { initializeApp }
   from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged,
@@ -651,72 +579,63 @@ import { getFirestore, collection, onSnapshot, addDoc, updateDoc,
          deleteDoc, doc, serverTimestamp, query, orderBy }
   from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
-// ════════════════════════════════════════════════════════════════════════
-//  CONFIGURAÇÃO FIREBASE — apenas Cloud Firestore, sem databaseURL
-// ════════════════════════════════════════════════════════════════════════
-const firebaseConfig = {
+// ── FIREBASE INIT ─────────────────────────────────────────────────────────────
+// getFirestore() puro — sem cache local, sem persistência IndexedDB.
+// Cada addDoc vai DIRETAMENTE ao Cloud Firestore (sem camada intermediária).
+const app  = initializeApp({
   apiKey:            "AIzaSyBJ4_iiknBGZX1ciwKtOfhfDPytsRqYW9A",
   authDomain:        "crm-marcenaria-ac88a.firebaseapp.com",
   projectId:         "crm-marcenaria-ac88a",
   storageBucket:     "crm-marcenaria-ac88a.firebasestorage.app",
   messagingSenderId: "763443542872",
   appId:             "1:763443542872:web:8046db5950bf66ddd1432d"
-};
-
-// Inicialização única — auth e db criados uma única vez após initializeApp
-const app  = initializeApp(firebaseConfig);
+  // ← sem databaseURL: usa exclusivamente Cloud Firestore
+});
 const auth = getAuth(app);
 const db   = getFirestore(app);
 
-// Sessão persistente — usuário continua logado ao recarregar ou trocar de máquina
+// Sessão persistente no browser — usuário continua logado ao recarregar
 setPersistence(auth, browserLocalPersistence)
-  .catch(e => console.warn('[CRM] setPersistence:', e));
+  .catch(e => console.warn('[CRM] setPersistence:', e.message));
 
-// ════════════════════════════════════════════════════════════════════════
-//  CONSTANTES
-// ════════════════════════════════════════════════════════════════════════
+// ── CONSTANTES ────────────────────────────────────────────────────────────────
 const STAGES        = ['Novo Lead','Primeiro Contato','Qualificação','Proposta','Negociação','Fechado','Perdido'];
 const ACTIVE_STAGES = ['Novo Lead','Primeiro Contato','Qualificação','Proposta','Negociação'];
 const SST = {
-  'Novo Lead':        {dot:'#9e9990', badge:'background:#ebe8e4;color:#5a5550'},
-  'Primeiro Contato': {dot:'#1a4a7a', badge:'background:#e6eef8;color:#1a4a7a'},
-  'Qualificação':     {dot:'#1a5c2a', badge:'background:#e4f2e8;color:#1a5c2a'},
-  'Proposta':         {dot:'#92530a', badge:'background:#fdf0e0;color:#7a3d08'},
-  'Negociação':       {dot:'#b04010', badge:'background:#fde8e0;color:#8a2a10'},
-  'Fechado':          {dot:'#0f5c4a', badge:'background:#e0f2ec;color:#0a4035'},
-  'Perdido':          {dot:'#8a1f1f', badge:'background:#fdeaea;color:#6b1a1a'},
+  'Novo Lead':        { dot:'#9e9990', badge:'background:#ebe8e4;color:#5a5550' },
+  'Primeiro Contato': { dot:'#1a4a7a', badge:'background:#e6eef8;color:#1a4a7a' },
+  'Qualificação':     { dot:'#1a5c2a', badge:'background:#e4f2e8;color:#1a5c2a' },
+  'Proposta':         { dot:'#92530a', badge:'background:#fdf0e0;color:#7a3d08' },
+  'Negociação':       { dot:'#b04010', badge:'background:#fde8e0;color:#8a2a10' },
+  'Fechado':          { dot:'#0f5c4a', badge:'background:#e0f2ec;color:#0a4035' },
+  'Perdido':          { dot:'#8a1f1f', badge:'background:#fdeaea;color:#6b1a1a' },
 };
-const BRAND_COLORS = ['#592419','#7a3326','#9a4433','#ba5544','#d98070','#e9b0a0'];
+const BRAND_COLORS = ['#592419','#7a3326','#9a4433','#ba5544','#d98070','#e9b0a0','#1a4a7a','#1a5c2a','#92530a'];
 const WPP = {
-  contato:  (n,p)=>`Olá ${n}! 👋\n\nSomos da *Rodrigues Móveis Planejados* e entramos em contato sobre seu interesse em *${p}*.\n\nPodemos conversar?`,
-  visita:   (n,p)=>`Olá ${n}! 📐\n\nGostaríamos de confirmar a visita para medição do projeto de *${p}*.\n\nQual a melhor data e horário?`,
-  proposta: (n,p)=>`Olá ${n}! 📋\n\nSua proposta para *${p}* está pronta! Vou encaminhar os detalhes agora. 😊`,
-  aprovado: (n,p)=>`Olá ${n}! 🎉\n\nSeu projeto de *${p}* foi aprovado e já entra na fila de produção!`,
-  producao: (n,p)=>`Olá ${n}! 🪵\n\nSeu projeto de *${p}* já está em produção. Qualquer dúvida, é só chamar!`,
-  entrega:  (n,p)=>`Olá ${n}! 🚚\n\nSeu projeto de *${p}* está pronto para entrega! Quando podemos agendar?`,
-  concluido:(n,p)=>`Olá ${n}! ✅\n\nO projeto de *${p}* foi concluído! Obrigado pela confiança. 🙏`,
+  contato:  (n,p) => `Olá ${n}! 👋\n\nSomos da *Rodrigues Móveis Planejados* e entramos em contato sobre seu interesse em *${p}*.\n\nPodemos conversar?`,
+  visita:   (n,p) => `Olá ${n}! 📐\n\nGostaríamos de confirmar a visita para medição do projeto de *${p}*.\n\nQual a melhor data e horário?`,
+  proposta: (n,p) => `Olá ${n}! 📋\n\nSua proposta para *${p}* está pronta! Vou encaminhar os detalhes agora. 😊`,
+  aprovado: (n,p) => `Olá ${n}! 🎉\n\nSeu projeto de *${p}* foi aprovado e já entra na fila de produção!`,
+  producao: (n,p) => `Olá ${n}! 🪵\n\nSeu projeto de *${p}* já está em produção. Qualquer dúvida, é só chamar!`,
+  entrega:  (n,p) => `Olá ${n}! 🚚\n\nSeu projeto de *${p}* está pronto para entrega! Quando podemos agendar?`,
+  concluido:(n,p) => `Olá ${n}! ✅\n\nO projeto de *${p}* foi concluído! Obrigado pela confiança. 🙏`,
 };
 
-// ════════════════════════════════════════════════════════════════════════
-//  ESTADO — 100% em memória, jamais localStorage
-// ════════════════════════════════════════════════════════════════════════
+// ── ESTADO — 100% em memória, jamais localStorage ─────────────────────────────
 let leads = [], tasks = [], sellers = [];
 let currentLeadId = null, currentSellerId = null;
 let taskFilter = 'all', dragId = null, selectedColor = '#592419';
 let chartFunil = null, chartOrigem = null;
 let prevLeadCount = 0, firstSnapshot = true;
 let unsubLeads = null, unsubTasks = null, unsubSellers = null;
-let webhookUrl = '';
 
-// ════════════════════════════════════════════════════════════════════════
-//  HELPERS VISUAIS
-// ════════════════════════════════════════════════════════════════════════
+// ── HELPERS VISUAIS ───────────────────────────────────────────────────────────
 function dbg(msg, isErr = false) {
-  console.log('[CRM]', msg);
+  console[isErr ? 'error' : 'log']('[CRM]', msg);
   const bar = document.getElementById('debug-bar');
   const el  = document.getElementById('debug-msg');
   el.textContent = msg;
-  el.className = isErr ? 'debug-err' : 'debug-ok';
+  el.className   = isErr ? 'debug-err' : 'debug-ok';
   bar.classList.add('show');
   if (!isErr) setTimeout(() => bar.classList.remove('show'), 4000);
 }
@@ -724,7 +643,7 @@ function dbg(msg, isErr = false) {
 function setSynced(ok, label) {
   const dot = document.getElementById('syncDot');
   dot.className = 'sync-dot' + (ok ? ' live' : ' err');
-  document.getElementById('syncLabel').textContent = label || (ok ? 'Ao vivo' : 'Sem conexão');
+  document.getElementById('syncLabel').textContent = label || (ok ? 'Ao vivo ●' : 'Sem conexão');
 }
 
 function toast(m) {
@@ -743,9 +662,7 @@ function hexLight(h) {
 
 const wppSVG = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
 
-// ════════════════════════════════════════════════════════════════════════
-//  ÁUDIO — alerta de novo lead
-// ════════════════════════════════════════════════════════════════════════
+// ── ÁUDIO ─────────────────────────────────────────────────────────────────────
 function playLeadSound() {
   try {
     const ctx  = new (window.AudioContext || window.webkitAudioContext)();
@@ -754,10 +671,10 @@ function playLeadSound() {
     osc.connect(gain); gain.connect(ctx.destination);
     osc.type = 'sine';
     osc.frequency.setValueAtTime(880, ctx.currentTime);
-    osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + .3);
-    gain.gain.setValueAtTime(.25, ctx.currentTime);
-    gain.gain.exponentialRampToValueAtTime(.001, ctx.currentTime + .4);
-    osc.start(); osc.stop(ctx.currentTime + .4);
+    osc.frequency.exponentialRampToValueAtTime(440, ctx.currentTime + 0.3);
+    gain.gain.setValueAtTime(0.25, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+    osc.start(); osc.stop(ctx.currentTime + 0.4);
   } catch(e) {}
 }
 
@@ -767,20 +684,16 @@ function showLeadNotif() {
   setTimeout(() => el.classList.remove('show'), 3500);
 }
 
-// ════════════════════════════════════════════════════════════════════════
-//  AUTH — login/logout com persistência browserLocal
-// ════════════════════════════════════════════════════════════════════════
+// ── AUTH ──────────────────────────────────────────────────────────────────────
 onAuthStateChanged(auth, user => {
   if (user) {
     document.getElementById('login-screen').classList.add('hidden');
-    dbg('✅ Sessão ativa: ' + user.email);
-    initListeners();
+    dbg('Sessão ativa: ' + user.email);
+    startListeners();
   } else {
     document.getElementById('login-screen').classList.remove('hidden');
     setSynced(false, 'Faça login');
-    // Cancela todos os listeners ativos
-    [unsubLeads, unsubTasks, unsubSellers].forEach(u => u && u());
-    unsubLeads = unsubTasks = unsubSellers = null;
+    stopListeners();
     leads = []; tasks = []; sellers = [];
     firstSnapshot = true; prevLeadCount = 0;
     render();
@@ -798,62 +711,56 @@ window.doLogin = async () => {
     errEl.style.display = 'block';
     return;
   }
-  btn.disabled = true;
-  btn.textContent = 'Entrando...';
+  btn.disabled = true; btn.textContent = 'Entrando...';
   try {
     await signInWithEmailAndPassword(auth, email, pass);
-    // onAuthStateChanged cuida do restante
   } catch(e) {
-    const codes = {
-      'auth/invalid-credential': 'E-mail ou senha incorretos.',
-      'auth/user-not-found':     'Usuário não cadastrado no Firebase Auth.',
-      'auth/wrong-password':     'Senha incorreta.',
-      'auth/invalid-email':      'E-mail inválido.',
-      'auth/too-many-requests':  'Muitas tentativas. Aguarde.',
+    const msgs = {
+      'auth/invalid-credential':     'E-mail ou senha incorretos.',
+      'auth/user-not-found':         'Usuário não cadastrado no Firebase Auth.',
+      'auth/wrong-password':         'Senha incorreta.',
+      'auth/invalid-email':          'E-mail inválido.',
+      'auth/too-many-requests':      'Muitas tentativas. Aguarde.',
       'auth/network-request-failed': 'Sem conexão com a internet.',
     };
-    const msg = codes[e.code] || ('ERRO: ' + e.code);
-    errEl.textContent = msg;
-    errEl.style.display = 'block';
-    console.error('[CRM] Login falhou:', e.code, e.message);
-    btn.disabled = false;
-    btn.textContent = 'Entrar';
+    const msg = msgs[e.code] || ('Erro: ' + e.code);
+    errEl.textContent = msg; errEl.style.display = 'block';
+    dbg('LOGIN FALHOU: ' + e.code, true);
+    btn.disabled = false; btn.textContent = 'Entrar';
   }
 };
 
 window.doLogout = async () => {
-  try { await signOut(auth); } catch(e) { console.error('[CRM] Logout:', e); }
+  try { await signOut(auth); } catch(e) { console.error('[CRM] logout:', e); }
 };
 
-document.getElementById('li-pass').addEventListener('keydown', e => {
-  if (e.key === 'Enter') window.doLogin();
-});
-document.getElementById('login-btn').addEventListener('click', () => window.doLogin());
+document.getElementById('li-pass').addEventListener('keydown', e => { if (e.key === 'Enter') window.doLogin(); });
+document.getElementById('login-btn').addEventListener('click', window.doLogin);
 
-// ════════════════════════════════════════════════════════════════════════
-//  FIRESTORE — listeners em tempo real (onSnapshot)
-//  Garante que PC e celular atualizem instantaneamente sem F5
-// ════════════════════════════════════════════════════════════════════════
-function initListeners() {
-  // Cancela listeners anteriores para evitar duplicação entre logins
+// ── LISTENERS FIRESTORE (onSnapshot em tempo real) ────────────────────────────
+function stopListeners() {
   if (unsubLeads)   { unsubLeads();   unsubLeads   = null; }
   if (unsubTasks)   { unsubTasks();   unsubTasks   = null; }
   if (unsubSellers) { unsubSellers(); unsubSellers = null; }
+}
 
+function startListeners() {
+  stopListeners();
   setSynced(false, 'Conectando...');
   dbg('Conectando ao Firestore...');
 
-  // ── LEADS — onSnapshot obrigatório: push imediato para todos os dispositivos ──
+  // ── LEADS — listener principal: atualiza toda a UI em tempo real ──────────
   unsubLeads = onSnapshot(
     query(collection(db, 'leads'), orderBy('createdAt', 'desc')),
     snapshot => {
       const newCount = snapshot.docs.length;
       leads = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
 
+      // Alerta sonoro + notificação apenas para leads NOVOS (não no carregamento inicial)
       if (!firstSnapshot && newCount > prevLeadCount) {
         playLeadSound();
         showLeadNotif();
-        dbg('🔔 Novo lead em tempo real! Total: ' + newCount);
+        dbg('Novo lead em tempo real! Total: ' + newCount);
       }
       prevLeadCount = newCount;
       firstSnapshot = false;
@@ -865,57 +772,47 @@ function initListeners() {
     error => {
       setSynced(false, 'Erro');
       dbg('ERRO onSnapshot leads: ' + error.code, true);
-      console.error('[CRM] onSnapshot leads:', error.code, error.message);
+      console.error('[CRM] onSnapshot leads:', error);
 
+      // Mensagem de ajuda específica para permissão negada
       if (error.code === 'permission-denied' || error.code === 'firestore/permission-denied') {
         alert(
-          'FALHA CRÍTICA NO FIRESTORE: ' + error.code +
-          '\n\nAs Regras do Firestore estão bloqueando a leitura.' +
-          '\n\nAcesse: Firebase Console → Firestore → Segurança' +
-          '\n\nPublique estas regras:\n\n' +
+          'FALHA DE PERMISSÃO NO FIRESTORE\n\n' +
+          'Acesse: Firebase Console → Firestore → Regras\n\n' +
+          'Publique estas regras:\n\n' +
           "rules_version = '2';\n" +
           'service cloud.firestore {\n' +
           '  match /databases/{database}/documents {\n' +
           '    match /{document=**} {\n' +
           '      allow read, write: if request.auth != null;\n' +
-          '    }\n' +
-          '  }\n' +
-          '}'
+          '    }\n  }\n}'
         );
       }
     }
   );
 
-  // ── TASKS ──
+  // ── TASKS ──────────────────────────────────────────────────────────────────
   unsubTasks = onSnapshot(
     query(collection(db, 'tasks'), orderBy('createdAt', 'desc')),
     snapshot => {
       tasks = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
       renderTasks(); renderDashTasks(); updateCounts();
     },
-    error => {
-      console.error('[CRM] onSnapshot tasks:', error.code);
-      dbg('ERRO tasks: ' + error.code, true);
-    }
+    error => dbg('ERRO onSnapshot tasks: ' + error.code, true)
   );
 
-  // ── SELLERS ──
+  // ── SELLERS ────────────────────────────────────────────────────────────────
   unsubSellers = onSnapshot(
     query(collection(db, 'sellers'), orderBy('createdAt', 'asc')),
     snapshot => {
       sellers = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
       renderTeam(); updateSellerSelects(); updateCounts();
     },
-    error => {
-      console.error('[CRM] onSnapshot sellers:', error.code);
-      dbg('ERRO sellers: ' + error.code, true);
-    }
+    error => dbg('ERRO onSnapshot sellers: ' + error.code, true)
   );
 }
 
-// ════════════════════════════════════════════════════════════════════════
-//  RENDER — lê apenas de leads/tasks/sellers em memória (vindos do Firestore)
-// ════════════════════════════════════════════════════════════════════════
+// ── RENDER ────────────────────────────────────────────────────────────────────
 function render() {
   renderMetrics(); renderRecent(); renderPipeline();
   renderClients(); renderTeam(); renderAnalytics();
@@ -954,9 +851,8 @@ function renderMetrics() {
 
 function renderRecent() {
   const el = document.getElementById('recent-leads');
-  const recent = leads.slice(0, 8);
-  if (!recent.length) { el.innerHTML = '<div class="empty"><p>Nenhum lead ainda.</p></div>'; return; }
-  el.innerHTML = recent.map(l => {
+  if (!leads.length) { el.innerHTML = '<div class="empty"><p>Nenhum lead ainda.<br>Clique em "+ Novo lead" para criar o primeiro.</p></div>'; return; }
+  el.innerHTML = leads.slice(0, 8).map(l => {
     const s = SST[l.stage] || SST['Novo Lead'];
     return `<div class="lead-row" onclick="openDetail('${l.id}')">
       <div class="avatar">${initials(l.name)}</div>
@@ -966,6 +862,21 @@ function renderRecent() {
   }).join('');
 }
 
+function renderDashTasks() {
+  const el = document.getElementById('dash-tasks');
+  const pend = tasks.filter(t => !t.done).slice(0, 6);
+  if (!pend.length) { el.innerHTML = '<div class="empty"><p>Nenhuma tarefa pendente.</p></div>'; return; }
+  el.innerHTML = pend.map(t => {
+    const lead   = t.leadId   ? leads.find(l => l.id === t.leadId)   : null;
+    const seller = t.sellerId ? sellers.find(s => s.id === t.sellerId) : null;
+    return `<div class="lead-row" style="cursor:default">
+      <div style="width:8px;height:8px;border-radius:50%;background:${t.priority==='urgente'?'#e24b4a':'#9e9990'};flex-shrink:0"></div>
+      <div class="lead-info"><div class="lead-name">${t.title}</div><div class="lead-sub">${lead?lead.name:'—'}${seller?' · '+seller.name:''}</div></div>
+    </div>`;
+  }).join('');
+}
+
+// ── PIPELINE KANBAN ───────────────────────────────────────────────────────────
 function renderPipeline() {
   const board = document.getElementById('kanban-board');
   board.innerHTML = ACTIVE_STAGES.map(stage => {
@@ -985,8 +896,8 @@ function renderPipeline() {
             <div class="kcard-name">${l.name}</div>
             <div class="kcard-product">${l.product || '—'}</div>
             <div class="kcard-foot">
-              <span class="kcard-value">${l.value ? 'R$ '+fmt(parseFloat(l.value)) : '—'}</span>
-              ${seller ? `<span class="kcard-seller">${seller.name}</span>` : ''}
+              <span class="kcard-value">${l.value ? 'R$ ' + fmt(parseFloat(l.value)) : '—'}</span>
+              ${seller ? `<span class="kcard-seller">${seller.name.split(' ')[0]}</span>` : ''}
             </div>
           </div>`;
         }).join('')}
@@ -997,25 +908,53 @@ function renderPipeline() {
   initKanbanDnd();
 }
 
+window.startDrag = (e, id) => { dragId = id; e.currentTarget.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; };
+window.endDrag   = (e) => { e.currentTarget.classList.remove('dragging'); document.querySelectorAll('.kcol').forEach(c => c.classList.remove('drag-over')); };
+
+function initKanbanDnd() {
+  document.querySelectorAll('.kcol').forEach(col => {
+    col.addEventListener('dragover', e => { e.preventDefault(); col.classList.add('drag-over'); });
+    col.addEventListener('dragleave', () => col.classList.remove('drag-over'));
+    col.addEventListener('drop', async e => {
+      e.preventDefault();
+      col.classList.remove('drag-over');
+      const stage = col.dataset.stage;
+      if (!dragId || !stage) return;
+      try {
+        await updateDoc(doc(db, 'leads', dragId), { stage });
+        toast('Etapa atualizada');
+        dbg('Card movido para: ' + stage);
+      } catch(error) {
+        alert('FALHA CRÍTICA NO FIRESTORE: ' + error.code + '\n\n' + error.message);
+        console.error('[CRM] drop:', error);
+      }
+      dragId = null;
+    });
+  });
+}
+
+// ── TAREFAS ───────────────────────────────────────────────────────────────────
 function renderTasks() {
   const el = document.getElementById('tasks-list');
-  let list = tasks;
-  if (taskFilter === 'pending') list = tasks.filter(t => !t.done);
-  if (taskFilter === 'done')    list = tasks.filter(t =>  t.done);
-  if (!list.length) { el.innerHTML = '<div class="empty"><p>Nenhuma tarefa.</p></div>'; return; }
+  if (!el) return;
+  let list = [...tasks];
+  if (taskFilter === 'pending') list = list.filter(t => !t.done);
+  if (taskFilter === 'done')    list = list.filter(t => t.done);
+  list.sort((a, b) => a.done === b.done ? 0 : a.done ? 1 : -1);
+  if (!list.length) { el.innerHTML = '<div class="empty"><p>Nenhuma tarefa encontrada.</p></div>'; return; }
   el.innerHTML = list.map(t => {
-    const lead   = t.leadId   ? leads.find(l => l.id === t.leadId)     : null;
+    const lead   = t.leadId   ? leads.find(l => l.id === t.leadId)   : null;
     const seller = t.sellerId ? sellers.find(s => s.id === t.sellerId) : null;
-    const isUrgent = t.priority === 'urgente';
-    return `<div class="tcard ${t.done ? 'done' : ''}">
-      <div class="tcheck ${t.done ? 'checked' : ''}" onclick="toggleTask('${t.id}','${t.done}')"></div>
+    const ds = t.date ? new Date(t.date).toLocaleString('pt-BR', { day:'2-digit', month:'2-digit', hour:'2-digit', minute:'2-digit' }) : '';
+    return `<div class="tcard${t.done ? ' done' : ''}">
+      <div class="tcheck${t.done ? ' checked' : ''}" onclick="toggleTask('${t.id}','${t.done}')"></div>
       <div class="t-body">
         <div class="t-title">${t.title}</div>
         <div class="t-meta">
           ${lead   ? `<span class="t-lead">${lead.name}</span>` : ''}
-          ${seller ? `<span class="t-seller">${seller.name}</span>` : ''}
-          ${t.date ? `<span class="t-date">${new Date(t.date).toLocaleString('pt-BR',{dateStyle:'short',timeStyle:'short'})}</span>` : ''}
-          ${isUrgent ? '<span class="t-urgent">Urgente</span>' : ''}
+          ${seller ? `<span class="t-seller">${seller.name.split(' ')[0]}</span>` : ''}
+          ${t.priority === 'urgente' ? '<span class="t-urgent">urgente</span>' : ''}
+          ${ds ? `<span class="t-date">${ds}</span>` : ''}
         </div>
       </div>
       <button class="tdel" onclick="deleteTask('${t.id}')">×</button>
@@ -1023,195 +962,109 @@ function renderTasks() {
   }).join('');
 }
 
-function renderDashTasks() {
-  const el = document.getElementById('dash-tasks');
-  const pending = tasks.filter(t => !t.done).slice(0, 5);
-  if (!pending.length) { el.innerHTML = '<div class="empty"><p>Sem tarefas pendentes.</p></div>'; return; }
-  el.innerHTML = pending.map(t => {
-    const lead = t.leadId ? leads.find(l => l.id === t.leadId) : null;
-    return `<div class="lead-row">
-      <div class="tcheck" onclick="toggleTask('${t.id}','${t.done}')"></div>
-      <div class="lead-info"><div class="lead-name">${t.title}</div>
-        <div class="lead-sub">${lead ? lead.name : '—'} ${t.date ? '· '+new Date(t.date).toLocaleDateString('pt-BR') : ''}</div>
-      </div>
-      ${t.priority==='urgente' ? '<span class="badge" style="background:#fdeaea;color:#8a1f1f">Urgente</span>' : ''}
-    </div>`;
-  }).join('');
-}
+window.filterTasks = (f, btn) => {
+  taskFilter = f;
+  document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTasks();
+};
 
+window.toggleTask = async (id, done) => {
+  try { await updateDoc(doc(db, 'tasks', id), { done: done !== 'true' }); }
+  catch(e) { alert('FALHA CRÍTICA NO FIRESTORE: ' + e.code + '\n\n' + e.message); }
+};
+
+window.deleteTask = async (id) => {
+  try { await deleteDoc(doc(db, 'tasks', id)); toast('Tarefa excluída'); }
+  catch(e) { alert('FALHA CRÍTICA NO FIRESTORE: ' + e.code); }
+};
+
+// ── CLIENTES ──────────────────────────────────────────────────────────────────
 function renderClients() {
   const el = document.getElementById('clients-grid');
-  const clients = leads.filter(l => l.stage === 'Fechado');
-  if (!clients.length) { el.innerHTML = '<div class="empty"><p>Nenhum cliente fechado ainda.</p></div>'; return; }
-  el.innerHTML = clients.map(l => `
-    <div class="client-card" onclick="openDetail('${l.id}')">
-      <div class="cc-head">
-        <div class="cc-av">${initials(l.name)}</div>
+  const closed = leads.filter(l => l.stage === 'Fechado');
+  if (!closed.length) { el.innerHTML = '<div class="empty"><p>Nenhum cliente com negócio fechado ainda.</p></div>'; return; }
+  el.innerHTML = closed.map(l => {
+    const seller = l.sellerId ? sellers.find(s => s.id === l.sellerId) : null;
+    return `<div class="client-card" onclick="openDetail('${l.id}')">
+      <div class="cc-head"><div class="cc-av">${initials(l.name)}</div>
         <div><div class="cc-name">${l.name}</div><div class="cc-product">${l.product || '—'}</div></div>
       </div>
-      <div class="cc-row"><span>Valor</span><span>R$ ${fmt(parseFloat(l.value)||0)}</span></div>
       ${l.city   ? `<div class="cc-row"><span>Cidade</span><span>${l.city}</span></div>` : ''}
+      ${l.value  ? `<div class="cc-row"><span>Valor</span><span>R$ ${fmt(parseFloat(l.value))}</span></div>` : ''}
+      ${seller   ? `<div class="cc-row"><span>Vendedor</span><span>${seller.name}</span></div>` : ''}
       ${l.source ? `<div class="cc-row"><span>Canal</span><span>${l.source}</span></div>` : ''}
-      ${l.phone  ? `<button class="wpp-btn" onclick="event.stopPropagation();window.open('https://wa.me/55${l.phone.replace(/\D/g,'')}')">${wppSVG} WhatsApp</button>` : ''}
-    </div>`).join('');
-}
-
-function renderTeam() {
-  const el = document.getElementById('sellers-list');
-  const rp = document.getElementById('ranking-panel');
-  if (!sellers.length) {
-    el.innerHTML = '<div class="empty"><p>Nenhum vendedor cadastrado.</p></div>';
-    rp.innerHTML = '<div class="empty"><p>—</p></div>';
-    return;
-  }
-  const ranked = sellers.map(s => {
-    const myLeads   = leads.filter(l => l.sellerId === s.id);
-    const fechados  = myLeads.filter(l => l.stage === 'Fechado');
-    const receita   = fechados.reduce((sum, l) => sum + (parseFloat(l.value)||0), 0);
-    const goal      = parseFloat(s.goal) || 0;
-    const pct       = goal ? Math.min(Math.round(receita/goal*100), 200) : 0;
-    return { ...s, myLeads: myLeads.length, fechados: fechados.length, receita, pct };
-  }).sort((a,b) => b.receita - a.receita);
-
-  el.innerHTML = ranked.map(s => `
-    <div class="seller-card" onclick="openSellerEdit('${s.id}')">
-      <div class="sc-head">
-        <div class="sc-av" style="background:${hexLight(s.color||'#592419')};color:${s.color||'#592419'}">${initials(s.name)}</div>
-        <div><div class="sc-name">${s.name}</div><div class="sc-role">${s.role||'—'}</div></div>
-      </div>
-      ${s.goal ? `<div class="meta-bar">
-        <div class="meta-bar-label"><span>Meta</span><span>${s.pct}%</span></div>
-        <div class="bar-track"><div class="bar-fill ${s.pct>=100?'over':''}" style="width:${Math.min(s.pct,100)}%"></div></div>
-      </div>` : ''}
-      <div class="sc-stats">
-        <div class="sc-stat"><div class="sc-stat-val">${s.myLeads}</div><div class="sc-stat-lbl">Leads</div></div>
-        <div class="sc-stat"><div class="sc-stat-val">${s.fechados}</div><div class="sc-stat-lbl">Fechados</div></div>
-        <div class="sc-stat"><div class="sc-stat-val">R$ ${fmt(Math.round(s.receita/1000))}k</div><div class="sc-stat-lbl">Receita</div></div>
-      </div>
-    </div>`).join('');
-
-  const posClass = ['gold','silver','bronze'];
-  rp.innerHTML = ranked.map((s,i) => {
-    const max = ranked[0]?.receita || 1;
-    return `<div class="rank-row">
-      <div class="rank-pos ${posClass[i]||'other'}">${i+1}</div>
-      <div class="rank-info"><div class="rank-name">${s.name}</div><div class="rank-detail">${s.fechados} fechados · ${s.myLeads} leads</div>
-        <div class="rank-bar"><div class="rank-bar-f" style="width:${Math.round(s.receita/max*100)}%"></div></div>
-      </div>
-      <div><div class="rank-brl">R$ ${fmt(s.receita)}</div><div class="rank-conv">${s.pct}% meta</div></div>
+      ${l.phone  ? `<button class="wpp-btn" onclick="event.stopPropagation();window.open('https://wa.me/55${l.phone.replace(/\D/g,'')}')">
+        ${wppSVG} Chamar no WhatsApp</button>` : ''}
     </div>`;
   }).join('');
 }
 
-function renderAnalytics() {
-  // Funil chart
-  const ctx1 = document.getElementById('chartFunil');
-  if (ctx1) {
-    const vals = STAGES.map(st => leads.filter(l => l.stage === st).length);
-    if (chartFunil) chartFunil.destroy();
-    chartFunil = new Chart(ctx1, {
-      type: 'bar',
-      data: { labels: STAGES, datasets: [{ data: vals, backgroundColor: '#592419', borderRadius: 4 }] },
-      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }
-    });
-  }
-  // Origem chart
-  const ctx2 = document.getElementById('chartOrigem');
-  if (ctx2) {
-    const srcMap = {};
-    leads.forEach(l => { const s = l.source || 'Direto'; srcMap[s] = (srcMap[s]||0)+1; });
-    const srcs = Object.keys(srcMap);
-    const colors = ['#592419','#7a3326','#9a4433','#1a4a7a','#4a2d8a','#92530a','#1a5c2a'];
-    if (chartOrigem) chartOrigem.destroy();
-    if (srcs.length) {
-      chartOrigem = new Chart(ctx2, {
-        type: 'doughnut',
-        data: { labels: srcs, datasets: [{ data: srcs.map(s => srcMap[s]), backgroundColor: colors.slice(0,srcs.length), borderWidth: 0 }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } } } }
-      });
-    } else {
-      ctx2.getContext('2d')?.clearRect(0,0,ctx2.width,ctx2.height);
-    }
-  }
-  // Tabela de origem
-  const srcWrap = document.getElementById('source-table-wrap');
-  if (srcWrap) {
-    const srcMap2 = {};
-    leads.forEach(l => {
-      const s = l.source || 'Direto';
-      if (!srcMap2[s]) srcMap2[s] = { total:0, fechados:0 };
-      srcMap2[s].total++;
-      if (l.stage === 'Fechado') srcMap2[s].fechados++;
-    });
-    const rows = Object.entries(srcMap2).sort((a,b)=>b[1].total-a[1].total);
-    srcWrap.innerHTML = rows.length ? `<table class="source-table">
-      <thead><tr><th>Canal</th><th>Leads</th><th>Fechados</th><th>Conversão</th></tr></thead>
-      <tbody>${rows.map(([s,d])=>{
-        const conv=d.total?Math.round(d.fechados/d.total*100):0;
-        return `<tr><td>${s}</td><td>${d.total}</td><td>${d.fechados}</td>
-          <td><div>${conv}%</div><div class="conv-bar"><div class="conv-bar-f" style="width:${conv}%"></div></div></td></tr>`;
-      }).join('')}</tbody></table>` : '<div class="empty" style="padding:24px"><p>Sem dados.</p></div>';
-  }
-  // Tabela de produto
-  const prodWrap = document.getElementById('product-table-wrap');
-  if (prodWrap) {
-    const prodMap = {};
-    leads.forEach(l => {
-      const p = l.product || 'Outro';
-      if (!prodMap[p]) prodMap[p] = { total:0, receita:0 };
-      prodMap[p].total++;
-      if (l.stage === 'Fechado') prodMap[p].receita += parseFloat(l.value)||0;
-    });
-    const rows2 = Object.entries(prodMap).sort((a,b)=>b[1].receita-a[1].receita);
-    prodWrap.innerHTML = rows2.length ? `<table class="source-table">
-      <thead><tr><th>Produto</th><th>Leads</th><th>Receita</th></tr></thead>
-      <tbody>${rows2.map(([p,d])=>
-        `<tr><td>${p}</td><td>${d.total}</td><td>R$ ${fmt(d.receita)}</td></tr>`
-      ).join('')}</tbody></table>` : '<div class="empty" style="padding:24px"><p>Sem dados.</p></div>';
-  }
+// ── EQUIPE ────────────────────────────────────────────────────────────────────
+function sellerStats(s) {
+  const ml = leads.filter(l => l.sellerId === s.id);
+  const fc = ml.filter(l => l.stage === 'Fechado');
+  const receita = fc.reduce((sum, l) => sum + (parseFloat(l.value) || 0), 0);
+  const conv    = ml.length ? Math.round(fc.length / ml.length * 100) : 0;
+  const now = new Date();
+  const mesRec  = fc.filter(l => {
+    if (!l.createdAt?.toDate) return false;
+    const d = l.createdAt.toDate();
+    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+  }).reduce((s, l) => s + (parseFloat(l.value) || 0), 0);
+  return { total: ml.length, fechados: fc.length, receita, conv, receitaMes: mesRec };
 }
 
-function renderMarketing() {
-  const mS = ['Instagram','Facebook'];
-  const mL  = leads.filter(l => mS.includes(l.source));
-  const mF  = mL.filter(l => l.stage === 'Fechado');
-  document.getElementById('meta-leads').textContent    = mL.length;
-  document.getElementById('meta-fechados').textContent = mF.length;
-  document.getElementById('meta-conv').textContent     = (mL.length ? Math.round(mF.length/mL.length*100) : 0) + '%';
-  const gS = ['Google','Google Ads'];
-  const gL  = leads.filter(l => gS.includes(l.source));
-  const gF  = gL.filter(l => l.stage === 'Fechado');
-  document.getElementById('google-leads').textContent    = gL.length;
-  document.getElementById('google-fechados').textContent = gF.length;
-  document.getElementById('google-conv').textContent     = (gL.length ? Math.round(gF.length/gL.length*100) : 0) + '%';
-  const pvRows = ACTIVE_STAGES.map(st => {
-    const sl = leads.filter(l => l.stage === st);
-    return { stage:st, count:sl.length, val:sl.reduce((s,l)=>s+(parseFloat(l.value)||0),0) };
-  }).filter(r => r.count > 0);
-  const totalPV = pvRows.reduce((s,r) => s+r.val, 0);
-  const pvEl = document.getElementById('pipeline-value-detail');
-  if (pvEl) pvEl.innerHTML = pvRows.length
-    ? `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px">
-        ${pvRows.map(r=>`<div style="background:var(--surface2);border-radius:var(--rs);padding:12px 14px">
-          <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
-            <span style="width:8px;height:8px;border-radius:50%;background:${SST[r.stage]?.dot||'#ccc'};flex-shrink:0"></span>
-            <span style="font-size:12px;font-weight:500">${r.stage}</span>
-          </div>
-          <div style="font-size:18px;font-weight:700;font-family:'DM Mono',monospace;color:var(--brand)">R$ ${fmt(r.val)}</div>
-          <div style="font-size:11px;color:var(--text3);margin-top:2px">${r.count} lead${r.count>1?'s':''}</div>
-        </div>`).join('')}
-        <div style="background:var(--brand);border-radius:var(--rs);padding:12px 14px">
-          <div style="font-size:12px;font-weight:500;color:#e8b8ae;margin-bottom:6px">TOTAL EM ABERTO</div>
-          <div style="font-size:18px;font-weight:700;font-family:'DM Mono',monospace;color:#fff">R$ ${fmt(totalPV)}</div>
-          <div style="font-size:11px;color:#e8b8ae;margin-top:2px">${pvRows.reduce((s,r)=>s+r.count,0)} leads ativos</div>
+function renderTeam() { renderSellerCards(); renderRanking(); }
+
+function renderSellerCards() {
+  const el = document.getElementById('sellers-list');
+  if (!sellers.length) { el.innerHTML = '<div class="empty"><p>Nenhum vendedor cadastrado.</p></div>'; return; }
+  el.innerHTML = sellers.map(s => {
+    const st   = sellerStats(s);
+    const goal = parseFloat(s.goal) || 0;
+    const pct  = goal > 0 ? Math.min(Math.round(st.receitaMes / goal * 100), 150) : 0;
+    const c    = s.color || '#592419';
+    return `<div class="seller-card" onclick="openSellerEdit('${s.id}')">
+      <div class="sc-head">
+        <div class="sc-av" style="background:${hexLight(c)};color:${c}">${initials(s.name)}</div>
+        <div><div class="sc-name">${s.name}</div><div class="sc-role">${s.role || 'Vendedor'}</div></div>
+      </div>
+      ${goal > 0 ? `<div class="meta-bar">
+        <div class="meta-bar-label"><span>Meta do mês</span><span>R$ ${fmt(st.receitaMes)} / R$ ${fmt(goal)} (${pct}%)</span></div>
+        <div class="bar-track"><div class="bar-fill${pct >= 100 ? ' over' : ''}" style="width:${Math.min(pct,100)}%"></div></div>
+      </div>` : ''}
+      <div class="sc-stats">
+        <div class="sc-stat"><div class="sc-stat-val">${st.total}</div><div class="sc-stat-lbl">Leads</div></div>
+        <div class="sc-stat"><div class="sc-stat-val">${st.fechados}</div><div class="sc-stat-lbl">Fechados</div></div>
+        <div class="sc-stat"><div class="sc-stat-val">${st.conv}%</div><div class="sc-stat-lbl">Conversão</div></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderRanking() {
+  const el = document.getElementById('ranking-panel');
+  if (!sellers.length) { el.innerHTML = '<div class="empty"><p>Cadastre vendedores para ver o ranking.</p></div>'; return; }
+  const ranked = sellers.map(s => ({ ...s, ...sellerStats(s) })).sort((a, b) => b.receita - a.receita);
+  const maxR   = ranked[0]?.receita || 1;
+  const pc     = i => i === 0 ? 'gold' : i === 1 ? 'silver' : i === 2 ? 'bronze' : 'other';
+  el.innerHTML = `<div class="panel-head"><span class="panel-title">Ranking — receita total</span></div>` +
+    ranked.map((s, i) => {
+      const c = s.color || '#592419';
+      return `<div class="rank-row">
+        <div class="rank-pos ${pc(i)}">${i + 1}</div>
+        <div style="width:32px;height:32px;border-radius:50%;background:${hexLight(c)};color:${c};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">${initials(s.name)}</div>
+        <div class="rank-info">
+          <div class="rank-name">${s.name}</div>
+          <div class="rank-detail">${s.total} leads · ${s.conv}% conversão</div>
+          <div class="rank-bar"><div class="rank-bar-f" style="width:${Math.round(s.receita / maxR * 100)}%"></div></div>
         </div>
-      </div>`
-    : '<div class="empty"><p>Nenhum lead ativo no pipeline.</p></div>';
+        <div><div class="rank-brl">R$ ${fmt(s.receita)}</div><div class="rank-conv">${s.fechados} fechados</div></div>
+      </div>`;
+    }).join('');
 }
 
-// ════════════════════════════════════════════════════════════════════════
-//  SELECTS DE VENDEDOR
-// ════════════════════════════════════════════════════════════════════════
 function updateSellerSelects() {
   const opts = sellers.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
   document.getElementById('nl-seller').innerHTML  = '<option value="">— nenhum —</option>' + opts;
@@ -1219,119 +1072,187 @@ function updateSellerSelects() {
   document.getElementById('det-seller').innerHTML = '<option value="">— sem atribuição —</option>' + opts;
 }
 
-// ════════════════════════════════════════════════════════════════════════
-//  CRUD — addDoc/updateDoc/deleteDoc com catch explícito
-// ════════════════════════════════════════════════════════════════════════
+// ── ANALYTICS + CHART.JS ──────────────────────────────────────────────────────
+function renderAnalytics() {
+  // Gráfico de barras — valor por etapa do funil
+  const stageVals = STAGES.map(st => leads.filter(l => l.stage === st).reduce((s, l) => s + (parseFloat(l.value) || 0), 0));
+  const ctxF = document.getElementById('chartFunil');
+  if (ctxF) {
+    if (chartFunil) { chartFunil.data.datasets[0].data = stageVals; chartFunil.update(); }
+    else {
+      chartFunil = new Chart(ctxF, {
+        type: 'bar',
+        data: { labels: STAGES, datasets: [{
+          label: 'Valor (R$)', data: stageVals,
+          backgroundColor: ['#c4b0ac','#b8c9e8','#b8d8c0','#f0d8b0','#f0c0a8','#a8d8c8','#f0b8b8'],
+          borderColor:     ['#9e9990','#1a4a7a','#1a5c2a','#92530a','#b04010','#0f5c4a','#8a1f1f'],
+          borderWidth: 1.5, borderRadius: 5
+        }]},
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => 'R$ ' + fmt(c.raw) }}},
+          scales: { y: { beginAtZero: true, ticks: { callback: v => 'R$ ' + fmt(v) }, grid: { color: 'rgba(0,0,0,.05)' }}, x: { grid: { display: false }}}
+        }
+      });
+    }
+  }
+  // Gráfico de rosca — origem dos leads
+  const srcMap = {};
+  leads.forEach(l => { const s = l.source || 'Não informado'; srcMap[s] = (srcMap[s] || 0) + 1; });
+  const srcL = Object.keys(srcMap), srcV = Object.values(srcMap);
+  const srcC = BRAND_COLORS.slice(0, srcL.length);
+  const ctxO = document.getElementById('chartOrigem');
+  if (ctxO) {
+    if (chartOrigem) { chartOrigem.data.labels = srcL; chartOrigem.data.datasets[0].data = srcV; chartOrigem.data.datasets[0].backgroundColor = srcC; chartOrigem.update(); }
+    else if (srcL.length) {
+      chartOrigem = new Chart(ctxO, {
+        type: 'doughnut',
+        data: { labels: srcL, datasets: [{ data: srcV, backgroundColor: srcC, borderWidth: 2, borderColor: '#fff' }]},
+        options: { responsive: true, maintainAspectRatio: false, cutout: '68%', plugins: { legend: { position: 'bottom', labels: { font: { size: 11 }, boxWidth: 12, padding: 10 }}}}
+      });
+    }
+  }
+  // Tabela de conversão por origem
+  const srcWrap = document.getElementById('source-table-wrap');
+  if (srcWrap) {
+    const srcData = Object.entries(srcMap).map(([s, total]) => {
+      const fechados = leads.filter(l => (l.source || 'Não informado') === s && l.stage === 'Fechado').length;
+      const conv     = total ? Math.round(fechados / total * 100) : 0;
+      return { s, total, fechados, conv };
+    }).sort((a, b) => b.total - a.total);
+    srcWrap.innerHTML = srcData.length ? `<table class="source-table">
+      <thead><tr><th>Origem</th><th>Leads</th><th>Fechados</th><th>Conversão</th></tr></thead>
+      <tbody>${srcData.map(d => `<tr>
+        <td style="font-weight:500">${d.s}</td><td>${d.total}</td><td>${d.fechados}</td>
+        <td><div>${d.conv}%</div><div class="conv-bar"><div class="conv-bar-f" style="width:${d.conv}%"></div></div></td>
+      </tr>`).join('')}</tbody></table>` : '<div class="empty" style="padding:24px"><p>Sem dados.</p></div>';
+  }
+  // Tabela de produto
+  const prodWrap = document.getElementById('product-table-wrap');
+  if (prodWrap) {
+    const prodMap = {};
+    leads.forEach(l => {
+      const p = l.product || 'Outro';
+      if (!prodMap[p]) prodMap[p] = { total: 0, receita: 0 };
+      prodMap[p].total++;
+      if (l.stage === 'Fechado') prodMap[p].receita += parseFloat(l.value) || 0;
+    });
+    const rows = Object.entries(prodMap).sort((a, b) => b[1].receita - a[1].receita);
+    prodWrap.innerHTML = rows.length ? `<table class="source-table">
+      <thead><tr><th>Produto</th><th>Leads</th><th>Receita</th></tr></thead>
+      <tbody>${rows.map(([p, d]) => `<tr><td>${p}</td><td>${d.total}</td><td>R$ ${fmt(d.receita)}</td></tr>`).join('')}</tbody>
+    </table>` : '<div class="empty" style="padding:24px"><p>Sem dados.</p></div>';
+  }
+}
 
-// ── LEADS ──
+// ── MARKETING ─────────────────────────────────────────────────────────────────
+function renderMarketing() {
+  const mS = ['Instagram','Facebook'];
+  const mL = leads.filter(l => mS.includes(l.source));
+  const mF = mL.filter(l => l.stage === 'Fechado');
+  document.getElementById('meta-leads').textContent    = mL.length;
+  document.getElementById('meta-fechados').textContent = mF.length;
+  document.getElementById('meta-conv').textContent     = (mL.length ? Math.round(mF.length / mL.length * 100) : 0) + '%';
+
+  const gS = ['Google','Google Ads'];
+  const gL = leads.filter(l => gS.includes(l.source));
+  const gF = gL.filter(l => l.stage === 'Fechado');
+  document.getElementById('google-leads').textContent    = gL.length;
+  document.getElementById('google-fechados').textContent = gF.length;
+  document.getElementById('google-conv').textContent     = (gL.length ? Math.round(gF.length / gL.length * 100) : 0) + '%';
+
+  const pvRows = ACTIVE_STAGES.map(st => {
+    const sl = leads.filter(l => l.stage === st);
+    return { stage: st, count: sl.length, val: sl.reduce((s, l) => s + (parseFloat(l.value) || 0), 0) };
+  }).filter(r => r.count > 0);
+  const totalPV = pvRows.reduce((s, r) => s + r.val, 0);
+  const pvEl = document.getElementById('pipeline-value-detail');
+  if (pvEl) pvEl.innerHTML = pvRows.length
+    ? `<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px">
+        ${pvRows.map(r => `<div style="background:var(--surface2);border-radius:var(--rs);padding:12px 14px">
+          <div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">
+            <span style="width:8px;height:8px;border-radius:50%;background:${SST[r.stage]?.dot||'#ccc'};flex-shrink:0"></span>
+            <span style="font-size:12px;font-weight:500">${r.stage}</span>
+          </div>
+          <div style="font-size:18px;font-weight:700;font-family:'DM Mono',monospace;color:var(--brand)">R$ ${fmt(r.val)}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px">${r.count} lead${r.count > 1 ? 's' : ''}</div>
+        </div>`).join('')}
+        <div style="background:var(--brand);border-radius:var(--rs);padding:12px 14px">
+          <div style="font-size:12px;font-weight:500;color:#e8b8ae;margin-bottom:6px">TOTAL EM ABERTO</div>
+          <div style="font-size:18px;font-weight:700;font-family:'DM Mono',monospace;color:#fff">R$ ${fmt(totalPV)}</div>
+          <div style="font-size:11px;color:#e8b8ae;margin-top:2px">${pvRows.reduce((s, r) => s + r.count, 0)} leads ativos</div>
+        </div>
+      </div>`
+    : '<div class="empty"><p>Nenhum lead ativo no pipeline.</p></div>';
+}
+
+// ── WEBHOOK ───────────────────────────────────────────────────────────────────
+window.updateWhStatus = () => {
+  const url   = document.getElementById('webhook-url').value.trim();
+  const badge = document.getElementById('wh-badge');
+  const valid = url.startsWith('https://');
+  badge.textContent = valid ? 'Configurado' : 'Não configurado';
+  badge.className   = 'wh-status ' + (valid ? 'active' : 'inactive');
+};
+
+window.saveWh = () => {
+  window.updateWhStatus();
+  toast('URL salva na sessão atual');
+};
+
+// ── CRUD — addDoc / updateDoc / deleteDoc com try/catch + alert explícito ─────
 window.saveLead = async () => {
   const name = document.getElementById('nl-name').value.trim();
   if (!name) { alert('Informe o nome do cliente.'); return; }
   const btn = document.getElementById('btn-save-lead');
   btn.disabled = true; btn.textContent = 'Salvando...';
-
-  const novoLead = {
-    name,
-    phone:     document.getElementById('nl-phone').value.trim(),
-    city:      document.getElementById('nl-city').value.trim(),
-    product:   document.getElementById('nl-product').value.trim(),
-    value:     document.getElementById('nl-value').value,
-    stage:     document.getElementById('nl-stage').value,
-    sellerId:  document.getElementById('nl-seller').value,
-    source:    document.getElementById('nl-source').value,
-    obs:       document.getElementById('nl-obs').value.trim(),
-    createdAt: serverTimestamp()
-  };
-
   try {
-    const ref = await addDoc(collection(db, 'leads'), novoLead);
+    const ref = await addDoc(collection(db, 'leads'), {
+      name,
+      phone:     document.getElementById('nl-phone').value.trim(),
+      city:      document.getElementById('nl-city').value.trim(),
+      product:   document.getElementById('nl-product').value.trim(),
+      value:     document.getElementById('nl-value').value,
+      stage:     document.getElementById('nl-stage').value,
+      sellerId:  document.getElementById('nl-seller').value,
+      source:    document.getElementById('nl-source').value,
+      obs:       document.getElementById('nl-obs').value.trim(),
+      createdAt: serverTimestamp()  // ← timestamp do servidor, não do browser
+    });
     console.log('[CRM] Lead salvo no Firestore — ID:', ref.id);
-    dbg('✅ Lead salvo! ID: ' + ref.id);
+    dbg('Lead salvo! ID: ' + ref.id);
     closeModal('lead');
     toast('Lead salvo!');
   } catch(error) {
     console.error('[CRM] addDoc falhou:', error.code, error.message, error);
-    alert('FALHA CRÍTICA NO FIRESTORE: ' + error.code + '\n\n' + error.message);
+    alert('FALHA CRÍTICA NO FIRESTORE\n\nCódigo: ' + error.code + '\n\nMensagem: ' + error.message + '\n\nSolução provável: verifique as Regras do Firestore no Firebase Console.');
     dbg('ERRO ao salvar lead: ' + error.code, true);
   } finally {
     btn.disabled = false; btn.textContent = 'Salvar lead';
   }
 };
 
-window.updateLeadStage = async () => {
-  if (!currentLeadId) return;
-  try {
-    await updateDoc(doc(db, 'leads', currentLeadId), { stage: document.getElementById('det-stage').value });
-    toast('Etapa atualizada');
-  } catch(error) {
-    alert('FALHA CRÍTICA NO FIRESTORE: ' + error.code);
-    console.error('[CRM] updateLeadStage:', error);
-  }
-};
-
-window.updateLeadSeller = async () => {
-  if (!currentLeadId) return;
-  try {
-    await updateDoc(doc(db, 'leads', currentLeadId), { sellerId: document.getElementById('det-seller').value });
-    toast('Vendedor atribuído');
-  } catch(error) {
-    alert('FALHA CRÍTICA NO FIRESTORE: ' + error.code);
-    console.error('[CRM] updateLeadSeller:', error);
-  }
-};
-
-window.deleteLead = async () => {
-  if (!confirm('Excluir este lead permanentemente?')) return;
-  try {
-    await deleteDoc(doc(db, 'leads', currentLeadId));
-    closeModal('detail');
-    toast('Lead excluído');
-  } catch(error) {
-    alert('FALHA CRÍTICA NO FIRESTORE: ' + error.code);
-  }
-};
-
-// ── TASKS ──
 window.saveTask = async () => {
   const title = document.getElementById('nt-title').value.trim();
   if (!title) { alert('Informe a descrição.'); return; }
   try {
     const ref = await addDoc(collection(db, 'tasks'), {
       title,
-      leadId:   document.getElementById('nt-lead').value,
-      sellerId: document.getElementById('nt-seller').value,
-      date:     document.getElementById('nt-date').value,
-      priority: document.getElementById('nt-priority').value,
-      done:     false,
+      leadId:    document.getElementById('nt-lead').value,
+      sellerId:  document.getElementById('nt-seller').value,
+      date:      document.getElementById('nt-date').value,
+      priority:  document.getElementById('nt-priority').value,
+      done:      false,
       createdAt: serverTimestamp()
     });
     dbg('Tarefa salva! ID: ' + ref.id);
-    closeModal('task');
-    toast('Tarefa criada!');
+    closeModal('task'); toast('Tarefa criada!');
   } catch(error) {
-    alert('FALHA CRÍTICA NO FIRESTORE: ' + error.code + '\n\n' + error.message);
+    alert('FALHA CRÍTICA NO FIRESTORE\n\nCódigo: ' + error.code + '\n\n' + error.message);
     console.error('[CRM] saveTask:', error);
   }
 };
 
-window.toggleTask = async (id, done) => {
-  try {
-    await updateDoc(doc(db, 'tasks', id), { done: done !== 'true' });
-  } catch(error) {
-    alert('FALHA CRÍTICA NO FIRESTORE: ' + error.code);
-  }
-};
-
-window.deleteTask = async (id) => {
-  try {
-    await deleteDoc(doc(db, 'tasks', id));
-    toast('Tarefa excluída');
-  } catch(error) {
-    alert('FALHA CRÍTICA NO FIRESTORE: ' + error.code);
-  }
-};
-
-// ── SELLERS ──
 window.saveSeller = async () => {
   const name = document.getElementById('sv-name').value.trim();
   if (!name) { alert('Informe o nome.'); return; }
@@ -1354,27 +1275,39 @@ window.saveSeller = async () => {
     }
     closeModal('seller');
   } catch(error) {
-    alert('FALHA CRÍTICA NO FIRESTORE: ' + error.code + '\n\n' + error.message);
+    alert('FALHA CRÍTICA NO FIRESTORE\n\nCódigo: ' + error.code + '\n\n' + error.message);
     console.error('[CRM] saveSeller:', error);
   }
 };
 
 window.deleteSeller = async () => {
   if (!confirm('Excluir este vendedor?')) return;
-  try {
-    await deleteDoc(doc(db, 'sellers', currentSellerId));
-    closeModal('seller');
-    toast('Vendedor removido');
-  } catch(error) {
-    alert('FALHA CRÍTICA NO FIRESTORE: ' + error.code);
-  }
+  try { await deleteDoc(doc(db, 'sellers', currentSellerId)); closeModal('seller'); toast('Vendedor removido'); }
+  catch(e) { alert('FALHA: ' + e.code); }
 };
 
-// ════════════════════════════════════════════════════════════════════════
-//  MODAIS
-// ════════════════════════════════════════════════════════════════════════
+window.updateLeadStage = async () => {
+  if (!currentLeadId) return;
+  try { await updateDoc(doc(db, 'leads', currentLeadId), { stage: document.getElementById('det-stage').value }); toast('Etapa atualizada'); }
+  catch(e) { alert('FALHA CRÍTICA NO FIRESTORE: ' + e.code + '\n\n' + e.message); }
+};
+
+window.updateLeadSeller = async () => {
+  if (!currentLeadId) return;
+  try { await updateDoc(doc(db, 'leads', currentLeadId), { sellerId: document.getElementById('det-seller').value }); toast('Vendedor atribuído'); }
+  catch(e) { alert('FALHA: ' + e.code); }
+};
+
+window.deleteLead = async () => {
+  if (!confirm('Excluir este lead permanentemente?')) return;
+  try { await deleteDoc(doc(db, 'leads', currentLeadId)); closeModal('detail'); toast('Lead excluído'); }
+  catch(e) { alert('FALHA: ' + e.code); }
+};
+
+// ── MODAIS ────────────────────────────────────────────────────────────────────
 window.openModal = (name) => {
   if (name === 'lead') {
+    // Reset completo — sem dados do lead anterior
     ['nl-name','nl-phone','nl-city','nl-product','nl-value','nl-obs'].forEach(id => document.getElementById(id).value = '');
     document.getElementById('nl-stage').value  = 'Novo Lead';
     document.getElementById('nl-source').value = '';
@@ -1406,8 +1339,7 @@ window.closeModal = (name) => document.getElementById(`overlay-${name}`).classLi
 
 window.openSellerEdit = (id) => {
   currentSellerId = id;
-  const s = sellers.find(s => s.id === id);
-  if (!s) return;
+  const s = sellers.find(s => s.id === id); if (!s) return;
   document.getElementById('seller-modal-title').textContent = 'Editar vendedor';
   document.getElementById('btn-del-seller').style.display   = 'block';
   document.getElementById('sv-name').value  = s.name  || '';
@@ -1429,24 +1361,23 @@ window.selectColor = (color, el) => {
 
 window.openDetail = (id) => {
   currentLeadId = id;
-  const l = leads.find(l => l.id === id);
-  if (!l) return;
+  const l = leads.find(l => l.id === id); if (!l) return;
   updateSellerSelects();
-  document.getElementById('det-title').textContent = l.name;
-  document.getElementById('det-stage').value        = l.stage;
-  document.getElementById('det-seller').value       = l.sellerId || '';
-  document.getElementById('det-wpp-tpl').value      = '';
+  document.getElementById('det-title').textContent        = l.name;
+  document.getElementById('det-stage').value              = l.stage;
+  document.getElementById('det-seller').value             = l.sellerId || '';
+  document.getElementById('det-wpp-tpl').value            = '';
   document.getElementById('det-wpp-preview').style.display = 'none';
-  document.getElementById('btn-open-wpp').style.display    = 'none';
+  document.getElementById('btn-open-wpp').style.display   = 'none';
   const seller = l.sellerId ? sellers.find(s => s.id === l.sellerId) : null;
   document.getElementById('det-info').innerHTML = `
-    <div class="det-row"><span>Projeto</span><span>${l.product||'—'}</span></div>
-    <div class="det-row"><span>Valor</span><span>${l.value ? 'R$ '+fmt(parseFloat(l.value)) : '—'}</span></div>
-    <div class="det-row"><span>WhatsApp</span><span>${l.phone||'—'}</span></div>
-    ${l.city   ? `<div class="det-row"><span>Cidade</span><span>${l.city}</span></div>` : ''}
-    ${l.source ? `<div class="det-row"><span>Canal</span><span>${l.source}</span></div>` : ''}
+    <div class="det-row"><span>Projeto</span><span>${l.product || '—'}</span></div>
+    <div class="det-row"><span>Valor</span><span>${l.value ? 'R$ ' + fmt(parseFloat(l.value)) : '—'}</span></div>
+    <div class="det-row"><span>WhatsApp</span><span>${l.phone || '—'}</span></div>
+    ${l.city   ? `<div class="det-row"><span>Cidade</span><span>${l.city}</span></div>`     : ''}
+    ${l.source ? `<div class="det-row"><span>Canal</span><span>${l.source}</span></div>`    : ''}
     ${seller   ? `<div class="det-row"><span>Vendedor</span><span>${seller.name}</span></div>` : ''}
-    ${l.obs    ? `<div class="det-row"><span>Obs</span><span>${l.obs}</span></div>` : ''}`;
+    ${l.obs    ? `<div class="det-row"><span>Obs</span><span>${l.obs}</span></div>`         : ''}`;
   window.openModal('detail');
 };
 
@@ -1456,8 +1387,8 @@ window.previewWpp = () => {
   const el  = document.getElementById('det-wpp-preview');
   const btn = document.getElementById('btn-open-wpp');
   if (!tpl || !l) { el.style.display = 'none'; btn.style.display = 'none'; return; }
-  el.textContent = WPP[tpl](l.name, l.product || 'seu projeto');
-  el.style.display = 'block';
+  el.textContent    = WPP[tpl](l.name, l.product || 'seu projeto');
+  el.style.display  = 'block';
   btn.style.display = l.phone ? 'flex' : 'none';
 };
 
@@ -1465,29 +1396,17 @@ window.openWpp = () => {
   const tpl = document.getElementById('det-wpp-tpl').value;
   const l   = leads.find(l => l.id === currentLeadId);
   if (!l || !l.phone || !tpl) return;
-  window.open(`https://wa.me/55${l.phone.replace(/\D/g,'')}?text=${encodeURIComponent(WPP[tpl](l.name, l.product||'seu projeto'))}`);
+  window.open(`https://wa.me/55${l.phone.replace(/\D/g,'')}?text=${encodeURIComponent(WPP[tpl](l.name, l.product || 'seu projeto'))}`);
 };
 
-window.openModalForStage = (stage) => {
-  window.openModal('lead');
-  document.getElementById('nl-stage').value = stage;
-};
+window.openModalForStage = (stage) => { window.openModal('lead'); document.getElementById('nl-stage').value = stage; };
 
-// ════════════════════════════════════════════════════════════════════════
-//  NAVEGAÇÃO
-// ════════════════════════════════════════════════════════════════════════
+// ── NAVEGAÇÃO ─────────────────────────────────────────────────────────────────
 window.showView = (name, btn) => {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.getElementById(`view-${name}`).classList.add('active');
   btn.classList.add('active');
-};
-
-window.filterTasks = (f, btn) => {
-  taskFilter = f;
-  document.querySelectorAll('.fbtn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderTasks();
 };
 
 window.copyLink = () => {
@@ -1498,67 +1417,14 @@ window.copyLink = () => {
     .catch(() => toast('Copie o link acima'));
 };
 
-// ════════════════════════════════════════════════════════════════════════
-//  WEBHOOK — estado em memória (não persiste, sem localStorage)
-// ════════════════════════════════════════════════════════════════════════
-window.updateWhStatus = () => {
-  const url   = document.getElementById('webhook-url').value.trim();
-  const badge = document.getElementById('wh-badge');
-  const valid = url.startsWith('https://');
-  badge.textContent = valid ? 'Configurado' : 'Não configurado';
-  badge.className   = 'wh-status ' + (valid ? 'active' : 'inactive');
-};
+// ── INIT ──────────────────────────────────────────────────────────────────────
+document.querySelectorAll('.overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); });
+});
+document.getElementById('form-link').textContent = window.location.href.replace(/\/[^\/]*$/, '') + '/formulario.html';
+document.querySelector('.cp-opt').style.border = '3px solid var(--text)';
+dbg('Motor Firebase v10.7.1 iniciado. Aguardando autenticação...');
 
-window.saveWh = () => {
-  webhookUrl = document.getElementById('webhook-url').value.trim();
-  window.updateWhStatus();
-  toast('URL salva na sessão atual');
-};
-
-// ════════════════════════════════════════════════════════════════════════
-//  KANBAN DRAG & DROP
-// ════════════════════════════════════════════════════════════════════════
-window.startDrag = (e, id) => {
-  dragId = id;
-  e.currentTarget.classList.add('dragging');
-  e.dataTransfer.effectAllowed = 'move';
-};
-
-window.endDrag = (e) => {
-  e.currentTarget.classList.remove('dragging');
-  document.querySelectorAll('.kcol').forEach(c => c.classList.remove('drag-over'));
-};
-
-function initKanbanDnd() {
-  document.querySelectorAll('.kcol').forEach(col => {
-    col.addEventListener('dragover', e => { e.preventDefault(); col.classList.add('drag-over'); });
-    col.addEventListener('dragleave', () => col.classList.remove('drag-over'));
-    col.addEventListener('drop', async e => {
-      e.preventDefault();
-      col.classList.remove('drag-over');
-      const stage = col.dataset.stage;
-      if (dragId && stage) {
-        try {
-          await updateDoc(doc(db, 'leads', dragId), { stage });
-          toast('Etapa atualizada');
-          dbg('Card movido para: ' + stage);
-        } catch(error) {
-          alert('FALHA CRÍTICA NO FIRESTORE: ' + error.code);
-          console.error('[CRM] drop:', error);
-        }
-        dragId = null;
-      }
-    });
-  });
-}
-
-// ════════════════════════════════════════════════════════════════════════
-//  INICIALIZAÇÃO
-// ════════════════════════════════════════════════════════════════════════
-document.querySelectorAll('.overlay').forEach(o =>
-  o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); })
-);
-document.getElementById('form-captacao-link')?.addEventListener('click', window.copyLink);
 </script>
 </body>
 </html>
