@@ -283,7 +283,7 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
     <div class="fg"><label>Senha</label><input id="li-pass" type="password" placeholder="••••••••"></div>
     <button class="login-btn" id="login-btn" onclick="doLogin()">Entrar</button>
     <div class="login-hint">
-      <strong>Credenciais:</strong> contatomoveisrodrigues@gmail.com<br>
+      <strong>Credenciais:</strong> contato@rodriguesmoveisplanejados.com.br<br>
       Certifique-se de ter ativado o <strong>Firebase Authentication</strong> no console e criado este usuário.
     </div>
   </div>
@@ -1307,10 +1307,23 @@ window.copyLink=()=>{
 //  INIT
 // ════════════════════════════════════════════════════════════════════════
 document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
-document.getElementById('form-link').textContent=window.location.href.replace(/\/[^\/]*$/,'')+'/formulario.html';
-document.querySelector('.cp-opt').style.border='3px solid var(--text)';
+document.getElementById('form-captacao-link').addEventListener('click',window.copyLink);
 
-dbg('CRM iniciado. Aguardando autenticação Firebase...');
+// Kanban drag-and-drop
+let dragId=null;
+document.querySelectorAll('.kcol').forEach(col=>{
+  col.addEventListener('dragover',e=>{e.preventDefault();col.classList.add('drag-over');});
+  col.addEventListener('dragleave',()=>col.classList.remove('drag-over'));
+  col.addEventListener('drop',async e=>{
+    e.preventDefault();col.classList.remove('drag-over');
+    const stage=col.dataset.stage;
+    if(dragId&&stage){
+      try{await updateDoc(doc(db,'leads',dragId),{stage});toast('Etapa atualizada');}
+      catch(err){alert('❌ Erro ao mover card: '+errMsg(err));}
+    }
+    dragId=null;
+  });
+});
 </script>
 </body>
 </html>
