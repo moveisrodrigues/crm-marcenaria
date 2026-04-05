@@ -572,8 +572,7 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
 // ── IMPORTS ──────────────────────────────────────────────────────────────────
 import { initializeApp }
   from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged,
-         setPersistence, browserLocalPersistence }
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
   from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import { getFirestore, collection, onSnapshot, addDoc, updateDoc,
          deleteDoc, doc, serverTimestamp, query, orderBy }
@@ -594,9 +593,7 @@ const app  = initializeApp({
 const auth = getAuth(app);
 const db   = getFirestore(app);
 
-// Sessão persistente no browser — usuário continua logado ao recarregar
-setPersistence(auth, browserLocalPersistence)
-  .catch(e => console.warn('[CRM] setPersistence:', e.message));
+// Sessão gerida exclusivamente pelo Firebase Auth (sem armazenamento local)
 
 // ── CONSTANTES ────────────────────────────────────────────────────────────────
 const STAGES        = ['Novo Lead','Primeiro Contato','Qualificação','Proposta','Negociação','Fechado','Perdido'];
@@ -715,6 +712,8 @@ window.doLogin = async () => {
   try {
     await signInWithEmailAndPassword(auth, email, pass);
   } catch(e) {
+    alert('ERRO DE LOGIN: ' + e.code);
+    console.error('[CRM] Login error:', e);
     const msgs = {
       'auth/invalid-credential':     'E-mail ou senha incorretos.',
       'auth/user-not-found':         'Usuário não cadastrado no Firebase Auth.',
@@ -722,6 +721,8 @@ window.doLogin = async () => {
       'auth/invalid-email':          'E-mail inválido.',
       'auth/too-many-requests':      'Muitas tentativas. Aguarde.',
       'auth/network-request-failed': 'Sem conexão com a internet.',
+      'auth/operation-not-allowed':  'Método de login não ativado no Firebase Console.',
+      'auth/unauthorized-domain':    'Domínio não autorizado — adicione no Firebase Console.',
     };
     const msg = msgs[e.code] || ('Erro: ' + e.code);
     errEl.textContent = msg; errEl.style.display = 'block';
@@ -1225,7 +1226,7 @@ window.saveLead = async () => {
     toast('Lead salvo!');
   } catch(error) {
     console.error('[CRM] addDoc falhou:', error.code, error.message, error);
-    alert('FALHA CRÍTICA NO FIRESTORE\n\nCódigo: ' + error.code + '\n\nMensagem: ' + error.message + '\n\nSolução provável: verifique as Regras do Firestore no Firebase Console.');
+    alert('ERRO GOOGLE: ' + error.code);
     dbg('ERRO ao salvar lead: ' + error.code, true);
   } finally {
     btn.disabled = false; btn.textContent = 'Salvar lead';
