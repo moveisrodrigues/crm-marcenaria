@@ -281,9 +281,9 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
     <div class="login-err" id="login-err"></div>
     <div class="fg"><label>E-mail</label><input id="li-email" type="email" placeholder="seu@email.com"></div>
     <div class="fg"><label>Senha</label><input id="li-pass" type="password" placeholder="••••••••"></div>
-    <button class="login-btn" id="login-btn" onclick="doLogin()">Entrar</button>
+    <button class="login-btn" id="login-btn">Entrar</button>
     <div class="login-hint">
-      <strong>Credenciais:</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="462529283227322906342922342f213323352b2930232f35362a2728232c272229356825292b682434">[email&#160;protected]</a><br>
+      <strong>Credenciais:</strong> contato@rodriguesoveisplanejados.com.br<br>
       Certifique-se de ter ativado o <strong>Firebase Authentication</strong> no console e criado este usuário.
     </div>
   </div>
@@ -630,7 +630,7 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
 
 <div class="toast" id="toast"></div>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
+<script type="module">
 // ════════════════════════════════════════════════════════════════════════
 //  FIREBASE SDK v10.7.1 — Modular (sem databaseURL → evita operation-not-allowed)
 // ════════════════════════════════════════════════════════════════════════
@@ -806,8 +806,10 @@ window.doLogout = async () => {
 };
 
 document.getElementById('li-pass').addEventListener('keydown', e => {
-  if (e.key === 'Enter') window.doLogin();
+  if (e.key === 'Enter') doLogin();
 });
+
+document.getElementById('login-btn').addEventListener('click', () => doLogin());
 
 
 
@@ -1340,4 +1342,15 @@ document.querySelectorAll('.kcol').forEach(col => {
       try {
         await updateDoc(doc(db, 'leads', dragId), { stage });
         toast('Etapa atualizada');
-        dbg('Card movido para: 
+        dbg('Card movido para: ' + stage);
+      } catch(e) {
+        dbg('Erro ao mover card: ' + errMsg(e), true);
+      }
+    }
+    dragId = null;
+  });
+});
+
+</script>
+</body>
+</html>
