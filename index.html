@@ -286,6 +286,14 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
       <strong>Credenciais:</strong> contato@rodriguesoveisplanejados.com.br<br>
       Certifique-se de ter ativado o <strong>Firebase Authentication</strong> no console e criado este usuário.
     </div>
+    <div id="setup-banner" style="display:none;margin-top:14px;padding:12px;background:#fff3cd;border:1px solid #ffc107;border-radius:8px;font-size:12px;color:#664d03;line-height:1.7">
+      <strong>⚠️ Firestore não encontrado. Siga os passos:</strong><br>
+      1. <a href="https://console.firebase.google.com/project/crm-marcenaria-ac88a/firestore" target="_blank" style="color:#592419;font-weight:700">Clique aqui → Firebase Console</a><br>
+      2. Clique em <strong>"Criar banco de dados"</strong><br>
+      3. Escolha <strong>Modo produção</strong> → região <strong>us-east1</strong><br>
+      4. Em <strong>Regras</strong>, publique: <code style="background:#eee;padding:1px 4px;border-radius:3px">allow read, write: if request.auth != null;</code><br>
+      5. Recarregue esta página
+    </div>
   </div>
 </div>
 
@@ -717,10 +725,10 @@ function dbg(msg, isErr=false) {
 function errMsg(e) {
   // Traduz os códigos de erro mais comuns do Firebase/Firestore
   const map = {
-    'permission-denied':       'PERMISSÃO NEGADA — Ajuste as Regras do Firestore para allow read, write: if true',
-    'unavailable':             'FIRESTORE INDISPONÍVEL — Verifique sua conexão com a internet',
+    'permission-denied':       'PERMISSÃO NEGADA — No Firebase Console → Firestore → Regras, publique: allow read, write: if request.auth != null',
+    'unavailable':             'FIRESTORE INDISPONÍVEL — Verifique sua conexão ou aguarde alguns segundos',
     'unauthenticated':         'NÃO AUTENTICADO — Faça login novamente',
-    'not-found':               'PROJETO NÃO ENCONTRADO — Confirme o projectId no Firebase Console',
+    'not-found':               '⚠️ BANCO NÃO CRIADO — Acesse console.firebase.google.com → seu projeto → Firestore Database → "Criar banco de dados"',
     'invalid-argument':        'ARGUMENTO INVÁLIDO — Dado malformado enviado ao Firestore',
     'resource-exhausted':      'COTA ESGOTADA — Limite gratuito do Firebase atingido',
     'auth/user-not-found':     'USUÁRIO NÃO CADASTRADO — Crie o usuário no Firebase Auth',
@@ -731,6 +739,10 @@ function errMsg(e) {
     'auth/network-request-failed': 'ERRO DE REDE — Sem conexão com a internet',
   };
   const code = e?.code?.replace('firestore/','') || '';
+  // Detecta o erro específico "database does not exist" que aparece como mensagem longa
+  if (e?.message && e.message.includes('does not exist')) {
+    return '⚠️ BANCO NÃO CRIADO — Acesse console.firebase.google.com → projeto crm-marcenaria-ac88a → Firestore Database → clique "Criar banco de dados" → escolha modo Produção → selecione região us-east1';
+  }
   return map[code] || `${e?.code || 'ERRO'}: ${e?.message || e}`;
 }
 
@@ -769,6 +781,42 @@ onAuthStateChanged(auth, user => {
     document.getElementById('login-screen').classList.add('hidden');
     dbg('✅ Sessão ativa: ' + user.email);
     initListeners(); // inicia onSnapshot — cancela listeners anteriores internamente
+
+    // ── Teste de permissão imediato: tenta escrever um doc de teste e apaga na sequência ──
+    // Isso confirma se as Regras do Firestore permitem escrita antes do usuário tentar salvar
+    (async () => {
+      try {
+        const testRef = await addDoc(collection(db, '_ping'), { ts: serverTimestamp(), uid: user.uid });
+        await deleteDoc(testRef);
+        dbg('✅ Permissão Firestore OK — escrita e leitura funcionando');
+      } catch(e) {
+        const isPermission = e.code && e.code.includes('permission-denied');
+        const isMissing    = e.message && e.message.includes('does not exist');
+        if (isPermission) {
+          setSynced(false, '❌ Sem permissão');
+          dbg('❌ PERMISSÃO NEGADA — Ajuste as Regras do Firestore', true);
+          alert(
+            '❌ PERMISSÃO NEGADA no Firestore!\n\n' +
+            'O banco existe, mas as Regras bloqueiam a escrita.\n\n' +
+            'Acesse: Firebase Console → Firestore → Segurança\n' +
+            'e substitua o conteúdo por:\n\n' +
+            'rules_version = \'2\';\n' +
+            'service cloud.firestore {\n' +
+            '  match /databases/{database}/documents {\n' +
+            '    match /{document=**} {\n' +
+            '      allow read, write: if request.auth != null;\n' +
+            '    }\n' +
+            '  }\n' +
+            '}\n\n' +
+            'Clique em "Publicar" e recarregue a página.'
+          );
+        } else if (isMissing) {
+          dbg('⚠️ Banco Firestore não encontrado', true);
+        } else {
+          console.warn('[CRM] Ping falhou (não crítico):', e.code, e.message);
+        }
+      }
+    })();
   } else {
     // Sem sessão — mostra tela de login e limpa estado
     document.getElementById('login-screen').classList.remove('hidden');
@@ -858,8 +906,43 @@ function initListeners() {
       const msg = errMsg(error);
       setSynced(false, 'Erro de sync');
       dbg('ERRO LEADS: '+msg, true);
+
+      // ── Banco não criado (erro mais comum na primeira configuração) ──
+      if (error.message && error.message.includes('does not exist')) {
+        setSynced(false, '⚠️ Banco não criado');
+        // Mostra banner de setup na tela de login caso esteja visível
+        const banner = document.getElementById('setup-banner');
+        if (banner) banner.style.display = 'block';
+        alert(
+          '⚠️ O Cloud Firestore ainda não foi criado!\n\n' +
+          'Siga estes passos:\n' +
+          '1. Acesse: console.firebase.google.com\n' +
+          '2. Selecione o projeto: crm-marcenaria-ac88a\n' +
+          '3. No menu lateral: Firestore Database\n' +
+          '4. Clique em "Criar banco de dados"\n' +
+          '5. Escolha "Modo produção"\n' +
+          '6. Selecione região: us-east1 (ou a mais próxima)\n' +
+          '7. Após criar, vá em Regras e publique:\n\n' +
+          'allow read, write: if request.auth != null;\n\n' +
+          'Depois recarregue esta página.'
+        );
+        return;
+      }
+
+      // ── Permissão negada ──
       if (error.code === 'permission-denied' || error.code === 'firestore/permission-denied') {
-        alert('❌ PERMISSÃO NEGADA no Firestore!\n\nNo Firebase Console → Firestore → Regras, publique:\n\nrules_version = \'2\';\nservice cloud.firestore {\n  match /databases/{database}/documents {\n    match /{document=**} {\n      allow read, write: if request.auth != null;\n    }\n  }\n}');
+        alert(
+          '❌ PERMISSÃO NEGADA no Firestore!\n\n' +
+          'No Firebase Console → Firestore → Regras, publique:\n\n' +
+          'rules_version = \'2\';\n' +
+          'service cloud.firestore {\n' +
+          '  match /databases/{database}/documents {\n' +
+          '    match /{document=**} {\n' +
+          '      allow read, write: if request.auth != null;\n' +
+          '    }\n' +
+          '  }\n' +
+          '}'
+        );
       }
     }
   );
@@ -1158,28 +1241,38 @@ window.saveLead=async()=>{
   if(!name){alert('Informe o nome do cliente.');return;}
   const btn=document.getElementById('btn-save-lead');
   btn.disabled=true; btn.textContent='Salvando...';
+
   const data={
     name,
-    phone:   document.getElementById('nl-phone').value.trim(),
-    city:    document.getElementById('nl-city').value.trim(),
-    product: document.getElementById('nl-product').value.trim(),
-    value:   document.getElementById('nl-value').value,
-    stage:   document.getElementById('nl-stage').value,
-    sellerId:document.getElementById('nl-seller').value,
-    source:  document.getElementById('nl-source').value,
-    obs:     document.getElementById('nl-obs').value.trim(),
+    phone:    document.getElementById('nl-phone').value.trim(),
+    city:     document.getElementById('nl-city').value.trim(),
+    product:  document.getElementById('nl-product').value.trim(),
+    value:    document.getElementById('nl-value').value,
+    stage:    document.getElementById('nl-stage').value,
+    sellerId: document.getElementById('nl-seller').value,
+    source:   document.getElementById('nl-source').value,
+    obs:      document.getElementById('nl-obs').value.trim(),
     createdAt: serverTimestamp()
   };
+
+  console.log('[CRM] Tentando addDoc na coleção "leads":', data);
+
   try {
     const ref = await addDoc(collection(db,'leads'), data);
-    dbg('Lead salvo com sucesso! ID: '+ref.id);
+    console.log('[CRM] addDoc OK — ID:', ref.id);
+    dbg('✅ Lead salvo! ID: '+ref.id);
     closeModal('lead');
     toast('Lead salvo!');
   } catch(e) {
-    const msg = errMsg(e);
-    dbg('ERRO AO SALVAR LEAD: '+msg, true);
-    alert('❌ Erro ao salvar lead no Firebase:\n\n'+msg+'\n\nVerifique as Regras do Firestore e tente novamente.');
-  } finally {
+    // Exibe o código técnico EXATO do erro conforme exigido
+    console.error('[CRM] addDoc FALHOU:', e.code, e.message, e);
+    alert('ERRO FIRESTORE: ' + e.code + '\n\n' + e.message +
+      '\n\n──────────────────\n' +
+      'Se o código for "permission-denied":\n' +
+      'Vá em Firebase Console → Firestore → Segurança\n' +
+      'e publique as regras:\n\n' +
+      'allow read, write: if request.auth != null;');
+    dbg('ERRO SALVAR LEAD: ' + e.code, true);
     btn.disabled=false; btn.textContent='Salvar lead';
   }
 };
