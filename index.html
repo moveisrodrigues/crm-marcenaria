@@ -636,12 +636,14 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
 // ════════════════════════════════════════════════════════════════════════
 import { initializeApp }
   from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged,
+         setPersistence, browserLocalPersistence }
   from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
   getFirestore, collection, onSnapshot,
   addDoc, updateDoc, deleteDoc,
-  doc, serverTimestamp, query, orderBy
+  doc, serverTimestamp, query, orderBy,
+  enableNetwork, disableNetwork
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 // ════════════════════════════════════════════════════════════════════════
@@ -659,6 +661,11 @@ const firebaseConfig = {
 const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db   = getFirestore(app);
+
+// ── Persistência LOCAL: mantém sessão mesmo ao fechar/reabrir o browser ──
+setPersistence(auth, browserLocalPersistence).catch(e =>
+  console.warn('[CRM] setPersistence falhou:', e)
+);
 
 // ════════════════════════════════════════════════════════════════════════
 //  CONSTANTES
@@ -754,19 +761,25 @@ function showLeadNotif() {
 // ════════════════════════════════════════════════════════════════════════
 //  AUTH
 // ════════════════════════════════════════════════════════════════════════
+//  AUTH STATE — dispara ao carregar (sessão salva) ou após login/logout
+// ════════════════════════════════════════════════════════════════════════
 onAuthStateChanged(auth, user => {
   if (user) {
+    // Sessão ativa (login novo ou sessão persistida pelo browserLocalPersistence)
     document.getElementById('login-screen').classList.add('hidden');
-    dbg('Autenticado como ' + user.email);
-    initListeners();
+    dbg('✅ Sessão ativa: ' + user.email);
+    initListeners(); // inicia onSnapshot — cancela listeners anteriores internamente
   } else {
+    // Sem sessão — mostra tela de login e limpa estado
     document.getElementById('login-screen').classList.remove('hidden');
     setSynced(false, 'Faça login');
+    // initListeners já faz o unsub, mas garantimos aqui também
     if (unsubLeads)   { unsubLeads();   unsubLeads   = null; }
     if (unsubTasks)   { unsubTasks();   unsubTasks   = null; }
     if (unsubSellers) { unsubSellers(); unsubSellers = null; }
     leads = []; tasks = []; sellers = [];
     firstSnapshot = true; prevLeadCount = 0;
+    render(); // limpa a UI
   }
 });
 
@@ -783,22 +796,19 @@ window.doLogin = async () => {
   }
   btn.disabled = true;
   btn.textContent = 'Entrando...';
-  signInWithEmailAndPassword(auth, email, pass)
-    .then(() => {
-      // sucesso — onAuthStateChanged trata o resto
-    })
-    .catch((error) => {
-      // ── Alerta OBRIGATÓRIO com código técnico do erro ──────────────────
-      alert('ERRO DE LOGIN: ' + error.code);
-      console.error('[CRM] Login error:', error);
-      // ── Tradução amigável na tela ──────────────────────────────────────
-      const msg = errMsg(error);
-      errEl.textContent = msg;
-      errEl.style.display = 'block';
-      dbg('LOGIN FALHOU: ' + msg, true);
-      btn.disabled = false;
-      btn.textContent = 'Entrar';
-    });
+  try {
+    // setPersistence já foi aplicado no init — garante sessão LOCAL persistente
+    await signInWithEmailAndPassword(auth, email, pass);
+    // sucesso — onAuthStateChanged cuida do resto
+  } catch(error) {
+    console.error('[CRM] Login error:', error.code, error.message);
+    const msg = errMsg(error);
+    errEl.textContent = msg;
+    errEl.style.display = 'block';
+    dbg('LOGIN FALHOU: ' + msg, true);
+    btn.disabled = false;
+    btn.textContent = 'Entrar';
+  }
 };
 
 window.doLogout = async () => {
@@ -808,7 +818,6 @@ window.doLogout = async () => {
 document.getElementById('li-pass').addEventListener('keydown', e => {
   if (e.key === 'Enter') doLogin();
 });
-
 document.getElementById('login-btn').addEventListener('click', () => doLogin());
 
 
@@ -817,11 +826,18 @@ document.getElementById('login-btn').addEventListener('click', () => doLogin());
 //  LISTENERS FIRESTORE — somente após login autenticado
 // ════════════════════════════════════════════════════════════════════════
 function initListeners() {
-  dbg('Conectando ao Firestore...');
+  // Cancela qualquer listener anterior antes de criar novos (evita duplicatas entre logins)
+  if (unsubLeads)   { unsubLeads();   unsubLeads   = null; }
+  if (unsubTasks)   { unsubTasks();   unsubTasks   = null; }
+  if (unsubSellers) { unsubSellers(); unsubSellers = null; }
 
-  // ── LEADS ──
+  dbg('Conectando ao Firestore em tempo real...');
+  setSynced(false, 'Conectando...');
+
+  // ── LEADS — onSnapshot garante atualização instantânea em todos os dispositivos ──
   unsubLeads = onSnapshot(
     query(collection(db,'leads'), orderBy('createdAt','desc')),
+    { includeMetadataChanges: false },
     snapshot => {
       const newCount = snapshot.docs.length;
       leads = snapshot.docs.map(d => ({id:d.id, ...d.data()}));
@@ -829,19 +845,22 @@ function initListeners() {
       if (!firstSnapshot && newCount > prevLeadCount) {
         playLeadSound();
         showLeadNotif();
-        dbg(`Novo lead recebido! Total: ${newCount}`);
+        dbg(`🔔 Novo lead recebido em tempo real! Total: ${newCount}`);
       }
       prevLeadCount = newCount;
       firstSnapshot = false;
 
       render();
-      setSynced(true, 'Sincronizado');
-      dbg(`Leads carregados: ${leads.length}`);
+      setSynced(true, 'Ao vivo ●');
+      dbg(`Leads sincronizados: ${leads.length}`);
     },
     error => {
       const msg = errMsg(error);
-      setSynced(false, 'Erro');
-      dbg('ERRO AO LER LEADS: '+msg, true);
+      setSynced(false, 'Erro de sync');
+      dbg('ERRO LEADS: '+msg, true);
+      if (error.code === 'permission-denied' || error.code === 'firestore/permission-denied') {
+        alert('❌ PERMISSÃO NEGADA no Firestore!\n\nNo Firebase Console → Firestore → Regras, publique:\n\nrules_version = \'2\';\nservice cloud.firestore {\n  match /databases/{database}/documents {\n    match /{document=**} {\n      allow read, write: if request.auth != null;\n    }\n  }\n}');
+      }
     }
   );
 
@@ -852,7 +871,7 @@ function initListeners() {
       tasks = snapshot.docs.map(d => ({id:d.id, ...d.data()}));
       renderTasks(); renderDashTasks(); updateCounts();
     },
-    error => dbg('ERRO AO LER TASKS: '+errMsg(error), true)
+    error => dbg('ERRO TASKS: '+errMsg(error), true)
   );
 
   // ── SELLERS ──
@@ -862,7 +881,7 @@ function initListeners() {
       sellers = snapshot.docs.map(d => ({id:d.id, ...d.data()}));
       renderTeam(); updateSellerSelects(); updateCounts();
     },
-    error => dbg('ERRO AO LER SELLERS: '+errMsg(error), true)
+    error => dbg('ERRO SELLERS: '+errMsg(error), true)
   );
 }
 
