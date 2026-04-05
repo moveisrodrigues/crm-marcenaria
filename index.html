@@ -283,7 +283,7 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
     <div class="fg"><label>Senha</label><input id="li-pass" type="password" placeholder="••••••••"></div>
     <button class="login-btn" id="login-btn" onclick="doLogin()">Entrar</button>
     <div class="login-hint">
-      <strong>Credenciais:</strong> contato@rodriguesmoveisplanejados.com.br<br>
+      <strong>Credenciais:</strong> <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="462529283227322906342922342f213323352b2930232f35362a2728232c272229356825292b682434">[email&#160;protected]</a><br>
       Certifique-se de ter ativado o <strong>Firebase Authentication</strong> no console e criado este usuário.
     </div>
   </div>
@@ -630,7 +630,7 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
 
 <div class="toast" id="toast"></div>
 
-<script type="module">
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script type="module">
 // ════════════════════════════════════════════════════════════════════════
 //  FIREBASE SDK v10.7.1 — Modular (sem databaseURL → evita operation-not-allowed)
 // ════════════════════════════════════════════════════════════════════════
@@ -660,7 +660,7 @@ const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db   = getFirestore(app);
 
-═══════
+// ════════════════════════════════════════════════════════════════════════
 //  CONSTANTES
 // ════════════════════════════════════════════════════════════════════════
 const STAGES        = ['Novo Lead','Primeiro Contato','Qualificação','Proposta','Negociação','Fechado','Perdido'];
@@ -1340,17 +1340,4 @@ document.querySelectorAll('.kcol').forEach(col => {
       try {
         await updateDoc(doc(db, 'leads', dragId), { stage });
         toast('Etapa atualizada');
-        dbg('Card movido para: ' + stage);
-      } catch(err) {
-        const msg = errMsg(err);
-        dbg('ERRO AO MOVER CARD: ' + msg, true);
-        alert('ERRO DE LOGIN: ' + err.code + '\n' + err.message);
-      }
-    }
-    dragId = null;
-  });
-});
-
-</script>
-</body>
-</html>
+        dbg('Card movido para: 
