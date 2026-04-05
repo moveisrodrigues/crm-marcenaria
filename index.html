@@ -448,7 +448,7 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
       </div>
       <div class="fg-row">
         <div class="fg"><label>Etapa</label>
-          <select id="nl-stage"><option>Novo Lead</option><option>Primeiro Contato</option><option>Qualificação</option><option>Proposta</option><option>Negociação</option><option>Fechado</option><option>Perdido</option></select>
+          <select id="nl-stage"><option>Novo Lead</option><option>Primeiro Contato</option><option>Qualificação</option><option>Projeto/Orçamento</option><option>Proposta</option><option>Negociação</option><option>Fechado</option><option>Perdido/Desqualificado</option></select>
         </div>
         <div class="fg"><label>Vendedor responsável</label><select id="nl-seller" class="sel-inp"><option value="">— nenhum —</option></select></div>
       </div>
@@ -533,8 +533,8 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
       <div class="det-section">
         <div class="det-section-title">Mover etapa</div>
         <select id="det-stage" class="sel-inp" onchange="updateLeadStage()">
-          <option>Novo Lead</option><option>Primeiro Contato</option><option>Qualificação</option><option>Proposta</option><option>Negociação</option><option>Fechado</option><option>Perdido</option>
-        </select>
+          <option>Novo Lead</option><option>Primeiro Contato</option><option>Qualificação</option><option>Projeto/Orçamento</option><option>Proposta</option><option>Negociação</option><option>Fechado</option><option>Perdido/Desqualificado</option>
+          </select>
       </div>
       <div class="det-section">
         <div class="det-section-title">Aviso WhatsApp</div>
@@ -595,16 +595,17 @@ const db   = getFirestore(app);
 
 
 // ── CONSTANTES ────────────────────────────────────────────────────────────────
-const STAGES        = ['Novo Lead','Primeiro Contato','Qualificação','Proposta','Negociação','Fechado','Perdido'];
-const ACTIVE_STAGES = ['Novo Lead','Primeiro Contato','Qualificação','Proposta','Negociação'];
+const STAGES        = ['Novo Lead','Primeiro Contato','Qualificação','Projeto/Orçamento','Proposta','Negociação','Fechado','Perdido/Desqualificado'];
+const ACTIVE_STAGES = ['Novo Lead','Primeiro Contato','Qualificação','Projeto/Orçamento','Proposta','Negociação'];
 const SST = {
-  'Novo Lead':        { dot:'#9e9990', badge:'background:#ebe8e4;color:#5a5550' },
-  'Primeiro Contato': { dot:'#1a4a7a', badge:'background:#e6eef8;color:#1a4a7a' },
-  'Qualificação':     { dot:'#1a5c2a', badge:'background:#e4f2e8;color:#1a5c2a' },
-  'Proposta':         { dot:'#92530a', badge:'background:#fdf0e0;color:#7a3d08' },
-  'Negociação':       { dot:'#b04010', badge:'background:#fde8e0;color:#8a2a10' },
-  'Fechado':          { dot:'#0f5c4a', badge:'background:#e0f2ec;color:#0a4035' },
-  'Perdido':          { dot:'#8a1f1f', badge:'background:#fdeaea;color:#6b1a1a' },
+  'Novo Lead':              { dot:'#9e9990', badge:'background:#ebe8e4;color:#5a5550' },
+  'Primeiro Contato':       { dot:'#1a4a7a', badge:'background:#e6eef8;color:#1a4a7a' },
+  'Qualificação':           { dot:'#1a5c2a', badge:'background:#e4f2e8;color:#1a5c2a' },
+  'Projeto/Orçamento':      { dot:'#5a2d8a', badge:'background:#eeebfa;color:#3a1a6a' },
+  'Proposta':               { dot:'#92530a', badge:'background:#fdf0e0;color:#7a3d08' },
+  'Negociação':             { dot:'#b04010', badge:'background:#fde8e0;color:#8a2a10' },
+  'Fechado':                { dot:'#0f5c4a', badge:'background:#e0f2ec;color:#0a4035' },
+  'Perdido/Desqualificado': { dot:'#8a1f1f', badge:'background:#fdeaea;color:#6b1a1a' },
 };
 const BRAND_COLORS = ['#592419','#7a3326','#9a4433','#ba5544','#d98070','#e9b0a0','#1a4a7a','#1a5c2a','#92530a'];
 const WPP = {
@@ -711,7 +712,6 @@ window.doLogin = async () => {
   try {
     await signInWithEmailAndPassword(auth, email, pass);
   } catch(e) {
-    // ── Diagnóstico imediato — mostra o código técnico exato do Firebase ──
     alert('ERRO DE LOGIN: ' + e.code);
     console.error('[CRM] Login error:', e);
     const msgs = {
@@ -721,8 +721,8 @@ window.doLogin = async () => {
       'auth/invalid-email':          'E-mail inválido.',
       'auth/too-many-requests':      'Muitas tentativas. Aguarde.',
       'auth/network-request-failed': 'Sem conexão com a internet.',
-      'auth/operation-not-allowed':  'Ative E-mail/Senha no Firebase Console → Authentication → Sign-in method.',
-      'auth/unauthorized-domain':    'Adicione este domínio em Firebase Console → Authentication → Authorized Domains.',
+      'auth/operation-not-allowed':  'Ative E-mail/Senha no Firebase Console → Authentication.',
+      'auth/unauthorized-domain':    'Adicione este domínio em Firebase → Authentication → Authorized Domains.',
     };
     const msg = msgs[e.code] || ('Erro: ' + e.code);
     errEl.textContent = msg; errEl.style.display = 'block';
@@ -1218,12 +1218,16 @@ window.saveLead = async () => {
       sellerId:  document.getElementById('nl-seller').value,
       source:    document.getElementById('nl-source').value,
       obs:       document.getElementById('nl-obs').value.trim(),
-      createdAt: serverTimestamp()  // ← timestamp do servidor, não do browser
+      createdAt: serverTimestamp()
     });
-    console.log('[CRM] Lead salvo no Firestore — ID:', ref.id);
+    console.log('[CRM] Lead salvo! ID:', ref.id);
     dbg('Lead salvo! ID: ' + ref.id);
+    ['nl-name','nl-phone','nl-city','nl-product','nl-value','nl-obs'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('nl-stage').value  = 'Novo Lead';
+    document.getElementById('nl-source').value = '';
+    document.getElementById('nl-seller').value = '';
     closeModal('lead');
-    toast('Lead salvo!');
+    alert('Enviado ao Google!');
   } catch(error) {
     console.error('[CRM] addDoc falhou:', error.code, error.message, error);
     alert('ERRO NO GOOGLE: ' + error.code);
@@ -1274,9 +1278,12 @@ window.saveSeller = async () => {
       dbg('Vendedor criado! ID: ' + ref.id);
       toast('Vendedor cadastrado!');
     }
+    ['sv-name','sv-phone','sv-email','sv-role','sv-goal'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('sv-color').value = '#592419';
     closeModal('seller');
+    alert('Enviado ao Google!');
   } catch(error) {
-    alert('FALHA CRÍTICA NO FIRESTORE\n\nCódigo: ' + error.code + '\n\n' + error.message);
+    alert('ERRO NO GOOGLE: ' + error.code);
     console.error('[CRM] saveSeller:', error);
   }
 };
