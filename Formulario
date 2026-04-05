@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Solicite seu Orçamento — Marcenaria Rodrigues</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#f4f3ef;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+.wrap{width:100%;max-width:520px}
+.logo-area{text-align:center;margin-bottom:28px}
+.logo-mark{width:52px;height:52px;background:#2d5a1b;border-radius:14px;display:inline-flex;align-items:center;justify-content:center;color:#d4e8c8;font-size:24px;font-weight:700;margin-bottom:10px}
+.logo-name{font-size:20px;font-weight:700;color:#1a1916;letter-spacing:-.4px}
+.logo-sub{font-size:13px;color:#a09d98;margin-top:3px}
+.card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.1)}
+.hero{background:#2d5a1b;padding:28px 32px}
+.hero h1{font-size:22px;font-weight:700;color:#fff;letter-spacing:-.4px;margin-bottom:6px}
+.hero p{font-size:13px;color:#9dc888;line-height:1.6}
+.body{padding:28px 32px}
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:12px;font-weight:500;color:#6b6760;margin-bottom:5px}
+.fg input,.fg select,.fg textarea{width:100%;padding:10px 13px;font-size:14px;font-family:'DM Sans',sans-serif;border:1px solid #e2ddd6;border-radius:8px;background:#fff;color:#1a1916;outline:none;transition:border-color .15s;-webkit-appearance:none}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:#4a8a2e;box-shadow:0 0 0 3px rgba(74,138,46,.1)}
+.fg textarea{resize:vertical;min-height:90px}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.req{color:#e24b4a;margin-left:2px}
+.btn-submit{width:100%;padding:13px;background:#2d5a1b;color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:600;font-family:'DM Sans',sans-serif;cursor:pointer;transition:background .15s;margin-top:6px;display:flex;align-items:center;justify-content:center;gap:8px}
+.btn-submit:hover{background:#4a8a2e}
+.btn-submit:disabled{background:#a09d98;cursor:not-allowed}
+.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.sent{text-align:center;padding:48px 32px;display:none}
+.sent-icon{width:68px;height:68px;background:#e8f0e2;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:30px}
+.sent h2{font-size:20px;font-weight:700;color:#1a1916;margin-bottom:8px}
+.sent p{font-size:14px;color:#6b6760;line-height:1.6;margin-bottom:24px}
+.btn-new{padding:10px 28px;background:none;border:1px solid #e2ddd6;border-radius:8px;font-size:13px;font-weight:500;font-family:'DM Sans',sans-serif;cursor:pointer;color:#6b6760;transition:all .15s}
+.btn-new:hover{border-color:#4a8a2e;color:#2d5a1b;background:#e8f0e2}
+.error-msg{font-size:12px;color:#e24b4a;margin-top:4px;display:none}
+.footer{text-align:center;margin-top:20px;font-size:12px;color:#a09d98;line-height:1.6}
+@media(max-width:480px){.hero{padding:22px 20px}.body{padding:22px 20px}.fg-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="logo-area">
+    <div class="logo-mark">M</div>
+    <div class="logo-name">Marcenaria Rodrigues</div>
+    <div class="logo-sub">Móveis planejados sob medida · Serra - ES</div>
+  </div>
+
+  <div class="card">
+    <div class="hero">
+      <h1>Solicite seu orçamento</h1>
+      <p>Preencha o formulário e entraremos em contato em breve pelo WhatsApp com a proposta personalizada para o seu projeto.</p>
+    </div>
+
+    <div class="body" id="form-body">
+      <div class="fg">
+        <label>Nome completo <span class="req">*</span></label>
+        <input id="f-name" placeholder="Ex: João da Silva" autocomplete="name">
+        <div class="error-msg" id="err-name">Por favor, informe seu nome.</div>
+      </div>
+      <div class="fg-row">
+        <div class="fg">
+          <label>WhatsApp <span class="req">*</span></label>
+          <input id="f-phone" placeholder="(47) 99999-0000" type="tel" autocomplete="tel">
+          <div class="error-msg" id="err-phone">Informe seu WhatsApp.</div>
+        </div>
+        <div class="fg">
+          <label>Cidade</label>
+          <input id="f-city" placeholder="Ex: Serra - ES" autocomplete="address-level2">
+        </div>
+      </div>
+      <div class="fg">
+        <label>O que você precisa? <span class="req">*</span></label>
+        <select id="f-product">
+          <option value="">Selecione o produto...</option>
+          <option>Cozinha planejada</option>
+          <option>Dormitório planejado</option>
+          <option>Home office</option>
+          <option>Closet</option>
+          <option>Sala planejada</option>
+          <option>Banheiro planejado</option>
+          <option>Área de serviço</option>
+          <option>Varanda / área gourmet</option>
+          <option>Outro</option>
+        </select>
+        <div class="error-msg" id="err-product">Selecione o produto desejado.</div>
+      </div>
+      <div class="fg">
+        <label>Conte mais sobre o projeto</label>
+        <textarea id="f-obs" placeholder="Medidas aproximadas, estilo desejado, prazo, algum detalhe importante..."></textarea>
+      </div>
+      <button class="btn-submit" id="btn-submit" onclick="submitForm()">
+        <span id="btn-text">Enviar solicitação →</span>
+        <div class="spinner" id="spinner"></div>
+      </button>
+    </div>
+
+    <div class="sent" id="form-sent">
+      <div class="sent-icon">✅</div>
+      <h2>Solicitação enviada!</h2>
+      <p>Recebemos o seu interesse.<br>Nossa equipe entrará em contato em breve pelo WhatsApp para dar continuidade ao seu projeto.</p>
+      <button class="btn-new" onclick="resetForm()">Enviar nova solicitação</button>
+    </div>
+  </div>
+
+  <div class="footer">
+    Seus dados são usados apenas para contato comercial.<br>
+    Não compartilhamos suas informações com terceiros.
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const db = getFirestore(initializeApp({
+  apiKey: "AIzaSyBJ4_iiknBGZX1ciwKtOfhfDPytsRqYW9A",
+  authDomain: "crm-marcenaria-ac88a.firebaseapp.com",
+  projectId: "crm-marcenaria-ac88a",
+  storageBucket: "crm-marcenaria-ac88a.firebasestorage.app",
+  messagingSenderId: "763443542872",
+  appId: "1:763443542872:web:8046db5950bf66ddd1432d"
+}));
+
+function showErr(id, show) {
+  document.getElementById(id).style.display = show ? 'block' : 'none';
+}
+
+window.submitForm = async () => {
+  const name    = document.getElementById('f-name').value.trim();
+  const phone   = document.getElementById('f-phone').value.trim();
+  const product = document.getElementById('f-product').value;
+  const city    = document.getElementById('f-city').value.trim();
+  const obs     = document.getElementById('f-obs').value.trim();
+
+  let valid = true;
+  showErr('err-name',    !name);    if (!name)    valid = false;
+  showErr('err-phone',   !phone);   if (!phone)   valid = false;
+  showErr('err-product', !product); if (!product) valid = false;
+  if (!valid) return;
+
+  const btn = document.getElementById('btn-submit');
+  const txt = document.getElementById('btn-text');
+  const spin = document.getElementById('spinner');
+  btn.disabled = true;
+  txt.textContent = 'Enviando...';
+  spin.style.display = 'block';
+
+  try {
+    await addDoc(collection(db, 'leads'), {
+      name, phone, city, product, obs,
+      stage: 'Novo Lead',
+      source: 'Formulário do site',
+      createdAt: serverTimestamp()
+    });
+    document.getElementById('form-body').style.display = 'none';
+    document.getElementById('form-sent').style.display = 'block';
+  } catch(e) {
+    alert('Erro ao enviar. Por favor tente novamente.');
+    btn.disabled = false;
+    txt.textContent = 'Enviar solicitação →';
+    spin.style.display = 'none';
+  }
+};
+
+window.resetForm = () => {
+  ['f-name','f-phone','f-city','f-obs'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-product').value = '';
+  ['err-name','err-phone','err-product'].forEach(id => showErr(id, false));
+  const btn = document.getElementById('btn-submit');
+  btn.disabled = false;
+  document.getElementById('btn-text').textContent = 'Enviar solicitação →';
+  document.getElementById('spinner').style.display = 'none';
+  document.getElementById('form-body').style.display = 'block';
+  document.getElementById('form-sent').style.display = 'none';
+};
+</script>
+</body>
+</html>
