@@ -635,31 +635,33 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
 //  IMPORTS — Firebase v10 Modular SDK (sem persistência local)
 // ════════════════════════════════════════════════════════════════════════
 import { initializeApp }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+  from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 import {
   getFirestore, collection, onSnapshot,
   addDoc, updateDoc, deleteDoc,
   doc, serverTimestamp, query, orderBy
-} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 // ════════════════════════════════════════════════════════════════════════
 //  CONFIGURAÇÃO FIREBASE
 //  getFirestore() simples — sem IndexedDB cache, sem localStorage.
 //  Isso garante que cada escrita vai DIRETO para o servidor.
 // ════════════════════════════════════════════════════════════════════════
-const firebaseApp = initializeApp({
+// ── Configuração Firebase (sem databaseURL — evita auth/operation-not-allowed) ──
+const firebaseConfig = {
   apiKey:            "AIzaSyBJ4_iiknBGZX1ciwKtOfhfDPytsRqYW9A",
   authDomain:        "crm-marcenaria-ac88a.firebaseapp.com",
   projectId:         "crm-marcenaria-ac88a",
   storageBucket:     "crm-marcenaria-ac88a.firebasestorage.app",
   messagingSenderId: "763443542872",
   appId:             "1:763443542872:web:8046db5950bf66ddd1432d"
-});
+};
 
-const auth = getAuth(firebaseApp);
-const db   = getFirestore(firebaseApp); // ← sem persistência local intencional
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
 
 // ════════════════════════════════════════════════════════════════════════
 //  CONSTANTES
@@ -1307,10 +1309,8 @@ window.copyLink=()=>{
 //  INIT
 // ════════════════════════════════════════════════════════════════════════
 document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
-document.getElementById('form-captacao-link').addEventListener('click',window.copyLink);
 
 // Kanban drag-and-drop
-let dragId=null;
 document.querySelectorAll('.kcol').forEach(col=>{
   col.addEventListener('dragover',e=>{e.preventDefault();col.classList.add('drag-over');});
   col.addEventListener('dragleave',()=>col.classList.remove('drag-over'));
@@ -1319,7 +1319,11 @@ document.querySelectorAll('.kcol').forEach(col=>{
     const stage=col.dataset.stage;
     if(dragId&&stage){
       try{await updateDoc(doc(db,'leads',dragId),{stage});toast('Etapa atualizada');}
-      catch(err){alert('❌ Erro ao mover card: '+errMsg(err));}
+      catch(err){
+        const msg=errMsg(err);
+        dbg('ERRO AO MOVER CARD: '+msg,true);
+        alert('❌ Erro ao mover card: '+msg);
+      }
     }
     dragId=null;
   });
