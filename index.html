@@ -632,8 +632,8 @@ body{font-family:'Ubuntu',sans-serif;background:var(--bg);color:var(--text);min-
 
 <script type="module">
 // ════════════════════════════════════════════════════════════════════════
-//  FIREBASE SDK v10.7.1 — Modular, sem persistência local, sem databaseURL
-//  databaseURL removido intencionalmente: evita auth/operation-not-allowed
+//  FIREBASE SDK v10.7.1 — Modular
+//  IMPORTANTE: sem databaseURL → evita auth/operation-not-allowed
 // ════════════════════════════════════════════════════════════════════════
 import { initializeApp }
   from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
@@ -646,7 +646,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
 // ════════════════════════════════════════════════════════════════════════
-//  CONFIGURAÇÃO FIREBASE
+//  CONFIG — credenciais exatas do projeto crm-marcenaria-ac88a
 // ════════════════════════════════════════════════════════════════════════
 const firebaseConfig = {
   apiKey:            "AIzaSyBJ4_iiknBGZX1ciwKtOfhfDPytsRqYW9A",
@@ -787,6 +787,8 @@ window.doLogin = async () => {
     errEl.textContent = msg;
     errEl.style.display = 'block';
     dbg('LOGIN FALHOU: '+msg, true);
+    // Alerta explícito com o código técnico do erro (ex: auth/operation-not-allowed)
+    alert('Erro no Login: ' + (e.code || e.message));
     btn.disabled=false; btn.textContent='Entrar';
   }
 };
@@ -1311,13 +1313,10 @@ document.querySelectorAll('.overlay').forEach(o=>o.addEventListener('click',e=>{
 document.getElementById('form-captacao-link')?.addEventListener('click', window.copyLink);
 
 // ════════════════════════════════════════════════════════════════════════
-//  KANBAN DRAG-AND-DROP
+//  KANBAN DRAG-AND-DROP (arrastar cards entre colunas)
 // ════════════════════════════════════════════════════════════════════════
 document.querySelectorAll('.kcol').forEach(col => {
-  col.addEventListener('dragover', e => {
-    e.preventDefault();
-    col.classList.add('drag-over');
-  });
+  col.addEventListener('dragover', e => { e.preventDefault(); col.classList.add('drag-over'); });
   col.addEventListener('dragleave', () => col.classList.remove('drag-over'));
   col.addEventListener('drop', async e => {
     e.preventDefault();
@@ -1327,10 +1326,11 @@ document.querySelectorAll('.kcol').forEach(col => {
       try {
         await updateDoc(doc(db, 'leads', dragId), { stage });
         toast('Etapa atualizada');
+        dbg('Card movido para: ' + stage);
       } catch(err) {
         const msg = errMsg(err);
         dbg('ERRO AO MOVER CARD: ' + msg, true);
-        alert('❌ Erro ao mover card:\n\n' + msg);
+        alert('Erro ao mover card: ' + err.code + '\n' + err.message);
       }
     }
     dragId = null;
